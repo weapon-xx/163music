@@ -1,0 +1,62 @@
+@font-face {
+    font-family: 'icomoon';
+    src:url('../fonts/icomoon.woff') format('woff');
+    src:url('../fonts/icomoon.eot');
+    src: url('../fonts/icomoon.eot?#iefix&v=4.3.0') format('embedded-opentype'),
+    url('../fonts/icomoon.woff') format('woff'),
+    url('../fonts/icomoon.ttf') format('truetype'),
+    url('../fonts/icomoon.svg') format('svg');
+    font-weight: normal;
+    font-style: normal;
+  }
+  .wif{
+    display: inline-block;
+    font: normal normal normal 14px/1 icomoon;
+    font-size: larger;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  .icon-male:before {
+    content: "\e900";
+    color: #37b9ea;
+  }
+  
+  .icon-female:before {
+    content: "\e901";
+    color: #ff8585;
+  }
+  
+  .icon-people:before {
+    content: "\e902";
+  }
+  
+  .icon-wy-music:before {
+    content: "\e903";
+  }
+  
+  .icon-music:before {
+    content: "\e904";
+  }
+  
+  .icon-friend:before {
+    content: "\e905";
+  }
+  
+  .icon-wy-music-black:before {
+    content: "\e906";
+  }
+  
+  .icon-voice:before {
+    content: "\e907";
+  }
+  
+  .icon-password:before {
+    content: "\e908";
+  }
+  
+  .icon-phone:before {
+    content: "\e909";
+  }
+  
