@@ -1,18 +1,22 @@
 <template>
-  <div class="hello">
+  <div class="container">
       <headBox></headBox>
-    <h1>123</h1>
+      <banner></banner>
+      <footBox></footBox>
   </div>
 </template>
 
 <script>
 import headBox from './headBox'
+import footBox from './footBox'
+import banner from './banner'
+
 export default {
   name: 'index',
   props: {
     msg: String
   },
-  components: {headBox}
+  components: {headBox, footBox, banner}
 }
 </script>
 

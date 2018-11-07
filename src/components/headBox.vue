@@ -4,7 +4,7 @@
         <div class="search-box">
         <input type="text" name="" value="" placeholder="搜索音乐、歌词、电台">
         </div>
-        <div :class="[{active: is_play}, custom]" ref="voice_box" @click="playMusic">
+        <div :class="[{active: is_play}, 'voice-box']" ref="voice_box" @click="playMusic">
         <i></i>
         <i></i>
         <i></i>
@@ -17,7 +17,7 @@
         name: 'headBox',
         data() {
             return {
-                is_play: '',
+                is_play: true,
                 custom: ''
             }
         },
@@ -45,6 +45,24 @@
   align-items: center;
   z-index: 100;
 }
+
+.search-box{
+    width: 70%;
+    height: 28px;
+    padding: 1px 0;
+    background-color: #fff;
+    border-radius: 30px;
+    input {
+      width: 90%;
+      height: 26px;
+      line-height: 26px;
+      text-align: center;
+      color: $font_color;
+      font-size: 14px;
+      outline: none;
+      border: none;
+    }
+  }
 
 .wif.i-voice {
   font-size: 26px;
