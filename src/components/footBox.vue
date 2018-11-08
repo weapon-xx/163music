@@ -39,6 +39,7 @@ export default {
     color: #fff;
 }
 .footer-item {
+  text-align: center;
   i {
     display: block;
     font-size: 24px;

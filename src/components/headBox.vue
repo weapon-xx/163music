@@ -47,15 +47,17 @@
 }
 
 .search-box{
+    box-sizing: border-box;
     width: 70%;
     height: 28px;
-    padding: 1px 0;
     background-color: #fff;
     border-radius: 30px;
     input {
+      display: block;
+      margin: 0 auto;
       width: 90%;
-      height: 26px;
-      line-height: 26px;
+      height: 24px;
+      line-height: 24px;
       text-align: center;
       color: $font_color;
       font-size: 14px;
@@ -81,13 +83,13 @@
     transition: all .5s ease;
   }
   i:nth-of-type(1) {
-    height: 18px;
+    height: 4px;
   }
   i:nth-of-type(2) {
     height: 14px;
   }
   i:nth-of-type(3) {
-    height: 8px;
+    height: 18px;
   }
   i:nth-of-type(4) {
     height: 22px;
