@@ -1,40 +1,56 @@
 <template>
     <div class="login-box">
-        <img class="logo" src="../img/logo.jpg"/>
+        <!-- <img class="logo" src="../img/logo.jpg"/> -->
+        <div class="logo"></div>
         <div class="login-form-box">
             <div class="login-form-line">
                 <label for="">账号</label>
-                <input type="text">
+                <input type="text" v-model="phone">
             </div>
             <div class="login-form-line">
                 <label for="">密码</label>
-                <input type="password">
+                <input type="password" v-model="password">
             </div>
         </div>
         <button class="login-btn" @click="login">登录</button>
     </div>
 </template>
 <script>
-    export default {
-        data() {
-            return {
+import {login} from '../api/index'
 
-            }
-        },
-        methods: {
-            login() {
-                alert(123)
-            }
-        },
-        mounted() {
-
+export default {
+    data() {
+        return {
+            phone: '',
+            password: ''
         }
+    },
+    methods: {
+        login() {
+            if(!!this.phone && !!this.password) {
+                login({
+                    phone: this.phone,
+                    password: this.password
+                }).then(data => {
+                    debugger
+                    if(data && +data.code === 200) {
+                        alert('登录成功');
+                    } else {
+                        alert(data && data.msg || '登录失败')
+                    }
+                })
+            }
+        }
+    },
+    mounted() {
+
     }
+}
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 $main_color: #ed1c00;
-$bg_color: #f9f5f5;
+$bg_color: #e6e6e6;
 
 .login-box {
     position: absolute;
@@ -43,17 +59,17 @@ $bg_color: #f9f5f5;
     top: 0;
     width: 100%;
     padding-top: 50px;
-    background-color: #f9f5f5;
+    background-color: $bg_color;
 }
 
 .logo {
     display: block;
-    width: 90px;
+    // width: 90px;
     margin: 0 auto 20px;
-    // height: 69px;
-    // background-position: 0 0;
-    // background: url(../img/topbar.png) no-repeat;
-    // margin: 0 auto 20px;
+    width: 160px;
+    height: 69px;
+    background-position: 0 0;
+    background: url(../img/topbar.png) no-repeat;
 }
 
 .login-form-box {
