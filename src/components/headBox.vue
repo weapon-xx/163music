@@ -30,7 +30,7 @@
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-@import "../css/common.scss";
+@import "../style/common.scss";
 .head {
   width: 90%;
   height: 50px;

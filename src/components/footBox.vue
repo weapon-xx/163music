@@ -24,8 +24,8 @@ export default {
 }
 </script>
 
-<style lang="scss">
-@import "../css/common.scss";
+<style lang="scss" scoped>
+@import "../style/common.scss";
 .footer {
     display: flex;
     justify-content: space-between;

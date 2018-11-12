@@ -17,6 +17,7 @@
 </template>
 <script>
 import {login} from '../api/index'
+import {isLogin} from '../javascript/util'
 
 export default {
     data() {
@@ -32,9 +33,9 @@ export default {
                     phone: this.phone,
                     password: this.password
                 }).then(data => {
-                    debugger
                     if(data && +data.code === 200) {
-                        alert('登录成功');
+                        localStorage.setItem('skey', data.account && data.account.salt);
+                        this.$router.push('/');
                     } else {
                         alert(data && data.msg || '登录失败')
                     }
@@ -43,8 +44,10 @@ export default {
         }
     },
     mounted() {
-
-    }
+        if(isLogin()) {
+            this.$router.push('/');
+        }
+    }   
 }
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->

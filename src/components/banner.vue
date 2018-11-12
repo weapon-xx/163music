@@ -29,8 +29,8 @@
     },
     mounted() {
       request_banner().then(data => {
-        if(data && data.data && +data.data.code === 200) {
-          this.banners = data.data.banners
+        if(data && +data.code === 200) {
+          this.banners = data.banners
         }
       })
     }
