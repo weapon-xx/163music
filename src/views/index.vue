@@ -8,10 +8,11 @@
 </template>
 
 <script>
-import headBox from './headBox'
-import footBox from './footBox'
-import banner from './banner'
-import listBlock from './listBlock'
+import headBox from '../components/headBox'
+import footBox from '../components/footBox'
+import banner from '../components//banner'
+import listBlock from '../components/listBlock'
+import player from '../components/player'
 import {request_resource} from '../api'
 
 export default {

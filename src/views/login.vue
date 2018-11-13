@@ -16,8 +16,8 @@
     </div>
 </template>
 <script>
-import {login} from '../api/index'
-import {isLogin} from '../javascript/util'
+import { login } from '../api/index'
+import { isLogin } from '../javascript/util'
 
 export default {
     data() {

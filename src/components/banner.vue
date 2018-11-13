@@ -7,34 +7,34 @@
   </swiper>
 </template>
 <script>
-  import 'swiper/dist/css/swiper.css'
-  import { swiper, swiperSlide } from 'vue-awesome-swiper'
-  import { request_banner } from '../api/index'
+    import 'swiper/dist/css/swiper.css'
+    import { swiper, swiperSlide } from 'vue-awesome-swiper'
+    import { request_banner } from '../api/index'
 
-  export default {
-    name: 'banner',
-    components: {swiper, swiperSlide},
-    data() {
-      return {
-        swiperOption: {
-            pagination: {
-                el: '.swiper-pagination',
-                bulletActiveClass: 'bullet-active',
-                clickable :true,
-                // dynamicBullets: true
-            }
-        },
-        banners: []
-      }
-    },
-    mounted() {
-      request_banner().then(data => {
-        if(data && +data.code === 200) {
-          this.banners = data.banners
+    export default {
+      name: 'banner',
+      components: {swiper, swiperSlide},
+      data() {
+        return {
+          swiperOption: {
+              pagination: {
+                  el: '.swiper-pagination',
+                  bulletActiveClass: 'bullet-active',
+                  clickable :true,
+                  // dynamicBullets: true
+              }
+          },
+          banners: []
         }
-      })
+      },
+      mounted() {
+        request_banner().then(data => {
+          if(data && +data.code === 200) {
+            this.banners = data.banners
+          }
+        })
+      }
     }
-  }
 </script>
 <style lang="scss">
 .bullet-active {

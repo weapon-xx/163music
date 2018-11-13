@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const domain = 'jacksonx.cn';
+const domain = 'jacksonx.cn'
 // const domain = '127.0.0.1'
 
 /** 
@@ -8,7 +8,7 @@ const domain = 'jacksonx.cn';
  * promise 缓存函数
  * @param fn 执行函数
  * @param convertParam 缓存 key 生成函数
- *
+ * @return function  
  */ 
 function promiseCache(fn, convertParam) {
     if(typeof fn !== 'function') {
@@ -16,14 +16,14 @@ function promiseCache(fn, convertParam) {
         return 
     }
     if(!promiseCache._cache) {
-        promiseCache._cache = {};
+        promiseCache._cache = {}
     }
-    const cachKey = convertParam();
+    const cachKey = convertParam()
     return function(...args) {
         if(!promiseCache._cache[cachKey]) {
-            promiseCache._cache[cachKey] = fn(args);
+            promiseCache._cache[cachKey] = fn(args)
         }
-        return promiseCache._cache[cachKey];
+        return promiseCache._cache[cachKey]
     }
 }
 
@@ -46,7 +46,7 @@ export const login = params => {
     }
     return axios.get(`//${domain}:3000/login/cellphone?phone=${phone}&password=${password}`).then(data => {
         return data.data
-    });
+    })
 }
 
 /** 
