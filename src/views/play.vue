@@ -1,7 +1,7 @@
 <template>
     <div class="player-box">
         <div class="player-topbar">
-            <i class="wif icon-music"></i>
+            <i class="player-back wif icon-left" @click="back"></i>
             <div>
                 <p class="player-topbar-title">1231</p>    
                 <p class="player-topbar-">歌手</p>
@@ -23,9 +23,9 @@
             <p class="player-progress-totaltime"></p>
         </div>
         <div class="player-control-box">
-            <div class="player-control-last"></div>
-            <div class="player-control-operate"></div>
-            <div class="player-control-last"></div>
+            <div class="player-control-last wif icon-left"></div>
+            <div class="player-control-operate wif"></div>
+            <div class="player-control-last wif icon-right"></div>
         </div>
     </div>
 </template>
@@ -37,7 +37,9 @@
             }
         },
         methods: {
-
+            back() {
+                alert(123)
+            }
         },
         mounted() {
             
@@ -46,11 +48,24 @@
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
+@import "../style/common.scss";
+.player-box {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    bottom: 0;
+}
+
 .player-topbar {
     display: flex;
     padding: 0 10px;
     justify-content: space-between;
     background-color: #c1c1c1;
+    .player-back {
+        width: 30px;
+        height: 45px;
+        line-height: 45px;
+    }
 }
 
 .player-cover-box {
@@ -80,4 +95,30 @@
         width: 100%;
     }
 }
+
+.player-progress-box {
+    position: absolute;
+    bottom: 160px;
+    width: 100%;
+    height: 50px;
+    background-color: #ccc;
+}
+
+.player-control-box {
+    position: absolute;
+    bottom: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
+    padding: 0 5%;
+    .wif {
+        width: 60px;
+        height: 60px;
+        line-height: 60px;
+        font-size: 30px;
+        text-align: center;
+    }
+}
+
 </style>

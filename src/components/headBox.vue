@@ -1,14 +1,14 @@
 <template>
     <div class="head">
-        <i class="wif icon-voice i-voice"></i>
+        <i class="wif icon-voice i-voice" ></i>
         <div class="search-box">
-        <input type="text" name="" value="" placeholder="搜索音乐、歌词、电台">
+          <input type="text" name="" value="" placeholder="搜索音乐、歌词、电台">
         </div>
-        <div :class="[{active: is_play}, 'voice-box']" ref="voice_box" @click="playMusic">
-        <i></i>
-        <i></i>
-        <i></i>
-        <i></i>
+        <div :class="[{active: is_play}, 'voice-box']" @click="goPlay" ref="voice_box">
+          <i></i>
+          <i></i>
+          <i></i>
+          <i></i>
         </div>
     </div>
 </template>
@@ -22,8 +22,9 @@
             }
         },
         methods: {
-            playMusic()  {
-
+            goPlay() {
+              debugger
+              this.$route.push('play')
             }
         }
     }
@@ -71,11 +72,11 @@
   color: #fff;
 }
 .voice-box {
-  width: 19px;
-  height: 24px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 19px;
+  height: 24px;
   i {
     height: 24px;
     width: 1px;
