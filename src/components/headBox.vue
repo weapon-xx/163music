@@ -24,7 +24,7 @@
         methods: {
             goPlay() {
               debugger
-              this.$route.push('play')
+              this.$router.push('play')
             }
         }
     }
