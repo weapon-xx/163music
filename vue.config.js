@@ -1,9 +1,6 @@
-// module.exports = {
-//     pluginOptions: {
-//         DefinePlugin: new webpack.DefinePlugin({
-//             env: {
-//                 NODE_ENV: JSON.stringify(process.env.NODE_ENV)
-//             }
-//       })
-//     }
-//   }
+module.exports = {
+    // 解决开发环境配置 host 而导致 'Invalid Host Header'
+    devServer: {
+      disableHostCheck: true
+    }
+  }

@@ -9,6 +9,12 @@ npm install
 ```
 npm run serve
 ```
+#### 开发环境运行:
+- 拉取 [NeteaseCloudMusicApi](https://github.com/Binaryify/NeteaseCloudMusicApi)，并运行
+- 运行项目 npm run serve
+- 配置 host - jacksonx.cn:8080 局域网ip:8080 & jacksonx.cn:3000 局域网ip:3000
+- 浏览器打开 jacksonx.cn:8080 
+
 
 ### Compiles and minifies for production
 ```
@@ -24,3 +30,4 @@ npm run test
 ```
 npm run lint
 ```
+

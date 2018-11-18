@@ -34,11 +34,12 @@ export default {
                     password: this.password
                 }).then(data => {
                     if(data && +data.code === 200) {
-                        localStorage.setItem('skey', data.account && data.account.salt);
                         this.$router.push('/');
                     } else {
-                        alert(data && data.msg || '登录失败')
+                        alert(data && data.data && data.data.msg || '登录失败')
                     }
+                }).catch(err => {
+                    debugger
                 })
             }
         }

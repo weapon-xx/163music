@@ -31,6 +31,6 @@
 </script>
 <style scoped>
 .player-box {
-    /* display: none; */
+    display: none;
 }
 </style>
