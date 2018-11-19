@@ -23,7 +23,6 @@
         },
         methods: {
             goPlay() {
-              debugger
               this.$router.push('play')
             }
         }

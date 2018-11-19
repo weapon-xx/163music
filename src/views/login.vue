@@ -17,7 +17,7 @@
 </template>
 <script>
 import { login } from '../api/index'
-import { isLogin } from '../javascript/util'
+import { getCookie } from '../javascript/util'
 
 export default {
     data() {
@@ -38,16 +38,14 @@ export default {
                     } else {
                         alert(data && data.data && data.data.msg || '登录失败')
                     }
-                }).catch(err => {
-                    debugger
-                })
+                }).catch(err => {})
             }
         }
     },
     mounted() {
-        if(isLogin()) {
-            this.$router.push('/');
-        }
+        // if() {
+        //     this.$router.push('/');
+        // }
     }   
 }
 </script>
