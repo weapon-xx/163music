@@ -15,10 +15,10 @@ export const getCookie = key => {
 
 /*
 * @params key String cookie键
-* @return String cookie值
+* @return Booleab 是否登录
 */
 export const isLogin = () => {
-    if(getCookie('')) {
+    if(!!getCookie('__csrf')) {
         return true
     } else {
         return false

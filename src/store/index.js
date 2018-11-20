@@ -6,7 +6,10 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
     state: {
       isPlay: false,
-      songUrl: '123'
+      songUrl: '123',
+      user: {
+          isLogin: false
+      }
     },
     getters: {
         isPlay(state) {

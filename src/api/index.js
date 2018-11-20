@@ -1,6 +1,8 @@
 import axios from 'axios'
+axios.defaults.withCredentials = true;
 
-const domain = 'jacksonx.cn'
+const domain = '//163music.jacksonx.cn/api'
+// const domain = '//jacksonx.cn:3000'
 
 /** 
  * 
@@ -31,7 +33,7 @@ function promiseCache(fn, convertParam) {
  * @return Promise
  */ 
 export const request_banner = promiseCache(function() {
-    return axios.get(`//${domain}:3000/banner`).then(data => {
+    return axios.get(`${domain}/banner`).then(data => {
         return data.data
     })
 }, () => 'banner')
@@ -46,13 +48,7 @@ export const login = params => {
     if(!phone || !password) {
         return Promise.reject({code: -1, msg: '手机号或者密码不能为空'})
     }
-    return axios.request({
-        method: 'get',
-        url: `//${domain}:3000/login/cellphone?phone=${phone}&password=${password}`,
-        // withCredentials: true,
-        // maxRedirects: 0,
-        credentials: 'include'
-    }).then(data => {
+    return axios.get(`${domain}/login/cellphone?phone=${phone}&password=${password}`).then(data => {
         return data.data
     }).catch(err => {
         return err.response
@@ -64,8 +60,10 @@ export const login = params => {
  * @return Promise
  */ 
 export const request_resource = () => {
-    return axios.get(`//${domain}:3000/recommend/resource`, {
-        withCredentials: true
+    return axios.request({
+        method: 'get',
+        withCredentials: true,
+        url: `${domain}/recommend/resource`
     }).then(data => {
         return data.data
     });

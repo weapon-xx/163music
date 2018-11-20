@@ -17,7 +17,7 @@
 </template>
 <script>
 import { login } from '../api/index'
-import { getCookie } from '../javascript/util'
+import { getCookie, isLogin } from '../javascript/util'
 
 export default {
     data() {
@@ -34,19 +34,17 @@ export default {
                     password: this.password
                 }).then(data => {
                     if(data && +data.code === 200) {
-                        this.$router.push('/');
+                        this.$router.push('/')
                     } else {
                         alert(data && data.data && data.data.msg || '登录失败')
                     }
                 }).catch(err => {})
+            } else {
+                alert('手机号码或者密码不能为空')
             }
         }
     },
-    mounted() {
-        // if() {
-        //     this.$router.push('/');
-        // }
-    }   
+    mounted() {}   
 }
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->

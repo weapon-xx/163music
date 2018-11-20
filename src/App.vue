@@ -11,7 +11,7 @@ import player from './components/player'
 
 export default {
   name: 'app',
-  components: {player}
+  components: {player},
 }
 </script>
 <style>
