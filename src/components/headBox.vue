@@ -4,7 +4,7 @@
         <div class="search-box">
           <input type="text" name="" value="" placeholder="搜索音乐、歌词、电台">
         </div>
-        <div :class="[{active: is_play}, 'voice-box']" @click="goPlay" ref="voice_box">
+        <div :class="[{active: isPlay}, 'voice-box']" @click="goPlay" ref="voice_box">
           <i></i>
           <i></i>
           <i></i>
@@ -15,9 +15,14 @@
 <script>
     export default {
         name: 'headBox',
+        computed: {
+            isPlay() {
+              return true;
+                return this.$store.getters.isPlay;
+            }
+        },
         data() {
             return {
-                is_play: true,
                 custom: ''
             }
         },
@@ -73,9 +78,9 @@
 .voice-box {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-end;
   width: 19px;
-  height: 24px;
+  height: 18px;
   i {
     height: 24px;
     width: 1px;
@@ -83,16 +88,16 @@
     transition: all .5s ease;
   }
   i:nth-of-type(1) {
-    height: 4px;
+    height: 10px;
   }
   i:nth-of-type(2) {
-    height: 14px;
-  }
-  i:nth-of-type(3) {
     height: 18px;
   }
+  i:nth-of-type(3) {
+    height: 10px;
+  }
   i:nth-of-type(4) {
-    height: 22px;
+    height: 16px;
   }
 }
 

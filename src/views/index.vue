@@ -2,7 +2,7 @@
   <div class="container">
       <headBox></headBox>
       <banner></banner>
-      <listBlock></listBlock>
+      <listBlock ref="recommend" :title="recommendTitle" :list="recommend"></listBlock>
       <footBox></footBox>
   </div>
 </template>
@@ -21,12 +21,20 @@ export default {
     msg: String
   },
   components: {headBox, footBox, banner, listBlock},
+  data() {
+    return {
+      recommendTitle: '推荐标题',
+      recommend: []
+    }
+  },
   methods: {
  
   },
   mounted() {
     request_resource().then(data => {
-      
+      if(+data.code === 200) {
+        this.recommend = data.recommend;
+      }
     })
   }
 }

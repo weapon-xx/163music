@@ -1,8 +1,8 @@
 import axios from 'axios'
 axios.defaults.withCredentials = true;
 
-const domain = '//163music.jacksonx.cn/api'
-// const domain = '//jacksonx.cn:3000'
+// const domain = '//163music.jacksonx.cn/api'
+const domain = '//jacksonx.cn:3000'
 
 /** 
  * 
@@ -62,7 +62,6 @@ export const login = params => {
 export const request_resource = () => {
     return axios.request({
         method: 'get',
-        withCredentials: true,
         url: `${domain}/recommend/resource`
     }).then(data => {
         return data.data
