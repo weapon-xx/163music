@@ -5,7 +5,8 @@
             <i class="wif icon-right title-icon"></i>
         </h4>
         <ul class="list-block-wrap">
-            <li class="list-block-item" v-for="item in handleList">
+            <li class="list-block-item" v-for="item in handleList" @click="goPlaylist(item.id)">
+                <div class="list-item-count" v-show="showCount"><i class="wif icon-headset count-icon"></i>{{handleCount(item.playcount)}}</div>
                 <img class="list-item-cover" :src="item.picUrl" alt="">
                 <p class="list-item-title">{{item.copywriter}}</p>
             </li>
@@ -14,20 +15,34 @@
 </template>
 <script>
     export default {
-        props: ['title', 'list'],
+        props: ['title', 'list', 'showCount'],
         data() {
             return {}
         },
         computed: {
             handleList() {
                 if(this.list.length > 6) {
-                    return this.list.slice(0, 6);
+                    return this.list.slice(0, 6)
                 }
-                return this.list;
-            }
+                return this.list
+            },
+
         },
         methods: {
-
+            handleCount(num) {
+                if(!num) {
+                    return 0
+                }
+                const str = String(num)
+                if(str.length > 5) {
+                    return str.replace(/\d{4}$/, '万')
+                } else {
+                    return str
+                }
+            }, 
+            goPlaylist(id) {
+                id && this.$router.push(`/playlist/${id}`)
+            }
         },
         mounted() {
 
@@ -62,8 +77,21 @@
     margin: 0;
     overflow: hidden;
     li {
-        width: 30%;
+        position: relative;
+        width: 32%;
         margin-bottom: 10px;
+        .count-icon {
+            margin-right: 3px;
+        }
+        .list-item-count {
+            display: flex;
+            align-items: center;
+            position: absolute;
+            right: 3px;
+            top: 3px;
+            color: #fff;
+            font-size: 12px;
+        }
         .list-item-cover {
             width: 100%;
         }

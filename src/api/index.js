@@ -32,7 +32,7 @@ function promiseCache(fn, convertParam) {
  * 首页 banner
  * @return Promise
  */ 
-export const request_banner = promiseCache(function() {
+export const requestBanner = promiseCache(function() {
     return axios.get(`${domain}/banner`).then(data => {
         return data.data
     })
@@ -59,10 +59,19 @@ export const login = params => {
  * 推荐歌单
  * @return Promise
  */ 
-export const request_resource = () => {
+export const requestResource = () => {
     return axios.request({
         method: 'get',
         url: `${domain}/recommend/resource`
+    }).then(data => {
+        return data.data
+    });
+}
+
+export const requestPlaylistDetail = async id => {
+    return axios.request({
+        method: 'get',
+        url: `${domain}/playlist/detail?id=${id}`
     }).then(data => {
         return data.data
     });

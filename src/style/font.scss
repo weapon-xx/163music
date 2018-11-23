@@ -18,62 +18,67 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
-  .icon-left:before {
+  .icon-headset:before {
     content: "\e900";
+    color: #fff;
+  }
+
+  .icon-left:before {
+    content: "\e901";
     color: #000;
   }
 
   .icon-right:before {
-    content: "\e901";
+    content: "\e902";
     color: #000;
   }
   
   .icon-male:before {
-    content: "\e902";
+    content: "\e903";
     color: #37b9ea;
   }
   
   .icon-female:before {
-    content: "\e903";
+    content: "\e904";
     color: #ff8585;
   }
   
   .icon-people:before {
-    content: "\e904";
-  }
-  
-  .icon-wy-music:before {
     content: "\e905";
   }
   
-  .icon-music:before {
+  .icon-wy-music:before {
     content: "\e906";
   }
   
-  .icon-friend:before {
+  .icon-music:before {
     content: "\e907";
   }
   
-  .icon-wy-music-black:before {
+  .icon-friend:before {
     content: "\e908";
   }
   
-  .icon-voice:before {
+  .icon-wy-music-black:before {
     content: "\e909";
+  }
+  
+  .icon-voice:before {
+    content: "\e90a";
   }
   
   .icon-password:before {
-    content: "\e910";
+    content: "\e90b";
   }
   
   .icon-phone:before {
-    content: "\e909";
-  }
-  
-  .icon-play:before {
     content: "\e90c";
   }
   
-  .icon-pause:before {
+  .icon-play:before {
     content: "\e90d";
+  }
+  
+  .icon-pause:before {
+    content: "\e90e";
   }

@@ -4,6 +4,7 @@ import { isLogin } from '../javascript/util'
 import index from '../views/index'
 import login from '../views/login'
 import play from '../views/play'
+import playlist from '../views/playlist'
 
 Vue.use(Router)
 
@@ -23,6 +24,11 @@ const router = new Router({
       path: '/play',
       name: 'play',
       component: play 
+    },
+    {
+      path: '/playlist/:id',
+      name: 'playlist',
+      component: playlist
     }
   ]
 })

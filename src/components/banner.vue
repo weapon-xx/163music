@@ -9,7 +9,7 @@
 <script>
     import 'swiper/dist/css/swiper.css'
     import { swiper, swiperSlide } from 'vue-awesome-swiper'
-    import { request_banner } from '../api/index'
+    import { requestBanner } from '../api/index'
 
     export default {
       name: 'banner',
@@ -28,7 +28,7 @@
         }
       },
       mounted() {
-        request_banner().then(data => {
+        requestBanner().then(data => {
           if(data && +data.code === 200) {
             this.banners = data.banners
           }

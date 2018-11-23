@@ -2,7 +2,7 @@
   <div class="container">
       <headBox></headBox>
       <banner></banner>
-      <listBlock ref="recommend" :title="recommendTitle" :list="recommend"></listBlock>
+      <listBlock ref="recommend" :title="recommendTitle" :list="recommend" :showCount="recommendShowCount"></listBlock>
       <footBox></footBox>
   </div>
 </template>
@@ -13,7 +13,7 @@ import footBox from '../components/footBox'
 import banner from '../components//banner'
 import listBlock from '../components/listBlock'
 import player from '../components/player'
-import {request_resource} from '../api'
+import {requestResource} from '../api'
 
 export default {
   name: 'index',
@@ -24,14 +24,15 @@ export default {
   data() {
     return {
       recommendTitle: '推荐标题',
-      recommend: []
+      recommend: [],
+      recommendShowCount: true
     }
   },
   methods: {
  
   },
   mounted() {
-    request_resource().then(data => {
+    requestResource().then(data => {
       if(+data.code === 200) {
         this.recommend = data.recommend;
       }
