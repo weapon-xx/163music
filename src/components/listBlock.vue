@@ -6,7 +6,7 @@
         </h4>
         <ul class="list-block-wrap">
             <li class="list-block-item" v-for="item in handleList" @click="goPlaylist(item.id)">
-                <div class="list-item-count" v-show="showCount"><i class="wif icon-headset count-icon"></i>{{handleCount(item.playcount)}}</div>
+                <i class="wif icon-headset count-icon">{{handleCount(item.playcount)}}</i>
                 <img class="list-item-cover" :src="item.picUrl" alt="">
                 <p class="list-item-title">{{item.copywriter}}</p>
             </li>
@@ -14,6 +14,8 @@
     </div>
 </template>
 <script>
+    import * as util from '../javascript/util'
+
     export default {
         props: ['title', 'list', 'showCount'],
         data() {
@@ -25,23 +27,14 @@
                     return this.list.slice(0, 6)
                 }
                 return this.list
-            },
-
+            }
         },
         methods: {
-            handleCount(num) {
-                if(!num) {
-                    return 0
-                }
-                const str = String(num)
-                if(str.length > 5) {
-                    return str.replace(/\d{4}$/, '万')
-                } else {
-                    return str
-                }
-            }, 
             goPlaylist(id) {
                 id && this.$router.push(`/playlist/${id}`)
+            },
+            handleCount(num) {
+                return util.handleCount(num)
             }
         },
         mounted() {
@@ -59,7 +52,7 @@
 .list-block-title {
     display: flex;
     align-items: center;
-    padding-left: 10px;
+    padding: 5px;
     margin-bottom: 5px;
 }
 
@@ -73,7 +66,7 @@
     flex-direction: row;
     justify-content: space-between;
     list-style: none;
-    padding: 0 10px;
+    padding: 0 5px;
     margin: 0;
     overflow: hidden;
     li {
@@ -81,16 +74,15 @@
         width: 32%;
         margin-bottom: 10px;
         .count-icon {
-            margin-right: 3px;
-        }
-        .list-item-count {
-            display: flex;
-            align-items: center;
             position: absolute;
             right: 3px;
             top: 3px;
             color: #fff;
             font-size: 12px;
+            margin-right: 3px;
+            &::before {
+                margin-right: 3px;
+            }
         }
         .list-item-cover {
             width: 100%;

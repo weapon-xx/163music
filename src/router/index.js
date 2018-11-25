@@ -21,7 +21,7 @@ const router = new Router({
       component: login 
     },
     {
-      path: '/play',
+      path: '/play/:id',
       name: 'play',
       component: play 
     },

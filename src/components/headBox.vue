@@ -34,7 +34,7 @@
     }
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang="scss" scoped>
+<style lang="scss">
 @import "../style/common.scss";
 .head {
   width: 90%;
