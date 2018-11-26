@@ -2,9 +2,9 @@
     <div class="player-box">
         <div class="player-topbar">
             <i class="player-back wif icon-left" @click="back"></i>
-            <div>
-                <p class="player-topbar-title">1231</p>    
-                <p class="player-topbar-singer">歌手</p>
+            <div class="player-song-text">
+                <p class="player-topbar-title">{{song && song.name}}</p>    
+                <p class="player-topbar-singer">{{song && song.ar[0].name}}</p>
             </div>            
             <div></div>
         </div>
@@ -12,6 +12,7 @@
             <img class="player-cover-rod" src="../img/rod.png" alt="">
             <div class="player-cover-wrap">
                 <img class="player-cover-cd" src="../img/cd.png" alt="">
+                <img class="player-cover" :src="song && song.al.picUrl" alt="">
             </div>
         </div>
         <div class="player-progress-box">
@@ -31,11 +32,12 @@
 </template>
 <script>    
     import store from '../store'
+    import {requestSongDetail} from '../api'
 
     export default {
         data() {
             return {
-
+                song: undefined
             }
         },
         methods: {
@@ -47,7 +49,14 @@
             }
         },
         mounted() {
-            
+            if(this.$route.params.id) {
+                requestSongDetail(this.$route.params.id).then(data => {
+                    if(data && +data.code === 200) {
+                        this.song = data.songs[0]
+                    }
+                })
+
+            }
         }
     }
 </script>
@@ -76,10 +85,18 @@
         line-height: 45px;
     }
     .player-topbar-title {
-        font-size: 16px;
+        font-size: 18px;
+        margin-bottom: 3px;
     }
     .player-topbar-singer {
         font-size: 12px;
+        text-align: center;
+    }
+    .player-song-text {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 200px;
         text-align: center;
     }
 }
@@ -101,14 +118,27 @@
 }
 
 .player-cover-wrap {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 80%;
+    height: 300px;
     margin: 0 auto;
     margin-top: 60px;
     border-radius: 50%;
     border: 1px solid #ccc;
     .player-cover-cd {
+        position: absolute;
+        left: 0;
+        top: 0;
         display: block;
         width: 100%;
+    }
+    .player-cover {
+        display: block;
+        width: 190px;
+        height: 190px;
     }
 }
 

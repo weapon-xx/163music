@@ -56,7 +56,7 @@ export const login = params => {
 }
 
 /** 
- * 推荐歌单
+ * 获取推荐歌单
  * @return Promise
  */ 
 export const requestResource = () => {
@@ -68,10 +68,29 @@ export const requestResource = () => {
     });
 }
 
+/** 
+ * 获取歌单详情
+ * @params id Number 歌单id
+ * @return Promise
+ */ 
 export const requestPlaylistDetail = async id => {
     return axios.request({
         method: 'get',
         url: `${domain}/playlist/detail?id=${id}`
+    }).then(data => {
+        return data.data
+    });
+}
+
+/** 
+ * 获取歌单详情
+ * @params id Number 歌单id
+ * @return Promise
+ */ 
+export const requestSongDetail = async id => {
+    return axios.request({
+        method: 'get',
+        url: `${domain}/song/detail?ids=${id}`
     }).then(data => {
         return data.data
     });

@@ -17,18 +17,17 @@
         name: 'headBox',
         computed: {
             isPlay() {
-              return true;
-                return this.$store.getters.isPlay;
+              return this.$store.getters.isPlay;
             }
         },
         data() {
             return {
-                custom: ''
+              custom: ''
             }
         },
         methods: {
             goPlay() {
-              this.$router.push('play')
+              this.$router.push('/play/1')
             }
         }
     }

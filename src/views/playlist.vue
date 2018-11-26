@@ -3,12 +3,13 @@
         <div class="list-topbar">
             <i class="wif icon-left list-topbar-icon" @click="goBack"></i>
             <h4 class="list-topbar-title">歌单</h4>
-            <div :class="[{active: isPlay}, 'voice-box']" @click="goPlay" ref="voice_box">
+            <div :class="[{active: isPlay}, 'voice-box']" @click="goPlay(1)" ref="voice_box">
                 <i></i>
                 <i></i>
                 <i></i>
                 <i></i>
             </div>
+            <div class="list-topbar-mask"></div>
         </div>
         <div class="list-detail-box">
             <div class="list-detail-cover-bg" :style="{backgroundImage: `url(${detail ? detail.coverImgUrl: ''})`}"></div>
@@ -17,11 +18,11 @@
                     <i class="wif icon-headset list-headset">{{handleCount(detail && detail.playCount)}}</i>
                     <img class="list-detail-cover" :src="detail ? detail.coverImgUrl: ''" alt="">
                 </div>
-                <div>
-                    <p>{{detail && detail.name}}</p>
-                    <div>
-                        <img src="" alt="">
-                        <p></p>
+                <div class="list-detail-rigth-box">
+                    <p class="list-detail-list-name">{{detail && detail.name}}</p>
+                    <div class="list-detail-creator">
+                        <img class="list-detail-creator-avatar" :src="detail && detail.creator.avatarUrl" alt="">
+                        <p class="list-detail-creator-name">{{detail && detail.creator.nickname}}</p>
                     </div>
                 </div>
             </div>
@@ -57,7 +58,7 @@
                 this.$router.go(-1)
             },
             goPlay(id) {
-                id && this.$router.push(`/play/${id}`)
+                this.$router.push(`/play/${id}`)
             },
             handleCount(num) {
                 return util.handleCount(num)
@@ -95,8 +96,17 @@
                 color: #fff;
             }
         }
+        .list-topbar-mask {
+            position: absolute;
+            z-index: -1;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 44px;
+            background-color: #000;
+            opacity: .2;
+        }
     }
-    
 }
 .list-detail-box {
     position: relative;
@@ -117,18 +127,23 @@
         filter: blur(30px);
     }
     .list-detail-wrap {
-        margin-top: 44px;
+        display: flex;
+        justify-content: space-between;
+        margin-top: 64px;
         padding: 20px;
     }
 }
 
 .list-detail-cover-box {
     position: relative;
-    width: 140px;
+    width: 45%;
     .list-headset {
         position: absolute;
-        right: 5px;
         top: 5px;
+        box-sizing: border-box;
+        width: 100%;
+        padding: 0 5px;
+        text-align: right;
         color: #fff;
         font-size: 12px;
         &::before {
@@ -137,7 +152,32 @@
     }
      .list-detail-cover {
         display: block;
-        width: 120px;
+        width: 100%;
+    }
+}
+
+.list-detail-rigth-box {
+    width: 50%;
+    padding-top: 15px;
+    color: #fff;
+    .list-detail-list-name {
+        margin-bottom: 10px;
+        font-weight: bold;
+        line-height: 18px;
+    }
+    .list-detail-creator {
+        display: flex;
+        align-items: center;
+        height: 30px;
+        .list-detail-creator-avatar {
+            display: block;
+            width: 26px;
+            margin-right: 10px;
+            border-radius: 50%;
+        }
+        .list-detail-creator-name {
+
+        }
     }
 }
 

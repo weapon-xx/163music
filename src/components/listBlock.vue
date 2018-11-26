@@ -57,7 +57,7 @@
 }
 
 .title-icon {
-    font-size: 16px;
+    font-size: 12px;
 }
 
 .list-block-wrap {
