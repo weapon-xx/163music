@@ -3,7 +3,7 @@
         <div class="list-topbar">
             <i class="wif icon-left list-topbar-icon" @click="goBack"></i>
             <h4 class="list-topbar-title">歌单</h4>
-            <div :class="[{active: isPlay}, 'voice-box']" @click="goPlay(1)" ref="voice_box">
+            <div :class="[{active: isPlay}, 'voice-box']" @click="goPlay(0)" ref="voice_box">
                 <i></i>
                 <i></i>
                 <i></i>
@@ -28,7 +28,7 @@
             </div>
         </div>
         <ul class="list-box">
-            <li class="list-item" v-for="song in detail.tracks" @click="goPlay(song.id)">
+            <li class="list-item" :key="index" v-for="(song, index) in detail.tracks" @click="goPlay(song.id)">
                 <p>{{song.name}}</p>
             </li>
         </ul>
@@ -42,14 +42,14 @@
         props: [],
         computed: {
             isPlay() {
-              return true;
                 return this.$store.getters.isPlay;
             }
         },
         data() {
             return {
                 detail: {
-                    tracks: []
+                    tracks: [],
+                    creator: {}
                 }
             }
         },
@@ -88,7 +88,7 @@
         z-index: 100;
         box-sizing: border-box;
         width: 100%;
-        padding: 10px 10px;
+        padding: 10px 20px 10px 10px;
         color: #fff;
         .list-topbar-icon {
             font-size: 24px;

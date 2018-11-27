@@ -27,7 +27,7 @@
         },
         methods: {
             goPlay() {
-              this.$router.push('/play/1')
+              this.$router.push('/play/0')
             }
         }
     }

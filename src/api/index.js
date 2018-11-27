@@ -88,10 +88,18 @@ export const requestPlaylistDetail = async id => {
  * @return Promise
  */ 
 export const requestSongDetail = async id => {
-    return axios.request({
-        method: 'get',
-        url: `${domain}/song/detail?ids=${id}`
-    }).then(data => {
+    return axios.get(`${domain}/song/detail?ids=${id}`).then(data => {
+        return data.data
+    });
+}
+
+/** 
+ * 获取歌单 url
+ * @params id Number 歌单id
+ * @return Promise
+ */ 
+export const requestSongUrl = async id => {
+    return axios.get(`${domain}/song/url?id=${id}`).then(data => {
         return data.data
     });
 }

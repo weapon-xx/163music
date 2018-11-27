@@ -1,7 +1,7 @@
 <template>
     <div class="player-box">
         {{isPlay}}
-        <audio src=""></audio>
+        <audio :src="songUrl" autoplay controls></audio>
     </div>
 </template>
 <script>
@@ -9,23 +9,27 @@
     export default {
         data() {
             return {
-                
+                audio: undefined
             }
         },
         computed: {
             isPlay() {
-                return store.getters.isPlay
+                return this.$store.getters.isPlay
             },
             songUrl() {
-                return store.getters.songUrl
+                return this.$store.getters.songUrl
+            }
+        },
+        watch: {
+            songUrl() {
+                this.audio && this.audio.play()
             }
         },
         methods: {
             
         },
         mounted() {
-            
-            
+            this.audio = this.$el.querySelector('audio')
         }
     }
 </script>

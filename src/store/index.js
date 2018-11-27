@@ -5,23 +5,28 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
     state: {
-      isPlay: false,
-      songUrl: '123',
       user: {
           isLogin: false
+      },
+      song: {
+        isPlay: false,
+        url: undefined
       }
     },
     getters: {
         isPlay(state) {
-            return state.isPlay
+            return state.song.isPlay
         },
-        songUrl() {
-            return state.songUrl
+        songUrl(state) {
+            return state.song.url
         }
     },
     mutations: {
         operate(state) {
-            state.isPlay = !state.isPlay;
+            state.song.isPlay = !state.song.isPlay;
+        },
+        updateSongUrl(state, url) {
+            state.song.url = url;
         }
     }
 })

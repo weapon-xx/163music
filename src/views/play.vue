@@ -32,7 +32,7 @@
 </template>
 <script>    
     import store from '../store'
-    import {requestSongDetail} from '../api'
+    import {requestSongDetail, requestSongUrl} from '../api'
 
     export default {
         data() {
@@ -44,18 +44,43 @@
             back() {
                 this.$router.go(-1)
             },
+            nextSong() {
+
+            },
+            lastSong() {
+
+            },
             operate() {
                 store.commit('operate')
+            },
+            requestSongDetail(songId) {
+                return requestSongDetail(songId).then(data => {
+                    if(data && +data.code === 200) {
+                        return data
+                    } else {
+                        console.error()
+                    }
+                })
+            },
+            requestSongUrl(songId) {
+                return requestSongUrl(songId).then(data => {
+                    if(data && +data.code === 200) {
+                        return data
+                    } else {
+                        console.error()
+                    }
+                })
             }
         },
         mounted() {
-            if(this.$route.params.id) {
-                requestSongDetail(this.$route.params.id).then(data => {
-                    if(data && +data.code === 200) {
-                        this.song = data.songs[0]
-                    }
+            const songId = this.$route.params.id
+            if(songId) {
+                this.requestSongDetail(songId).then(data => {
+                    this.song = data.songs[0]
                 })
-
+                this.requestSongUrl(songId).then(data => {
+                    this.$store.commit('updateSongUrl', data.data[0].url)
+                })
             }
         }
     }
@@ -85,7 +110,7 @@
         line-height: 45px;
     }
     .player-topbar-title {
-        font-size: 18px;
+        font-size: 16px;
         margin-bottom: 3px;
     }
     .player-topbar-singer {
