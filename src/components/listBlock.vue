@@ -5,7 +5,7 @@
             <i class="wif icon-right title-icon"></i>
         </h4>
         <ul class="list-block-wrap">
-            <li class="list-block-item" v-for="item in handleList" @click="goPlaylist(item.id)">
+            <li :key="key" class="list-block-item" v-for="(item, key) in handleList" @click="goPlaylist(item.id)">
                 <i class="wif icon-headset count-icon">{{handleCount(item.playcount)}}</i>
                 <img class="list-item-cover" :src="item.picUrl" alt="">
                 <p class="list-item-title">{{item.copywriter}}</p>
