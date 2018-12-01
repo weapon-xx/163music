@@ -9,23 +9,23 @@
             <div></div>
         </div>
         <div class="player-cover-box">
-            <img class="player-cover-rod" src="../img/rod.png" alt="">
+            <img class="player-cover-rod" :class="[isPlay ? 'active' : '']" src="../img/rod.png" alt="">
             <div class="player-cover-wrap">
                 <img class="player-cover-cd" src="../img/cd.png" alt="">
-                <img class="player-cover" :src="song && song.al.picUrl" alt="">
+                <img class="player-cover" :class="[isPlay ? 'active' : '']" :src="song && song.al.picUrl" alt="">
             </div>
         </div>
         <div class="player-progress-box">
             <p class="player-progress-currtime">00:00</p>
             <div class="player-progress-wrap">
                 <div class="player-progress-played"></div>
-                <div class="player-progress-point"></div>
+                <div class="player-progress-point" draggable="true" @dragstart="dragstart" @dragover="ondragover"></div>
             </div>
             <p class="player-progress-totaltime">5:20</p>
         </div>
         <div class="player-control-box">
             <div class="player-control-last wif icon-left"></div>
-            <div class="player-control-operate wif icon-play operate-btn" @click="operate"></div>
+            <div class="player-control-operate wif operate-btn" :class="[isPlay ? 'icon-pause' : 'icon-play']" @click="operate"></div>
             <div class="player-control-last wif icon-right"></div>
         </div>
     </div>
@@ -40,6 +40,11 @@
                 song: undefined
             }
         },
+        computed: {
+            isPlay() {
+                return this.$store.getters.isPlay
+            }
+        },
         methods: {
             back() {
                 this.$router.go(-1)
@@ -51,7 +56,11 @@
 
             },
             operate() {
-                store.commit('operate')
+                if(this.isPlay) {
+                    this.$store.commit('operate', false)
+                } else {
+                    this.$store.commit('operate', true)
+                }
             },
             requestSongDetail(songId) {
                 return requestSongDetail(songId).then(data => {
@@ -70,18 +79,34 @@
                         console.error()
                     }
                 })
+            },
+            initDrag() {
+                const point = document.querySelector('.player-progress-point')
+                point.addEventListener('touchstart', function() {
+                    
+                    point.addEventListener('touchmove', function() {
+                        
+                    }, false)
+                }, false)
             }
         },
         mounted() {
-            const songId = this.$route.params.id
+            let songId = +this.$route.params.id
             if(songId) {
+                this.$store.commit('updateSongId', songId)
                 this.requestSongDetail(songId).then(data => {
                     this.song = data.songs[0]
                 })
                 this.requestSongUrl(songId).then(data => {
                     this.$store.commit('updateSongUrl', data.data[0].url)
                 })
+            } else {
+                songId = this.$store.getters.songId
+                this.requestSongDetail(songId).then(data => {
+                    this.song = data.songs[0]
+                })
             }
+            this.initDrag()
         }
     }
 </script>
@@ -139,6 +164,10 @@
         transform-origin: 15px 15px;
         transform: rotate(-30deg);
         transition: transform .5s ease;
+        z-index: 2;
+    }
+    .active {
+        transform: rotate(-6deg);
     }
 }
 
@@ -159,11 +188,27 @@
         top: 0;
         display: block;
         width: 100%;
+        z-index: 1;
     }
     .player-cover {
         display: block;
         width: 190px;
         height: 190px;
+        z-index: 0;
+            animation: coverRotate 10s linear infinite running;
+            animation-play-state: paused;
+    }
+    .active {
+        animation-play-state: running;
+    }        
+}
+
+@keyframes coverRotate {
+    0% {
+        transform: rotate(0);
+    }
+    100% {
+        transform: rotate(360deg);
     }
 }
 
@@ -196,9 +241,8 @@
         }
         .player-progress-point {
             position: absolute;
-            left: 5%;
+            left: 0%;
             top: -8px;
-            // box-sizing: border-box;
             width: 6px;
             height: 6px;
             background-color: red;

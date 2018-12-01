@@ -9,6 +9,7 @@ const store = new Vuex.Store({
           isLogin: false
       },
       song: {
+        id: undefined,
         isPlay: false,
         url: undefined
       }
@@ -19,14 +20,20 @@ const store = new Vuex.Store({
         },
         songUrl(state) {
             return state.song.url
+        },
+        songId(state) {
+            return state.song.id
         }
     },
     mutations: {
-        operate(state) {
-            state.song.isPlay = !state.song.isPlay;
+        operate(state, status) {
+            state.song.isPlay = status
         },
         updateSongUrl(state, url) {
-            state.song.url = url;
+            state.song.url = url
+        },
+        updateSongId(state, id) {
+            state.song.id = id
         }
     }
 })

@@ -1,7 +1,7 @@
 <template>
     <div class="player-box">
         {{isPlay}}
-        <audio :src="songUrl" autoplay controls></audio>
+        <audio :src="songUrl" muted="muted"></audio>
     </div>
 </template>
 <script>
@@ -22,14 +22,34 @@
         },
         watch: {
             songUrl() {
-                this.audio && this.audio.play()
+                // this.load()
+                this.play()
+                this.$store.commit('operate', true)
+            },
+            isPlay(nval) {
+                if(nval) {
+                    this.play()
+                } else {
+                    this.pause()
+                }
             }
         },
         methods: {
-            
+            load() {
+                this.audio && this.audio.load()
+            },
+            play() {
+                this.audio && this.audio.play()
+            },
+            pause() {
+                this.audio && this.audio.pause()
+            }
         },
         mounted() {
             this.audio = this.$el.querySelector('audio')
+            this.audio.addEventListener('loadeddata', function() {
+                
+            })
         }
     }
 </script>
