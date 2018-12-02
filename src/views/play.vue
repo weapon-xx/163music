@@ -19,7 +19,7 @@
             <p class="player-progress-currtime">00:00</p>
             <div class="player-progress-wrap">
                 <div class="player-progress-played"></div>
-                <div class="player-progress-point" draggable="true" @dragstart="dragstart" @dragover="ondragover"></div>
+                <div class="player-progress-point"></div>
             </div>
             <p class="player-progress-totaltime">5:20</p>
         </div>
@@ -81,10 +81,25 @@
                 })
             },
             initDrag() {
+                const wrapWidth = 240
                 const point = document.querySelector('.player-progress-point')
-                point.addEventListener('touchstart', function() {
+                point.addEventListener('touchstart', function(event) {
+                    const originX = parseInt(event.touches[0].clientX)
+                    const offsetLeft = document.querySelector('.player-progress-wrap').offsetLeft
+
+                    document.addEventListener('touchmove', function(event) {
+                        let currentX = parseInt(event.touches[0].clientX)
+                        const distance = currentX - originX
+                        if(currentX < offsetLeft) {
+                            currentX = offsetLeft
+                        }
+                        if(currentX > offsetLeft + wrapWidth) {
+                            currentX = offsetLeft + wrapWidth
+                        }
+                        point.style.left = `${parseInt((currentX  - offsetLeft)/ 240 * 100)}%`
+                    }, false)
                     
-                    point.addEventListener('touchmove', function() {
+                    document.addEventListener('touchend', function(event) {
                         
                     }, false)
                 }, false)
@@ -93,19 +108,18 @@
         mounted() {
             let songId = +this.$route.params.id
             if(songId) {
-                this.$store.commit('updateSongId', songId)
-                this.requestSongDetail(songId).then(data => {
-                    this.song = data.songs[0]
-                })
-                this.requestSongUrl(songId).then(data => {
-                    this.$store.commit('updateSongUrl', data.data[0].url)
-                })
+                if(songId !== this.$store.getters.songId) {
+                    this.$store.commit('updateSongId', songId)
+                    this.requestSongUrl(songId).then(data => {
+                        this.$store.commit('updateSongUrl', data.data[0].url)
+                    })
+                }
             } else {
                 songId = this.$store.getters.songId
-                this.requestSongDetail(songId).then(data => {
-                    this.song = data.songs[0]
-                })
             }
+            this.requestSongDetail(songId).then(data => {
+                this.song = data.songs[0]
+            })
             this.initDrag()
         }
     }
@@ -230,18 +244,18 @@
     }
     .player-progress-wrap {
         position: relative;
-        width: 70%;
+        width: 240px;
         height: 2px;
         border-radius: 20px;
         background-color: #f6f6f6;
         .player-progress-played {
-            width: 5%;
+            width: 0%;
             height: 2px;
             background-color: #b2b2b2;
         }
         .player-progress-point {
             position: absolute;
-            left: 0%;
+            left: 0;
             top: -8px;
             width: 6px;
             height: 6px;
