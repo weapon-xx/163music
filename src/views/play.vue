@@ -16,12 +16,12 @@
             </div>
         </div>
         <div class="player-progress-box">
-            <p class="player-progress-currtime">00:00</p>
+            <p class="player-progress-currtime">{{currentTime}}</p>
             <div class="player-progress-wrap">
                 <div class="player-progress-played"></div>
                 <div class="player-progress-point"></div>
             </div>
-            <p class="player-progress-totaltime">5:20</p>
+            <p class="player-progress-totaltime">{{timeDuration}}</p>
         </div>
         <div class="player-control-box">
             <div class="player-control-last wif icon-left"></div>
@@ -43,6 +43,31 @@
         computed: {
             isPlay() {
                 return this.$store.getters.isPlay
+            },
+            songId() {
+                return this.$store.getters.songId
+            },
+            duration() {
+                return this.$store.getters.duration ? parseInt(this.$store.getters.duration) : undefined
+            },
+            timeDuration() {
+                if(!!this.duration) {
+                    let minutes = `${parseInt(this.duration / 60)}`
+                    minutes = minutes.length > 1 ? minutes : `0${minutes}`
+                    const remainder = `${this.duration % 60}`
+                    const seconds = remainder.length > 1 ? remainder : `0${remainder}`
+                    return `${minutes}:${seconds}`
+                } else {
+                    return `00:00`                    
+                }
+            },
+            currentTime() {
+                const currentTime = this.$store.getters.currentTime
+                if(!!currentTime) {
+                    return currentTime
+                } else {
+                    return `00:00`
+                }
             }
         },
         methods: {
@@ -56,6 +81,9 @@
 
             },
             operate() {
+                if(!!this.songId) {
+
+                }
                 if(this.isPlay) {
                     this.$store.commit('operate', false)
                 } else {
@@ -108,14 +136,14 @@
         mounted() {
             let songId = +this.$route.params.id
             if(songId) {
-                if(songId !== this.$store.getters.songId) {
+                if(songId !== this.songId) {
                     this.$store.commit('updateSongId', songId)
                     this.requestSongUrl(songId).then(data => {
                         this.$store.commit('updateSongUrl', data.data[0].url)
                     })
                 }
             } else {
-                songId = this.$store.getters.songId
+                songId = this.songId
             }
             this.requestSongDetail(songId).then(data => {
                 this.song = data.songs[0]

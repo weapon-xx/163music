@@ -46,10 +46,16 @@
             }
         },
         mounted() {
+            const _this = this
             this.audio = this.$el.querySelector('audio')
-            this.audio.addEventListener('loadeddata', function() {
-                
-            })
+
+            this.audio.oncanplay = function() {  
+                _this.$store.commit('duration', parseInt(this.duration))
+            }
+
+            this.audio.addEventListener('timeupdate', function(event) {
+                _this.$store.commit('currentTime', parseInt(event.currentTarget.currentTime))
+            }, false) 
         }
     }
 </script>

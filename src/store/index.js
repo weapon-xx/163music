@@ -11,7 +11,9 @@ const store = new Vuex.Store({
       song: {
         id: undefined,
         isPlay: false,
-        url: undefined
+        url: undefined,
+        duration: undefined,
+        currentTime: undefined
       }
     },
     getters: {
@@ -23,6 +25,12 @@ const store = new Vuex.Store({
         },
         songId(state) {
             return state.song.id
+        },
+        duration(state) {
+            return state.song.duration
+        },
+        currentTime(state) {
+            return state.song.currentTime
         }
     },
     mutations: {
@@ -34,6 +42,12 @@ const store = new Vuex.Store({
         },
         updateSongId(state, id) {
             state.song.id = id
+        },
+        duration(state, time) {
+            state.song.duration = time
+        },
+        currentTime(state, currentTime) {
+            state.song.currentTime = currentTime
         }
     }
 })
