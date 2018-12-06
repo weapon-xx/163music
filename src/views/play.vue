@@ -16,12 +16,12 @@
             </div>
         </div>
         <div class="player-progress-box">
-            <p class="player-progress-currtime">{{currentTime}}</p>
+            <p class="player-progress-currtime">{{songCurrTime}}</p>
             <div class="player-progress-wrap">
-                <div class="player-progress-played"></div>
-                <div class="player-progress-point"></div>
+                <div class="player-progress-played" :style="{width: playScale}"></div>
+                <div class="player-progress-point" :style="{left: playScale}"></div>
             </div>
-            <p class="player-progress-totaltime">{{timeDuration}}</p>
+            <p class="player-progress-totaltime">{{songDuration}}</p>
         </div>
         <div class="player-control-box">
             <div class="player-control-last wif icon-left"></div>
@@ -31,7 +31,7 @@
     </div>
 </template>
 <script>    
-    import store from '../store'
+    import { mapGetters } from 'vuex'
     import {requestSongDetail, requestSongUrl} from '../api'
 
     export default {
@@ -41,32 +41,36 @@
             }
         },
         computed: {
-            isPlay() {
-                return this.$store.getters.isPlay
-            },
-            songId() {
-                return this.$store.getters.songId
-            },
-            duration() {
-                return this.$store.getters.duration ? parseInt(this.$store.getters.duration) : undefined
-            },
-            timeDuration() {
-                if(!!this.duration) {
-                    let minutes = `${parseInt(this.duration / 60)}`
+            ...mapGetters(['isPlay', 'songId', 'duration', 'currentTime']),
+            songDuration() {
+                const _duration = this.duration !== undefined ?  parseInt(this.duration) : undefined
+                if(!!_duration) {
+                    let minutes = `${parseInt(_duration / 60)}`
                     minutes = minutes.length > 1 ? minutes : `0${minutes}`
-                    const remainder = `${this.duration % 60}`
-                    const seconds = remainder.length > 1 ? remainder : `0${remainder}`
+                    let seconds = `${_duration % 60}`
+                    seconds = seconds.length > 1 ? seconds : `0${seconds}`
                     return `${minutes}:${seconds}`
                 } else {
                     return `00:00`                    
                 }
             },
-            currentTime() {
-                const currentTime = this.$store.getters.currentTime
-                if(!!currentTime) {
-                    return currentTime
+            songCurrTime() {
+                const _currentTime = this.currentTime !== undefined ?  parseInt(this.currentTime) : undefined
+                if(!!_currentTime) {
+                    let minutes = `${parseInt(_currentTime / 60)}`
+                    minutes = minutes.length > 1 ? minutes : `0${minutes}`
+                    let seconds = `${_currentTime % 60}`
+                    seconds = seconds.length > 1 ? seconds : `0${seconds}`
+                    return `${minutes}:${seconds}` 
                 } else {
                     return `00:00`
+                }
+            },
+            playScale() {
+                if(this.duration !== undefined && this.currentTime !== undefined) {
+                    return `${parseInt(this.currentTime / this.duration * 100)}%`
+                } else {
+                    return `0%`
                 }
             }
         },
@@ -111,9 +115,9 @@
             initDrag() {
                 const wrapWidth = 240
                 const point = document.querySelector('.player-progress-point')
+                const offsetLeft = document.querySelector('.player-progress-wrap').offsetLeft
                 point.addEventListener('touchstart', function(event) {
                     const originX = parseInt(event.touches[0].clientX)
-                    const offsetLeft = document.querySelector('.player-progress-wrap').offsetLeft
 
                     document.addEventListener('touchmove', function(event) {
                         let currentX = parseInt(event.touches[0].clientX)
