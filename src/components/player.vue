@@ -56,6 +56,10 @@
             this.audio.addEventListener('timeupdate', function(event) {
                 _this.$store.commit('currentTime', parseInt(event.currentTarget.currentTime))
             }, false) 
+
+            this.audio.addEventListener('ended', function(event) {  
+                
+            })
         }
     }
 </script>

@@ -113,12 +113,13 @@
                 })
             },
             initDrag() {
+                var _this = this
                 const wrapWidth = 240
                 const point = document.querySelector('.player-progress-point')
                 const offsetLeft = document.querySelector('.player-progress-wrap').offsetLeft
                 point.addEventListener('touchstart', function(event) {
                     const originX = parseInt(event.touches[0].clientX)
-
+                    
                     document.addEventListener('touchmove', function(event) {
                         let currentX = parseInt(event.touches[0].clientX)
                         const distance = currentX - originX
@@ -149,7 +150,7 @@
             } else {
                 songId = this.songId
             }
-            this.requestSongDetail(songId).then(data => {
+            songId && this.requestSongDetail(songId).then(data => {
                 this.song = data.songs[0]
             })
             this.initDrag()
