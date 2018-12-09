@@ -46,8 +46,8 @@ const store = new Vuex.Store({
         duration(state, time) {
             state.song.duration = time
         },
-        currentTime(state, currentTime) {
-            state.song.currentTime = currentTime
+        currentTime(state, time) {
+            state.song.currentTime = time
         }
     }
 })

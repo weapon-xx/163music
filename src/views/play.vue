@@ -16,7 +16,7 @@
             </div>
         </div>
         <div class="player-progress-box">
-            <p class="player-progress-currtime">{{songCurrTime}}</p>
+            <p class="player-progress-currtime">{{showDragTime ? showDragTime : songCurrTime}}</p>
             <div class="player-progress-wrap">
                 <div class="player-progress-played" :style="{width: playScale}"></div>
                 <div class="player-progress-point" :style="{left: playScale}"></div>
@@ -32,39 +32,24 @@
 </template>
 <script>    
     import { mapGetters } from 'vuex'
-    import {requestSongDetail, requestSongUrl} from '../api'
+    import { requestSongDetail, requestSongUrl } from '../api'
 
     export default {
         data() {
             return {
-                song: undefined
+                song: undefined,
+                showDragTime: undefined
             }
         },
         computed: {
             ...mapGetters(['isPlay', 'songId', 'duration', 'currentTime']),
             songDuration() {
                 const _duration = this.duration !== undefined ?  parseInt(this.duration) : undefined
-                if(!!_duration) {
-                    let minutes = `${parseInt(_duration / 60)}`
-                    minutes = minutes.length > 1 ? minutes : `0${minutes}`
-                    let seconds = `${_duration % 60}`
-                    seconds = seconds.length > 1 ? seconds : `0${seconds}`
-                    return `${minutes}:${seconds}`
-                } else {
-                    return `00:00`                    
-                }
+                return this.handleTime(_duration)
             },
             songCurrTime() {
                 const _currentTime = this.currentTime !== undefined ?  parseInt(this.currentTime) : undefined
-                if(!!_currentTime) {
-                    let minutes = `${parseInt(_currentTime / 60)}`
-                    minutes = minutes.length > 1 ? minutes : `0${minutes}`
-                    let seconds = `${_currentTime % 60}`
-                    seconds = seconds.length > 1 ? seconds : `0${seconds}`
-                    return `${minutes}:${seconds}` 
-                } else {
-                    return `00:00`
-                }
+                return this.handleTime(_currentTime)
             },
             playScale() {
                 if(this.duration !== undefined && this.currentTime !== undefined) {
@@ -94,6 +79,17 @@
                     this.$store.commit('operate', true)
                 }
             },
+            handleTime(num) {
+                if(!!num) {
+                    let minutes = `${parseInt(num / 60)}`
+                    minutes = minutes.length > 1 ? minutes : `0${minutes}`
+                    let seconds = `${num % 60}`
+                    seconds = seconds.length > 1 ? seconds : `0${seconds}`
+                    return `${minutes}:${seconds}` 
+                } else {
+                    return `00:00`
+                }
+            },
             requestSongDetail(songId) {
                 return requestSongDetail(songId).then(data => {
                     if(data && +data.code === 200) {
@@ -113,13 +109,16 @@
                 })
             },
             initDrag() {
-                var _this = this
+                const _this = this
                 const wrapWidth = 240
                 const point = document.querySelector('.player-progress-point')
+                const playedProgress = document.querySelector('.player-progress-played')
                 const offsetLeft = document.querySelector('.player-progress-wrap').offsetLeft
+                
                 point.addEventListener('touchstart', function(event) {
                     const originX = parseInt(event.touches[0].clientX)
                     
+                    let dragTime
                     document.addEventListener('touchmove', function(event) {
                         let currentX = parseInt(event.touches[0].clientX)
                         const distance = currentX - originX
@@ -129,11 +128,16 @@
                         if(currentX > offsetLeft + wrapWidth) {
                             currentX = offsetLeft + wrapWidth
                         }
-                        point.style.left = `${parseInt((currentX  - offsetLeft)/ 240 * 100)}%`
+                        let progressPos = (currentX  - offsetLeft)/ 240
+                        dragTime = parseInt(_this.duration * progressPos)
+                        _this.showDragTime = _this.handleTime(dragTime)
+                        point.style.left = `${parseInt(progressPos * 100)}%`
+                        playedProgress.style.width = `${parseInt(progressPos * 100)}%`
                     }, false)
                     
                     document.addEventListener('touchend', function(event) {
-                        
+                        _this.$store.commit('currentTime', dragTime)
+                        _this.showDragTime = undefined                  // 重置拖拽时进度条时间
                     }, false)
                 }, false)
             }
@@ -160,6 +164,7 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 @import "../style/common.scss";
+
 .player-box {
     position: absolute;
     width: 100%;
@@ -284,7 +289,7 @@
         .player-progress-played {
             width: 0%;
             height: 2px;
-            background-color: #b2b2b2;
+            background-color: $main_color;
         }
         .player-progress-point {
             position: absolute;
@@ -292,7 +297,7 @@
             top: -8px;
             width: 6px;
             height: 6px;
-            background-color: red;
+            background-color: $main_color;
             border: 6px solid #f6f6f6;
             border-radius: 50%;
         }

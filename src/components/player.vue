@@ -5,7 +5,8 @@
     </div>
 </template>
 <script>
-    import store from '../store'
+    import { mapGetters } from 'vuex'
+
     export default {
         data() {
             return {
@@ -13,12 +14,7 @@
             }
         },
         computed: {
-            isPlay() {
-                return this.$store.getters.isPlay
-            },
-            songUrl() {
-                return this.$store.getters.songUrl
-            }
+            ...mapGetters(['isPlay', 'songUrl', 'currentTime'])
         },
         watch: {
             songUrl() {
@@ -31,6 +27,11 @@
                     this.play()
                 } else {
                     this.pause()
+                }
+            },
+            currentTime(nval, oval) {
+                if(Math.abs(nval - oval) > 1) {
+                    this.audio.currentTime = nval
                 }
             }
         },
