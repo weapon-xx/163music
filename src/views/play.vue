@@ -1,5 +1,6 @@
 <template>
     <div class="player-box">
+        <div class="player-cover-bg" :style="{backgroundImage: `url(${song && song.al.picUrl})`}"></div>
         <div class="player-topbar">
             <i class="player-back wif icon-left" @click="back"></i>
             <div class="player-song-text">
@@ -147,6 +148,7 @@
             if(songId) {
                 if(songId !== this.songId) {
                     this.$store.commit('updateSongId', songId)
+                    this.$store.commit('currentTime', 0)
                     this.requestSongUrl(songId).then(data => {
                         this.$store.commit('updateSongUrl', data.data[0].url)
                     })
@@ -203,9 +205,22 @@
     }
 }
 
+.player-cover-bg {
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: .3;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    filter: blur(20px);
+}
+
 .player-cover-box {
     position: relative;
     overflow: hidden;
+    padding: 60px 0;
     .player-cover-rod {
         position: absolute;
         top: -15px;
@@ -231,7 +246,6 @@
     width: 80%;
     height: 300px;
     margin: 0 auto;
-    margin-top: 60px;
     border-radius: 50%;
     border: 1px solid #ccc;
     .player-cover-cd {
@@ -265,8 +279,7 @@
 }
 
 .player-progress-box {
-    position: absolute;
-    bottom: 160px;
+    position: relative;
     box-sizing: border-box;
     width: 100%;
     padding: 0 10px;
