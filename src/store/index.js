@@ -6,7 +6,8 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
     state: {
       user: {
-          isLogin: false
+          isLogin: false,
+          id: undefined
       },
       song: {
         id: undefined,
@@ -17,6 +18,9 @@ const store = new Vuex.Store({
       }
     },
     getters: {
+        userId(state) {
+            return state.user.id
+        },
         isPlay(state) {
             return state.song.isPlay
         },
@@ -34,6 +38,9 @@ const store = new Vuex.Store({
         }
     },
     mutations: {
+        updateUserId(state, id) {
+            state.user.id = id
+        },
         operate(state, status) {
             state.song.isPlay = status
         },

@@ -7,9 +7,9 @@ const domain = '//jacksonx.cn:3000'
 /** 
  * 
  * promise 缓存函数
- * @param fn 执行函数
- * @param convertParam 缓存 key 生成函数
- * @return function  
+ * @param {Function} fn 执行函数
+ * @param {Function} convertParam 缓存 key 生成函数
+ * @return {Function}
  */ 
 function promiseCache(fn, convertParam) {
     if(typeof fn !== 'function') {
@@ -30,7 +30,7 @@ function promiseCache(fn, convertParam) {
 
 /** 
  * 首页 banner
- * @return Promise
+ * @return {Promise}
  */ 
 export const requestBanner = promiseCache(function() {
     return axios.get(`${domain}/banner`).then(data => {
@@ -40,8 +40,8 @@ export const requestBanner = promiseCache(function() {
 
 /** 
  * 手机号登录
- * @params params Object 参数对象
- * @return Promise
+ * @params {Object} params 参数对象
+ * @return {Promise}
  */ 
 export const login = params => {
     const {phone, password} = params;
@@ -57,7 +57,7 @@ export const login = params => {
 
 /** 
  * 获取推荐歌单
- * @return Promise
+ * @return {Promise}
  */ 
 export const requestResource = () => {
     return axios.request({
@@ -70,8 +70,8 @@ export const requestResource = () => {
 
 /** 
  * 获取歌单详情
- * @params id Number 歌单id
- * @return Promise
+ * @params {Number} id  歌单id
+ * @return {Promise}
  */ 
 export const requestPlaylistDetail = async id => {
     return axios.request({
@@ -84,8 +84,8 @@ export const requestPlaylistDetail = async id => {
 
 /** 
  * 获取歌单详情
- * @params id Number 歌单id
- * @return Promise
+ * @params {Number} id  歌单id
+ * @return {Promise}
  */ 
 export const requestSongDetail = async id => {
     return axios.get(`${domain}/song/detail?ids=${id}`).then(data => {
@@ -95,11 +95,32 @@ export const requestSongDetail = async id => {
 
 /** 
  * 获取歌单 url
- * @params id Number 歌单id
- * @return Promise
+ * @params {Number} id  歌单id
+ * @return {Promise}
  */ 
 export const requestSongUrl = async id => {
     return axios.get(`${domain}/song/url?id=${id}`).then(data => {
+        return data.data
+    });
+}
+
+/** 
+ * 获取登录状态
+ * @return {Promise}
+ */ 
+export const requestLoginStatus = async () => {
+    return axios.get(`${domain}/login/status`).then(data => {
+        return data.data
+    });
+}
+
+/** 
+ * 获取用户创建歌单
+ * @params {Number} useId 用户id
+ * @return {Promise}
+ */ 
+export const requestUserPlaylist = async useId => {
+    return axios.get(`${domain}/login/status`).then(data => {
         return data.data
     });
 }

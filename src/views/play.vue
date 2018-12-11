@@ -144,9 +144,11 @@
             }
         },
         mounted() {
+            const LCKEY = `music163`
             let songId = +this.$route.params.id
             if(songId) {
                 if(songId !== this.songId) {
+                    localStorage.setItem(LCKEY, JSON.stringify({songId: songId}))
                     this.$store.commit('updateSongId', songId)
                     this.$store.commit('currentTime', 0)
                     this.requestSongUrl(songId).then(data => {
@@ -154,7 +156,11 @@
                     })
                 }
             } else {
-                songId = this.songId
+                if(!!this.songId) {
+                    songId = this.songId                    
+                } else {
+                    songId = (JSON.parse(localStorage.getItem(LCKEY)) || {}).songId                    
+                }
             }
             songId && this.requestSongDetail(songId).then(data => {
                 this.song = data.songs[0]

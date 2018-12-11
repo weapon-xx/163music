@@ -21,6 +21,7 @@ export default {
     msg: String
   },
   components: {headBox, footBox, banner, listBlock},
+  computed: {},
   data() {
     return {
       recommendTitle: '推荐标题',

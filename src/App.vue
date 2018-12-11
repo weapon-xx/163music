@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-        <player></player>
+      <player></player>
       <transition name="fade">
         <router-view></router-view>
       </transition>
@@ -8,10 +8,18 @@
 </template>
 <script>
 import player from './components/player'
+import { requestLoginStatus } from './api/index'
 
 export default {
   name: 'app',
   components: {player},
+  mounted() {
+    requestLoginStatus().then(data => {
+      if(+data.code === 200) {
+        this.$store.commit('updateUserId', data.bindings[1].userId)
+      }
+    })
+  }
 }
 </script>
 <style lang="scss">

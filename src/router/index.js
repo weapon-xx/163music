@@ -5,6 +5,7 @@ import index from '../views/index'
 import login from '../views/login'
 import play from '../views/play'
 import playlist from '../views/playlist'
+import myMusic from '../views/myMusic'
 
 Vue.use(Router)
 
@@ -29,6 +30,11 @@ const router = new Router({
       path: '/playlist/:id',
       name: 'playlist',
       component: playlist
+    }, 
+    {
+      path: '/myMusic',
+      name: 'myMusic',
+      component: myMusic
     }
   ]
 })
