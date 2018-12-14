@@ -4,15 +4,17 @@
       <transition name="fade">
         <router-view></router-view>
       </transition>
+      <footBox></footBox>
   </div>
 </template>
 <script>
 import player from './components/player'
+import footBox from './components/footBox'
 import { requestLoginStatus } from './api/index'
 
 export default {
   name: 'app',
-  components: {player},
+  components: { player, footBox },
   mounted() {
     requestLoginStatus().then(data => {
       if(+data.code === 200) {

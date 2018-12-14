@@ -7,7 +7,8 @@ const store = new Vuex.Store({
     state: {
       user: {
           isLogin: false,
-          id: undefined
+          id: undefined,
+          playList: []
       },
       song: {
         id: undefined,
@@ -20,6 +21,9 @@ const store = new Vuex.Store({
     getters: {
         userId(state) {
             return state.user.id
+        },
+        userPlayList(state) {
+            return state.user.playList
         },
         isPlay(state) {
             return state.song.isPlay
@@ -40,6 +44,9 @@ const store = new Vuex.Store({
     mutations: {
         updateUserId(state, id) {
             state.user.id = id
+        },
+        updateUserPlayList(state, list) {
+            state.user.playList = list
         },
         operate(state, status) {
             state.song.isPlay = status

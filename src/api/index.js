@@ -120,7 +120,7 @@ export const requestLoginStatus = async () => {
  * @return {Promise}
  */ 
 export const requestUserPlaylist = async useId => {
-    return axios.get(`${domain}/login/status`).then(data => {
+    return axios.get(`${domain}/user/playlist?uid=${useId}`).then(data => {
         return data.data
     });
 }

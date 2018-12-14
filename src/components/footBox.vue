@@ -1,10 +1,10 @@
 <template lang="html">
-  <div class="footer">
-    <router-link to="/index" class="footer-item">
+  <div class="footer" :class="{isHide: isHide}">
+    <router-link to="/" class="footer-item" :class="{active: route === 'index'}">
       <i class="wif icon-wy-music-black"></i>
       <span>发现音乐</span>
     </router-link >
-    <router-link to="/myMusic" class="footer-item">
+    <router-link to="/myMusic" class="footer-item" :class="{active: route === 'myMusic'}">
       <i class="wif icon-music"></i>
       <span>我的音乐</span>
     </router-link>
@@ -20,8 +20,26 @@
 </template>
 
 <script>
-export default {
-}
+  export default {
+    computed: {
+      isHide() {
+        return !['index', 'myMusic'].includes(this.route)
+      }
+    },
+    watch: {
+      '$route' (to, from) {
+        this.route = to.name
+      }
+    },
+    data() {
+      return {
+        route: undefined
+      }
+    },
+    mounted() {
+      this.route = this.$route.name
+    }
+  }
 </script>
 
 <style lang="scss" scoped>
@@ -35,22 +53,27 @@ export default {
     left: 0;
     bottom: 0;
     padding: 5px 5% 3px;
-    background-color: #000;
-    opacity: 0.8;
-    color: #fff;
+    background-color: #fff;
+    border-top: 1px solid #f6f6f6;
+    &.isHide {
+      display: none;
+    }
 }
 .footer-item {
   text-align: center;
+  color: #484747;
+  text-decoration: unset;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   i {
     display: block;
-    font-size: 24px;
+    font-size: 28px;
+    margin-bottom: 3px;
   }
   span {
     font-size: 12px;
   }
-}
-.footer-item {
-  color: #fff;
-  text-decoration: unset;
+  &.active {
+    color: $main_color;
+  }
 }
 </style>

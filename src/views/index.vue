@@ -3,13 +3,11 @@
       <headBox></headBox>
       <banner></banner>
       <listBlock ref="recommend" :title="recommendTitle" :list="recommend" :showCount="recommendShowCount"></listBlock>
-      <footBox></footBox>
   </div>
 </template>
 
 <script>
 import headBox from '../components/headBox'
-import footBox from '../components/footBox'
 import banner from '../components//banner'
 import listBlock from '../components/listBlock'
 import player from '../components/player'
@@ -20,7 +18,7 @@ export default {
   props: {
     msg: String
   },
-  components: {headBox, footBox, banner, listBlock},
+  components: {headBox, banner, listBlock},
   computed: {},
   data() {
     return {
