@@ -1,6 +1,6 @@
 <template>
     <div class="myMusic-container">
-        <p class="myMusic-title">我创建的歌单(xx)</p>
+        <p class="myMusic-title">我创建的歌单({{userPlayList.length}})</p>
         <ul class="user-list">
             <li class="user-list-item" v-for="(item, index) in userPlayList" :key="index" @click="goPlaylist(item.id)"> 
                 <img class="user-list-item-cover" :src="item && item.coverImgUrl" alt="">
@@ -40,7 +40,7 @@
             }
         },
         mounted() {
-            
+            !!this.userId && this.requestUserPlaylist()
         }
     }
 </script>

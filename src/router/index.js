@@ -6,6 +6,8 @@ import login from '../views/login'
 import play from '../views/play'
 import playlist from '../views/playlist'
 import myMusic from '../views/myMusic'
+import friend from '../views/friend'
+import profile from '../views/profile'
 
 Vue.use(Router)
 
@@ -35,6 +37,16 @@ const router = new Router({
       path: '/myMusic',
       name: 'myMusic',
       component: myMusic
+    },
+    {
+      path: '/friend',
+      name: 'friend',
+      component: friend
+    },
+    {
+      path: '/profile',
+      name: 'profile',
+      component: profile
     }
   ]
 })

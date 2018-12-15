@@ -1,5 +1,5 @@
 <template>
-  <swiper :options="swiperOption" class="swiper-container">
+  <swiper ref="swiper" :options="swiperOption" class="swiper-container">
     <swiper-slide v-for="(slide, index) in banners" :key="index">
       <img :src="slide.imageUrl" alt="" style="width: 100%;">
     </swiper-slide>
@@ -15,6 +15,7 @@
       name: 'banner',
       components: {swiper, swiperSlide},
       data() {
+        const _this = this
         return {
           swiperOption: {
               pagination: {
@@ -22,9 +23,17 @@
                   bulletActiveClass: 'bullet-active',
                   clickable :true,
                   // dynamicBullets: true
+              },
+              on: {
+                tap(event) {}
               }
           },
           banners: []
+        }
+      },
+      methods: {
+        goPlaylist(slide) {
+          debugger
         }
       },
       mounted() {
@@ -36,9 +45,12 @@
       }
     }
 </script>
-<style lang="scss">
-.bullet-active {
-  background-color: #fff;
-  opacity: .5;
+<style lang="scss" scoped>
+.swiper-container {
+  min-height: 120px;
+  .bullet-active {
+    background-color: #fff;
+    opacity: .5;
+  }
 }
 </style>
