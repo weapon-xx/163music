@@ -119,8 +119,29 @@ export const requestLoginStatus = async () => {
  * @params {Number} useId 用户id
  * @return {Promise}
  */ 
-export const requestUserPlaylist = async useId => {
-    return axios.get(`${domain}/user/playlist?uid=${useId}`).then(data => {
+export const requestUserPlaylist = async uid => {
+    return axios.get(`${domain}/user/playlist?uid=${uid}`).then(data => {
+        return data.data
+    });
+}
+
+/** 
+ * 获取用户信息
+ * @params {Number} useId 用户id
+ * @return {Promise}
+ */ 
+export const requestUserDetail = async uid => {
+    return axios.get(`${domain}/user/detail?uid=${uid}`).then(data => {
+        return data.data
+    });
+}
+
+/** 
+ * 获取动态消息
+ * @return {Promise}
+ */ 
+export const requestEvent= async () => {
+    return axios.get(`${domain}/event`).then(data => {
         return data.data
     });
 }

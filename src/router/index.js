@@ -7,7 +7,7 @@ import play from '../views/play'
 import playlist from '../views/playlist'
 import myMusic from '../views/myMusic'
 import friend from '../views/friend'
-import profile from '../views/profile'
+import userDetail from '../views/userDetail'
 
 Vue.use(Router)
 
@@ -44,9 +44,9 @@ const router = new Router({
       component: friend
     },
     {
-      path: '/profile',
-      name: 'profile',
-      component: profile
+      path: '/userDetail',
+      name: 'userDetail',
+      component: userDetail
     }
   ]
 })

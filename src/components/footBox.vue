@@ -12,7 +12,7 @@
       <i class="wif icon-friend"></i>
       <span>朋友</span>
     </router-link>
-    <router-link to="/profile" class="footer-item" :class="{active: route === 'profile'}">
+    <router-link to="/userDetail" class="footer-item" :class="{active: route === 'userDetail'}">
       <i class="wif icon-people"></i>
       <span>账号</span>
     </router-link>
@@ -23,7 +23,7 @@
   export default {
     computed: {
       isHide() {
-        return !['index', 'myMusic', 'friend', 'profile'].includes(this.route)
+        return !['index', 'myMusic', 'friend', 'userDetail'].includes(this.route)
       }
     },
     watch: {

@@ -26,7 +26,7 @@
         </div>
         <div class="player-control-box">
             <div class="player-control-last wif icon-left"></div>
-            <div class="player-control-operate wif operate-btn" :class="[isPlay ? 'icon-pause' : 'icon-play']" @click="operate"></div>
+            <div ref="operateBtn" class="player-control-operate wif operate-btn" :class="[isPlay ? 'icon-pause' : 'icon-play']" @click="operate"></div>
             <div class="player-control-last wif icon-right"></div>
         </div>
     </div>
@@ -71,9 +71,6 @@
 
             },
             operate() {
-                if(!!this.songId) {
-
-                }
                 if(this.isPlay) {
                     this.$store.commit('operate', false)
                 } else {
@@ -246,29 +243,26 @@
 
 .player-cover-wrap {
     position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     width: 80%;
-    height: 300px;
     margin: 0 auto;
     border-radius: 50%;
     border: 1px solid #ccc;
     .player-cover-cd {
-        position: absolute;
-        left: 0;
-        top: 0;
         display: block;
         width: 100%;
         z-index: 1;
     }
     .player-cover {
         display: block;
-        width: 190px;
-        height: 190px;
-        z-index: 0;
-            animation: coverRotate 10s linear infinite running;
-            animation-play-state: paused;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 64%;
+        margin-left: -32%;
+        margin-top: -32%;
+        z-index: -1;
+        animation: coverRotate 10s linear infinite running;
+        animation-play-state: paused;
     }
     .active {
         animation-play-state: running;
