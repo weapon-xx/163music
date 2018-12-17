@@ -18,7 +18,7 @@
                     <i class="wif icon-headset list-headset">{{handleCount(detail && detail.playCount)}}</i>
                     <img class="list-detail-cover" :src="detail ? detail.coverImgUrl: ''" alt="">
                 </div>
-                <div class="list-detail-rigth-box">
+                <div class="list-detail-right-box">
                     <p class="list-detail-list-name">{{detail && detail.name}}</p>
                     <div class="list-detail-creator">
                         <img class="list-detail-creator-avatar" :src="detail && detail.creator.avatarUrl" alt="">
@@ -29,7 +29,11 @@
         </div>
         <ul class="list-box">
             <li class="list-item" :key="index" v-for="(song, index) in detail.tracks" @click="goPlay(song.id)">
-                <p>{{song.name}}</p>
+                <p class="list-item-index">{{index + 1}}</p>
+                <div class="list-item-song-wrap">
+                    <p class="list-item-song-name single-line-overflow">{{song.name}}</p>
+                    <p class="list-item-song-singer single-line-overflow">{{song.ar[0].name}} - {{song.al.name}}</p>
+                </div>
             </li>
         </ul>
     </div>
@@ -109,6 +113,8 @@
     }
 }
 .list-detail-box {
+    display: flex;
+    align-items: center;
     position: relative;
     width: 100%;
     height: 300px;
@@ -129,7 +135,6 @@
     .list-detail-wrap {
         display: flex;
         justify-content: space-between;
-        margin-top: 64px;
         padding: 20px;
     }
 }
@@ -157,7 +162,11 @@
     }
 }
 
-.list-detail-rigth-box {
+.list-detail-right-box {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
     width: 50%;
     padding-top: 15px;
     color: #fff;
@@ -183,15 +192,42 @@
 }
 
 .list-box {
+    width: 100%;
     margin: 0;
     padding: 0;
     .list-item {
         display: flex;
         align-items: center;
+        box-sizing: border-box;
+        width: 100%;
+        height: 50px;
         padding: 0 10px;
-        height: 40px;
         list-style: none;
-        border-bottom: 1px solid #000;
+        overflow: hidden;
+    }
+    .list-item-index {
+        margin-right: 10px;
+        color: #999;
+        width: 30px;
+    }
+    .list-item-song-wrap {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        flex: 1;
+        height: 50px;
+        color: #212121;
+        border-bottom: 2px solid #eee;
+        p {
+            width: 90%;
+        }
+        .list-item-song-name {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }   
+        .list-item-song-singer {
+            font-size: 12px;
+        } 
     }
 }
 </style>

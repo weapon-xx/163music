@@ -2,3 +2,9 @@
 
 $main_color: #d02d2d;
 $font_color: #212121;
+
+.single-line-overflow {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}

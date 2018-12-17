@@ -33,7 +33,7 @@
 </template>
 <script>    
     import { mapGetters } from 'vuex'
-    import { requestSongDetail, requestSongUrl } from '../api'
+    import { requestSongDetail, requestSongUrl, requestLyric } from '../api'
 
     export default {
         data() {
@@ -142,21 +142,34 @@
         },
         mounted() {
             const LCKEY = `music163`
-            let songId = +this.$route.params.id
-            if(songId) {
-                if(songId !== this.songId) {
-                    localStorage.setItem(LCKEY, JSON.stringify({songId: songId}))
-                    this.$store.commit('updateSongId', songId)
+            let songId
+            let urlId = +this.$route.params.id
+            if(urlId) {
+                // url
+                if(urlId !== this.songId) {
+                    songId = urlId
+                    this.operate()      // 自动播放
+                    this.$store.commit('updateSongId', urlId)
                     this.$store.commit('currentTime', 0)
-                    this.requestSongUrl(songId).then(data => {
+                    this.requestSongUrl(urlId).then(data => {
                         this.$store.commit('updateSongUrl', data.data[0].url)
                     })
+                    localStorage.setItem(LCKEY, JSON.stringify({songId: urlId}))        // 设置缓存
+                } else {
+                    songId = this.songId
                 }
             } else {
                 if(!!this.songId) {
+                    // vuex
                     songId = this.songId                    
                 } else {
-                    songId = (JSON.parse(localStorage.getItem(LCKEY)) || {}).songId                    
+                    // localStorage
+                    songId = (JSON.parse(localStorage.getItem(LCKEY)) || {}).songId  
+                    this.operate()      // 自动播放
+                    this.$store.commit('updateSongId', songId)                  
+                    this.requestSongUrl(songId).then(data => {
+                        this.$store.commit('updateSongUrl', data.data[0].url)
+                    })
                 }
             }
             songId && this.requestSongDetail(songId).then(data => {
@@ -181,8 +194,8 @@
     position: relative;
     display: flex;
     justify-content: center;
-    background-color: #c1c1c1;
     height: 45px;
+    color: #fff;
     .player-back {
         position: absolute;
         top: 0;
@@ -190,6 +203,9 @@
         width: 30px;
         height: 45px;
         line-height: 45px;
+        &::before {
+            color: #fff;
+        }
     }
     .player-topbar-title {
         font-size: 16px;
@@ -331,6 +347,9 @@
         line-height: 60px;
         font-size: 30px;
         text-align: center;
+        &::before {
+            color: #fff;
+        }
     }
     .operate-btn {
         font-size: 60px;

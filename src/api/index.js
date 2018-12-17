@@ -145,3 +145,14 @@ export const requestEvent= async () => {
         return data.data
     });
 }
+
+/** 
+ * 获取歌词
+ * @params {Number} id 歌曲id
+ * @return {Promise}
+ */ 
+export const requestLyric= async id => {
+    return axios.get(`${domain}/lyric?id=${id}`).then(data => {
+        return data.data
+    });
+}
