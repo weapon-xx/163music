@@ -45,12 +45,14 @@
       }
     }
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
+@import "../style/common.scss";
+
 .swiper-container {
   min-height: 120px;
   .bullet-active {
-    background-color: #fff;
-    opacity: .5;
+    background-color: $main_color;
+    opacity: 1;
   }
 }
 </style>

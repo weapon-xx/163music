@@ -186,7 +186,7 @@
             border-radius: 50%;
         }
         .list-detail-creator-name {
-
+            font-size: 12px;
         }
     }
 }

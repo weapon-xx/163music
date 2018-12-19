@@ -1,5 +1,6 @@
 <template>
-    <div class="player-box">
+    <div class="play-box">
+        <div class="play-mask player-top-mask"></div>
         <div class="player-cover-bg" :style="{backgroundImage: `url(${song && song.al.picUrl})`}"></div>
         <div class="player-topbar">
             <i class="player-back wif icon-left" @click="back"></i>
@@ -29,6 +30,7 @@
             <div ref="operateBtn" class="player-control-operate wif operate-btn" :class="[isPlay ? 'icon-pause' : 'icon-play']" @click="operate"></div>
             <div class="player-control-last wif icon-right"></div>
         </div>
+        <div class="play-mask player-bottom-mask"></div>
     </div>
 </template>
 <script>    
@@ -148,7 +150,9 @@
                 // url
                 if(urlId !== this.songId) {
                     songId = urlId
-                    this.operate()      // 自动播放
+                    if(!this.isPlay) {
+                        this.operate()      // 暂停时自动播放
+                    }
                     this.$store.commit('updateSongId', urlId)
                     this.$store.commit('currentTime', 0)
                     this.requestSongUrl(urlId).then(data => {
@@ -183,7 +187,7 @@
 <style lang="scss" scoped>
 @import "../style/common.scss";
 
-.player-box {
+.play-box {
     position: absolute;
     width: 100%;
     top: 0;
@@ -356,4 +360,23 @@
     }
 }
 
+.play-mask {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    background-color: #000;
+    filter: blur(15px);
+    z-index: -1;
+    opacity: .1;
+}
+
+.player-top-mask {
+    top: 0;
+    height: 50px;
+}
+
+.player-bottom-mask {
+    bottom: 0;
+    height: 100px;
+}
 </style>
