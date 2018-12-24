@@ -5,7 +5,6 @@ axios.defaults.withCredentials = true;
 const domain = '//jacksonx.cn:3000'
 
 /** 
- * 
  * promise 缓存函数
  * @param {Function} fn 执行函数
  * @param {Function} convertParam 缓存 key 生成函数
@@ -40,7 +39,7 @@ export const requestBanner = promiseCache(function() {
 
 /** 
  * 手机号登录
- * @params {Object} params 参数对象
+ * @param {Object} params 参数对象
  * @return {Promise}
  */ 
 export const login = params => {
@@ -70,7 +69,7 @@ export const requestResource = () => {
 
 /** 
  * 获取歌单详情
- * @params {Number} id  歌单id
+ * @param {Number} id  歌单id
  * @return {Promise}
  */ 
 export const requestPlaylistDetail = async id => {
@@ -84,7 +83,7 @@ export const requestPlaylistDetail = async id => {
 
 /** 
  * 获取歌单详情
- * @params {Number} id  歌单id
+ * @param {Number} id  歌单id
  * @return {Promise}
  */ 
 export const requestSongDetail = async id => {
@@ -95,7 +94,7 @@ export const requestSongDetail = async id => {
 
 /** 
  * 获取歌单 url
- * @params {Number} id  歌单id
+ * @param {Number} id  歌单id
  * @return {Promise}
  */ 
 export const requestSongUrl = async id => {
@@ -116,7 +115,7 @@ export const requestLoginStatus = async () => {
 
 /** 
  * 获取用户创建歌单
- * @params {Number} useId 用户id
+ * @param {Number} useId 用户id
  * @return {Promise}
  */ 
 export const requestUserPlaylist = async uid => {
@@ -127,7 +126,7 @@ export const requestUserPlaylist = async uid => {
 
 /** 
  * 获取用户信息
- * @params {Number} useId 用户id
+ * @param {Number} useId 用户id
  * @return {Promise}
  */ 
 export const requestUserDetail = async uid => {
@@ -148,7 +147,7 @@ export const requestEvent= async () => {
 
 /** 
  * 获取歌词
- * @params {Number} id 歌曲id
+ * @param {Number} id 歌曲id
  * @return {Promise}
  */ 
 export const requestLyric= async id => {

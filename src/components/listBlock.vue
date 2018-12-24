@@ -92,15 +92,21 @@
             overflow: hidden;
             height: 24px;
             line-height: 13px;
-            &:after {
-                content: "...";
-                font-weight: bold;
-                position: absolute;
-                bottom: 0;
-                right: 0;
-                padding: 0 10px 1px 0px;
-                background: #fff;
-            }
+            white-space: pre-wrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            // &:after {
+            //     content: "...";
+            //     font-weight: bold;
+            //     position: absolute;
+            //     bottom: 0;
+            //     right: 0;
+            //     padding: 0 10px 1px 0px;
+            //     background: #fff;
+            // }
         }
     }
 }

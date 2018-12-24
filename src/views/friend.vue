@@ -14,9 +14,18 @@
                     <div class="friend-event-content-box">
                         <p class="friend-event-content">{{item.data.msg}}</p>
                         <div class="friend-event-video-wrap" v-show="item.data && item.data.video">
+                            <div class="friend-event-video-info">
+                                <div class="friend-event-video-info-left">
+                                    <i class="wif icon-play friend-event-video-btn"></i>
+                                    <p class="friend-event-video-playTime">{{item.data.video && item.data.video.playTime}}</p>
+                                </div>
+                                <p class="friend-event-video-durationms">{{item.data.video && item.data.video.durationms}}</p>
+                            </div>
                             <img class="friend-event-video-cover" :src="item.data.video && item.data.video.coverUrl" alt="">
                         </div>
-                        <div class="friend-event-img-wrap"></div>
+                        <div class="friend-event-img-wrap" v-show="item.pics">
+                            <img v-for="(pic, index) in item.pics" :key="index" :src="pic.squareUrl" alt="">
+                        </div>
                         <div class="friend-event-song-wrap" v-show="item.data &&item.data.song">
                             <img class="friend-event-song-cover" :src="item.data.song && item.data.song.album.picUrl" alt="">
                             <div class="friend-event-song-info">
@@ -32,6 +41,8 @@
 </template>
 <script>
     import { requestEvent } from '../api'
+
+
     export default {
         data() {
             return {
@@ -55,6 +66,8 @@
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
+@import "../style/common.scss";
+
 .friend-event-list {
     padding: 10px 10px 60px;
     .friend-event {
@@ -85,6 +98,7 @@
         .friend-event-username {
             margin-right: 10px;
             color: #699de6;
+
         }
         .friend-event-operation {
             color: #747474;
@@ -106,10 +120,40 @@
 }
 
 .friend-event-video-wrap {
+    position: relative;
     .friend-event-video-cover {
         display: block;
         width: 100%;
+        border-radius: 5px;
     }
+    .friend-event-video-info {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: absolute;
+        left: 0;
+        bottom: 5px;
+        width: 100%;
+        box-sizing: border-box;
+        color: #fff;
+        .friend-event-video-info-left {
+            display: flex;
+            align-items: center;
+            padding-left: 5px;
+        }
+        .friend-event-video-btn {
+            font-size: 18px;
+            margin-right: 1px;
+        }
+        .friend-event-video-playTime {
+            font-size: 14px;
+        }
+        .friend-event-video-durationms {
+            font-size: 14px;
+            padding-right: 5px;
+        }
+    }
+    
 }
 
 .friend-event-song-wrap {
@@ -138,4 +182,15 @@
     }
 }
 
+.friend-event-img-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    img {
+        display: block;
+        width: 33%;
+        height: 100%;
+        margin-bottom: 2px;
+    }
+}
 </style>

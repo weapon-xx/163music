@@ -35,6 +35,7 @@
 </template>
 <script>    
     import { mapGetters } from 'vuex'
+    import { handleTime } from '../javascript/util'
     import { requestSongDetail, requestSongUrl, requestLyric } from '../api'
 
     export default {
@@ -48,11 +49,11 @@
             ...mapGetters(['isPlay', 'songId', 'duration', 'currentTime']),
             songDuration() {
                 const _duration = this.duration !== undefined ?  parseInt(this.duration) : undefined
-                return this.handleTime(_duration)
+                return handleTime(_duration)
             },
             songCurrTime() {
                 const _currentTime = this.currentTime !== undefined ?  parseInt(this.currentTime) : undefined
-                return this.handleTime(_currentTime)
+                return handleTime(_currentTime)
             },
             playScale() {
                 if(this.duration !== undefined && this.currentTime !== undefined) {
@@ -77,17 +78,6 @@
                     this.$store.commit('operate', false)
                 } else {
                     this.$store.commit('operate', true)
-                }
-            },
-            handleTime(num) {
-                if(!!num) {
-                    let minutes = `${parseInt(num / 60)}`
-                    minutes = minutes.length > 1 ? minutes : `0${minutes}`
-                    let seconds = `${num % 60}`
-                    seconds = seconds.length > 1 ? seconds : `0${seconds}`
-                    return `${minutes}:${seconds}` 
-                } else {
-                    return `00:00`
                 }
             },
             requestSongDetail(songId) {
@@ -130,7 +120,7 @@
                         }
                         let progressPos = (currentX  - offsetLeft)/ 240
                         dragTime = parseInt(_this.duration * progressPos)
-                        _this.showDragTime = _this.handleTime(dragTime)
+                        _this.showDragTime = handleTime(dragTime)
                         point.style.left = `${parseInt(progressPos * 100)}%`
                         playedProgress.style.width = `${parseInt(progressPos * 100)}%`
                     }, false)
