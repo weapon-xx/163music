@@ -5,7 +5,7 @@
         <div class="player-topbar">
             <i class="player-back wif icon-left" @click="back"></i>
             <div class="player-song-text">
-                <p class="player-topbar-title">{{song && song.name}}</p>    
+                <p class="player-topbar-title single-line-overflow">{{song && song.name}}</p>    
                 <p class="player-topbar-singer">{{song && song.ar[0].name}}</p>
             </div>            
             <div></div>
@@ -26,9 +26,9 @@
             <p class="player-progress-totaltime">{{songDuration}}</p>
         </div>
         <div class="player-control-box">
-            <div class="player-control-last wif icon-left"></div>
+            <div class="player-control-last wif icon-left" @click="lastSong"></div>
             <div ref="operateBtn" class="player-control-operate wif operate-btn" :class="[isPlay ? 'icon-pause' : 'icon-play']" @click="operate"></div>
-            <div class="player-control-last wif icon-right"></div>
+            <div class="player-control-last wif icon-right" @click="nextSong"></div>
         </div>
         <div class="play-mask player-bottom-mask"></div>
     </div>
@@ -46,7 +46,7 @@
             }
         },
         computed: {
-            ...mapGetters(['isPlay', 'songId', 'duration', 'currentTime']),
+            ...mapGetters(['isPlay', 'songId', 'duration', 'currentTime', 'tracks']),
             songDuration() {
                 const _duration = this.duration !== undefined ?  parseInt(this.duration) : undefined
                 return handleTime(_duration)
@@ -68,10 +68,26 @@
                 this.$router.go(-1)
             },
             nextSong() {
-
-            },
+            
+            },  
             lastSong() {
-
+                let index
+                this.tracks.filter((song, idx) => {
+                    if(song.id === this.songId) {
+                        index = idx
+                    }
+                })[0]
+                if(index === 0) {
+                    index = this.tracks.length - 1
+                }
+                const lastSong = this.tracks.slice(index - 1, index)[0]
+                this.requestSongUrl(lastSong.id).then(data => {
+                    this.$store.commit('updateSongUrl', data.data[0].url)
+                })
+                this.requestSongDetail(lastSong.id).then(data => {
+                    this.song = data.songs[0]
+                })
+                this.$store.commit('updateSongId', lastSong.id)                  
             },
             operate() {
                 if(this.isPlay) {

@@ -12,23 +12,23 @@
             <div class="list-topbar-mask"></div>
         </div>
         <div class="list-detail-box">
-            <div class="list-detail-cover-bg" :style="{backgroundImage: `url(${detail ? detail.coverImgUrl: ''})`}"></div>
+            <div class="list-detail-cover-bg" :style="{backgroundImage: `url(${playlist ? playlist.coverImgUrl: ''})`}"></div>
             <div class="list-detail-wrap">
                 <div class="list-detail-cover-box">
-                    <i class="wif icon-headset list-headset">{{handleCount(detail && detail.playCount)}}</i>
-                    <img class="list-detail-cover" :src="detail ? detail.coverImgUrl: ''" alt="">
+                    <i class="wif icon-headset list-headset">{{handleCount(playlist && playlist.playCount)}}</i>
+                    <img class="list-detail-cover" :src="playlist ? playlist.coverImgUrl: ''" alt="">
                 </div>
                 <div class="list-detail-right-box">
-                    <p class="list-detail-list-name">{{detail && detail.name}}</p>
+                    <p class="list-detail-list-name">{{playlist && playlist.name}}</p>
                     <div class="list-detail-creator">
-                        <img class="list-detail-creator-avatar" :src="detail && detail.creator.avatarUrl" alt="">
-                        <p class="list-detail-creator-name">{{detail && detail.creator.nickname}}</p>
+                        <img class="list-detail-creator-avatar" :src="playlist && playlist.creator.avatarUrl" alt="">
+                        <p class="list-detail-creator-name">{{playlist && playlist.creator.nickname}}</p>
                     </div>
                 </div>
             </div>
         </div>
         <ul class="list-box">
-            <li class="list-item" :key="index" v-for="(song, index) in detail.tracks" @click="goPlay(song.id)">
+            <li class="list-item" :key="index" v-for="(song, index) in playlist.tracks" @click="goPlay(song.id)">
                 <p class="list-item-index">{{index + 1}}</p>
                 <div class="list-item-song-wrap">
                     <p class="list-item-song-name single-line-overflow">{{song.name}}</p>
@@ -51,7 +51,7 @@
         },
         data() {
             return {
-                detail: {
+                playlist: {
                     tracks: [],
                     creator: {}
                 }
@@ -63,6 +63,7 @@
             },
             goPlay(id) {
                 this.$router.push(`/play/${id}`)
+                this.$store.commit('updatePlaylist', this.playlist)
             },
             handleCount(num) {
                 return util.handleCount(num)
@@ -71,7 +72,7 @@
         mounted() {
             requestPlaylistDetail(this.$route.params.id).then(data => {
                 if(data && +data.code === 200) {
-                    this.detail = data.playlist   
+                    this.playlist = data.playlist   
                 }
             })
         }
@@ -117,7 +118,7 @@
     align-items: center;
     position: relative;
     width: 100%;
-    height: 300px;
+    padding: 44px 0;
     overflow: hidden;
     .list-detail-cover-bg {
         position: absolute;
@@ -194,7 +195,7 @@
 .list-box {
     width: 100%;
     margin: 0;
-    padding: 0;
+    padding: 0 0 10px;
     .list-item {
         display: flex;
         align-items: center;
@@ -209,12 +210,13 @@
         margin-right: 10px;
         color: #999;
         width: 30px;
+        text-align: center;
     }
     .list-item-song-wrap {
         display: flex;
         flex-direction: column;
         justify-content: center;
-        flex: 1;
+        width: 90%;
         height: 50px;
         color: #212121;
         border-bottom: 2px solid #eee;

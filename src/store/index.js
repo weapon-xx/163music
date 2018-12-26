@@ -16,6 +16,10 @@ const store = new Vuex.Store({
         url: undefined,
         duration: undefined,
         currentTime: undefined
+      },
+      playlist: {
+          tracks: [],
+          id: undefined
       }
     },
     getters: {
@@ -39,6 +43,9 @@ const store = new Vuex.Store({
         },
         currentTime(state) {
             return state.song.currentTime
+        },
+        tracks(state) {
+            return state.playlist.tracks
         }
     },
     mutations: {
@@ -62,6 +69,12 @@ const store = new Vuex.Store({
         },
         currentTime(state, time) {
             state.song.currentTime = time
+        },
+        updatePlaylist(state, playlist) {
+            if(state.playlist.id !== playlist.id) {
+                state.playlist.id = playlist.id
+                state.playlist.tracks = playlist.tracks
+            }
         }
     }
 })
