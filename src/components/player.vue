@@ -55,7 +55,7 @@
             }, false) 
 
             this.audio.addEventListener('ended', function(event) {  
-                
+                console.info('song end')
             })
         }
     }

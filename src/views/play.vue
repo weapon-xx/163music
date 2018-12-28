@@ -81,13 +81,7 @@
                     index = this.tracks.length - 1
                 }
                 const lastSong = this.tracks.slice(index - 1, index)[0]
-                this.requestSongUrl(lastSong.id).then(data => {
-                    this.$store.commit('updateSongUrl', data.data[0].url)
-                })
-                this.requestSongDetail(lastSong.id).then(data => {
-                    this.song = data.songs[0]
-                })
-                this.$store.commit('updateSongId', lastSong.id)                  
+                this.updateSongInfo(lastSong.id)
             },
             operate() {
                 if(this.isPlay) {
@@ -95,6 +89,15 @@
                 } else {
                     this.$store.commit('operate', true)
                 }
+            },
+            updateSongInfo(songId) {
+                this.$store.commit('updateSongId', songId)
+                this.requestSongUrl(songId).then(data => {
+                    this.$store.commit('updateSongUrl', data.data[0].url)
+                })
+                this.requestSongDetail(songId).then(data => {
+                    this.song = data.songs[0]
+                })
             },
             requestSongDetail(songId) {
                 return requestSongDetail(songId).then(data => {
@@ -159,12 +162,8 @@
                     if(!this.isPlay) {
                         this.operate()      // 暂停时自动播放
                     }
-                    this.$store.commit('updateSongId', urlId)
                     this.$store.commit('currentTime', 0)
-                    this.requestSongUrl(urlId).then(data => {
-                        this.$store.commit('updateSongUrl', data.data[0].url)
-                    })
-                    localStorage.setItem(LCKEY, JSON.stringify({songId: urlId}))        // 设置缓存
+                    localStorage.setItem(LCKEY, JSON.stringify({songId: songId}))        // 设置缓存
                 } else {
                     songId = this.songId
                 }
@@ -176,15 +175,9 @@
                     // localStorage
                     songId = (JSON.parse(localStorage.getItem(LCKEY)) || {}).songId  
                     this.operate()      // 自动播放
-                    this.$store.commit('updateSongId', songId)                  
-                    this.requestSongUrl(songId).then(data => {
-                        this.$store.commit('updateSongUrl', data.data[0].url)
-                    })
                 }
             }
-            songId && this.requestSongDetail(songId).then(data => {
-                this.song = data.songs[0]
-            })
+            this.updateSongInfo(songId);
             this.initDrag()
         }
     }
