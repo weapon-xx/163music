@@ -6,6 +6,7 @@
 </template>
 <script>
     import { mapGetters } from 'vuex'
+    import eventbus from '../javascript/eventbus'
 
     export default {
         data() {
@@ -55,7 +56,8 @@
             }, false) 
 
             this.audio.addEventListener('ended', function(event) {  
-                console.info('song end')
+                // 触发结束事件
+                eventbus.$emit('songEnd')
             })
         }
     }

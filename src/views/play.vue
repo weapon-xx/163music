@@ -37,6 +37,7 @@
     import { mapGetters } from 'vuex'
     import { handleTime } from '../javascript/util'
     import { requestSongDetail, requestSongUrl, requestLyric } from '../api'
+    import eventbus from '../javascript/eventbus'
 
     export default {
         data() {
@@ -68,7 +69,17 @@
                 this.$router.go(-1)
             },
             nextSong() {
-            
+                let index
+                this.tracks.filter((song, idx) => {
+                    if(song.id === this.songId) {
+                        index = idx
+                    }
+                })[0]
+                if(index === this.tracks.length - 1) {
+                    index = 1
+                }
+                const lastSong = this.tracks.slice(index + 1, index + 2)[0]
+                this.updateSongInfo(lastSong.id)
             },  
             lastSong() {
                 let index
@@ -179,6 +190,10 @@
             }
             this.updateSongInfo(songId);
             this.initDrag()
+            // 监听结束事件
+            eventbus.$on('songEnd', () => {
+                this.nextSong()
+            })
         }
     }
 </script>

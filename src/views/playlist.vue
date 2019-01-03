@@ -118,7 +118,7 @@
     align-items: center;
     position: relative;
     width: 100%;
-    padding: 44px 0;
+    padding: 44px 0 0;
     overflow: hidden;
     .list-detail-cover-bg {
         position: absolute;
@@ -183,11 +183,11 @@
         .list-detail-creator-avatar {
             display: block;
             width: 26px;
-            margin-right: 10px;
+            margin-right: 5px;
             border-radius: 50%;
         }
         .list-detail-creator-name {
-            font-size: 12px;
+            font-size: 14px;
         }
     }
 }
@@ -211,6 +211,7 @@
         color: #999;
         width: 30px;
         text-align: center;
+        font-size: 18px;
     }
     .list-item-song-wrap {
         display: flex;
