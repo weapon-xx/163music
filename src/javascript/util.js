@@ -34,7 +34,8 @@ export const isLogin = () => {
  */
 export const handleCount = num => {
     if(!num) {
-        return 0
+        console.error('参数不能为空')
+        return
     }
     const str = String(num)
     if(str.length > 5) {
@@ -47,7 +48,7 @@ export const handleCount = num => {
 /**
  * 将秒时间转换 -> 分钟:秒
  * @param {Number} time 时间 
- * @return {String} time
+ * @return {String} 
  */
 export const handleTime = time => {
     if(!!time) {
@@ -58,5 +59,26 @@ export const handleTime = time => {
         return `${minutes}:${seconds}` 
     } else {
         return `00:00`
+    }
+}
+
+/**
+ * 函数节流
+ * @param {Function} fn 执行函数
+ * @param {Number} delay 延时时长
+ * @param {Object} context 函数执行上下文
+ * @return {Function}
+ */
+export const debounce = (fn, delay) => {
+    let timer = null
+    return function() {
+        if(!!timer) {
+            clearTimeout(timer)
+            timer = null
+        }
+        timer = setTimeout(function() {
+            fn.apply(this, arguments)
+            timer = null
+        }, delay)
     }
 }

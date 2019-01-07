@@ -155,3 +155,25 @@ export const requestLyric= async id => {
         return data.data
     });
 }
+
+/** 
+ * 搜索建议
+ * @param {String} keyword
+ * @return {Promise}
+ */ 
+export const requestSuggestKeyword = async keywords => {
+    return axios.get(`${domain}/search/suggest?keywords=${keywords}`).then(data => {
+        return data.data
+    });
+}
+
+/** 
+ * 搜索
+ * @param {String} keyword
+ * @return {Promise}
+ */ 
+export const requestSearchByKeyword = async keywords => {
+    return axios.get(`${domain}/search?keywords= ${keywords}`).then(data => {
+        return data.data
+    });
+}
