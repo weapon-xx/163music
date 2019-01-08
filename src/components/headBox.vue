@@ -1,12 +1,9 @@
 <template>
-    <div class="head">
+    <div :class="[{focus: isFocus}, 'head']">
         <i :class="[{focus: isFocus}, 'wif', 'icon-voice', 'i-voice']" ></i>
         <div :class="[{focus: isFocus}, 'search-box']">
           <input ref="input" type="text" v-model="keyword" placeholder="搜索音乐、歌词、电台">
           <i :class="[{focus: isFocus}, 'clear-btn']" @click="clear">x</i>
-          <ul class="search-word-box">
-            <li class="search-word" :key="index" v-for="(item, index) in suggestList">{{item.name}}-{{item.artist.name}}</li>
-          </ul>
         </div>
         <div :class="[{active: isPlay}, {focus: isFocus}, 'voice-box']" @click="goPlay" ref="voice_box">
           <i></i>
@@ -15,10 +12,21 @@
           <i></i>
         </div>
         <p :class="[{focus: isFocus}, 'cancel-btn']" @click="cancel">取消</p>
+        <div :class="[{focus: isFocus}, 'serch-box']">
+          <ul :class="[{focus: isFocus}, 'search-word-box']">
+            <li class="search-word first" v-show="keyword" @click="search(keyword)">搜索 “{{keyword}}”</li>
+            <li class="search-word" :key="index" v-for="(item, index) in suggestList" @click="search(item.name)">{{item.name}} - {{item.artist.name}}</li>
+          </ul>
+          <ul ref="searchList" class="serch-list-box">
+            <li :class="[isFocus ? 'focus' : 'blur', 'serch-list-item']" :key="index" v-for="(item, index) in songs">
+              {{item.name}}
+            </li>
+          </ul>
+        </div>
     </div>
 </template>
 <script>
-    import { requestSuggestKeyword } from '../api'
+    import { requestSuggestKeyword, requestSearchByKeyword } from '../api'
 
     export default {
         name: 'headBox',
@@ -32,6 +40,7 @@
               custom: '',
               keyword: undefined,
               suggestList: [],
+              songs: [],
               isFocus: false
             }
         },
@@ -61,6 +70,15 @@
                   this.suggestList = data.result.albums
                 }
               })
+            },
+            search(keyword) {
+              // this.isFocus = false
+              requestSearchByKeyword(keyword).then(data => {
+                if(+data.code === 200) {
+                  this.songs = data.result.songs
+                  // this.$refs.searchList.style.display = 'block'                
+                }
+              })
             }
         },
         mounted() {
@@ -87,6 +105,9 @@
   justify-content: space-between;
   align-items: center;
   z-index: 100;
+  &.focus {
+    background-color: #fff;
+  }
 }
 
 .search-box {
@@ -96,9 +117,10 @@
     height: 28px;
     background-color: #fff;
     border-radius: 30px;
-    transition: width .5s ease;
+    transition: all .5s ease;
     &.focus {
       width: 100%;
+      border: 1px solid #8b8b8b;
       input {
         text-align: left;
       }
@@ -126,22 +148,6 @@
       text-align: center;
       &.focus {
         display: block;
-      }
-    }
-    .search-word-box {
-      position: absolute;
-      width: 90%;
-      left: 50%;
-      top: 100%;
-      transform: translateX(-50%);
-      background-color: #fff;
-      padding: 0 5px;
-      box-sizing: border-box;
-      border-radius: 5px;
-      .search-word {
-        line-height: 24px;
-        font-size: 12px;
-        color: $font_color;
       }
     }
   }
@@ -187,7 +193,9 @@
 .cancel-btn {
   display: none;
   width: 50px;
-  color: #fff;
+  height: 28px;
+  line-height: 28px;
+  color: #8b8b8b;
   margin-left: 10px;
   &.focus {
     display: block;
@@ -218,6 +226,62 @@
   }
   100% {
     height: 22px;
+  }
+}
+
+.serch-box {
+  position: fixed;
+  top: 50px;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  background-color: #fff;
+  display: none;
+  &.focus {
+    display: block;
+  }
+  .search-word-box, .serch-list-box {
+    display: none;
+    position: absolute;
+    left: 0;
+    top: 0;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 0 5px;
+    background-color: #fff;
+    border-radius: 5px;
+  }
+}
+
+.search-word-box {
+  z-index: 10;
+  &.focus {
+      display: block;
+  }
+  .search-word {
+      line-height: 34px;
+      font-size: 14px;
+      color: $font_color;
+      border-bottom: 1px solid #f1f1f1;
+      &.first {
+        color: #0868b5;
+      }
+    }
+}
+
+.serch-list-box {
+  z-index: 11;
+  &.blur {
+    display: block;
+  }
+  &.focus {
+    display: none;
+  }
+  .serch-list-item {
+    line-height: 34px;
+    font-size: 14px;
+    color: $font_color;
+    border-bottom: 1px solid #f1f1f1;
   }
 }
 
