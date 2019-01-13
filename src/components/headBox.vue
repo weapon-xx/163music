@@ -1,25 +1,26 @@
 <template>
-    <div :class="[{focus: isFocus}, 'head']">
-        <i :class="[{focus: isFocus}, 'wif', 'icon-voice', 'i-voice']" ></i>
-        <div :class="[{focus: isFocus}, 'search-box']">
-          <input ref="input" type="text" v-model="keyword" placeholder="搜索音乐、歌词、电台">
-          <i :class="[{focus: isFocus}, 'clear-btn']" @click="clear">x</i>
+    <div :class="[{focus: isOpen}, 'head']">
+        <i :class="[{focus: isOpen}, 'wif', 'icon-voice', 'i-voice']" ></i>
+        <div :class="[{focus: isOpen}, 'search-box']">
+          <input ref="input" type="text" v-model="keyword" placeholder="🔍 输入关键字搜索单曲">
+          <i :class="[{focus: isOpen}, 'clear-btn']" @click="clear">✘</i>
         </div>
-        <div :class="[{active: isPlay}, {focus: isFocus}, 'voice-box']" @click="goPlay" ref="voice_box">
+        <div :class="[{active: isPlay}, {focus: isOpen}, 'voice-box']" @click="goPlay(0)" ref="voice_box">
           <i></i>
           <i></i>
           <i></i>
           <i></i>
         </div>
-        <p :class="[{focus: isFocus}, 'cancel-btn']" @click="cancel">取消</p>
-        <div :class="[{focus: isFocus}, 'serch-box']">
-          <ul :class="[{focus: isFocus}, 'search-word-box']">
-            <li class="search-word first" v-show="keyword" @click="search(keyword)">搜索 “{{keyword}}”</li>
-            <li class="search-word" :key="index" v-for="(item, index) in suggestList" @click="search(item.name)">{{item.name}} - {{item.artist.name}}</li>
+        <p :class="[{focus: isOpen}, 'cancel-btn']" @click="cancel">取消</p>
+        <div :class="[{focus: isOpen}, 'serch-box']">
+          <ul :class="[{active: isFocus}, 'search-word-box']">
+            <li class="search-word first single-line-overflow" v-show="keyword" @click="search(keyword)">🔍 搜索 “{{keyword}}”</li>
+            <li class="search-word single-line-overflow" :key="index" v-for="(item, index) in suggestList" @click="search(item.name)">🔍 {{item.name}} - {{item.artist.name}}</li>
           </ul>
-          <ul ref="searchList" class="serch-list-box">
-            <li :class="[isFocus ? 'focus' : 'blur', 'serch-list-item']" :key="index" v-for="(item, index) in songs">
-              {{item.name}}
+          <ul ref="searchList" :class="[{active: !isFocus}, 'serch-list-box']">
+            <li :class="[isFocus ? 'focus' : 'blur', 'serch-list-item']" :key="index" v-for="(item, index) in songs" @click="goPlay(item.id)">
+              <p class="serch-list-item-songname single-line-overflow">{{item.name}}</p>
+              <p class="serch-list-item-songinfo single-line-overflow">{{item.artists && item.artists[0].name}} - {{item.album && item.album.name}}</p>
             </li>
           </ul>
         </div>
@@ -41,7 +42,8 @@
               keyword: undefined,
               suggestList: [],
               songs: [],
-              isFocus: false
+              isFocus: false,     // 输入框是否聚焦
+              isOpen: false       // 是否进入搜索
             }
         },
         watch: {
@@ -54,15 +56,16 @@
           }
         },
         methods: {
-            goPlay() {
-              this.$router.push('/play/0')
+            goPlay(id) {
+              this.$router.push(`/play/${id}`)
             },
             clear() {
               this.keyword = ''
               this.$refs.input.focus()
             },
             cancel() {
-              this.isFocus = false              
+              this.isFocus = false
+              this.isOpen = false            
             },
             requestSuggestKeyword(keyword) {
               requestSuggestKeyword(keyword).then(data => {
@@ -72,11 +75,10 @@
               })
             },
             search(keyword) {
-              // this.isFocus = false
+              this.isFocus = false
               requestSearchByKeyword(keyword).then(data => {
                 if(+data.code === 200) {
                   this.songs = data.result.songs
-                  // this.$refs.searchList.style.display = 'block'                
                 }
               })
             }
@@ -85,6 +87,9 @@
           const _this = this
           this.$refs.input.addEventListener('focus', function() {
             _this.isFocus = true
+            if(!_this.isOpen) {
+              _this.isOpen = true     // 开启搜索
+            }
           }, false)
         }
     }
@@ -105,6 +110,7 @@
   justify-content: space-between;
   align-items: center;
   z-index: 100;
+  transition: all .3s ease;
   &.focus {
     background-color: #fff;
   }
@@ -247,6 +253,8 @@
     top: 0;
     box-sizing: border-box;
     width: 100%;
+    height: 100%;
+    overflow: scroll;
     padding: 0 5px;
     background-color: #fff;
     border-radius: 5px;
@@ -255,7 +263,7 @@
 
 .search-word-box {
   z-index: 10;
-  &.focus {
+  &.active {
       display: block;
   }
   .search-word {
@@ -271,18 +279,22 @@
 
 .serch-list-box {
   z-index: 11;
-  &.blur {
+  &.active {
     display: block;
-  }
-  &.focus {
-    display: none;
   }
   .serch-list-item {
     line-height: 34px;
     font-size: 14px;
     color: $font_color;
     border-bottom: 1px solid #f1f1f1;
+    padding: 5px 0;
+    .serch-list-item-songinfo {
+      font-size: 12px;
+      line-height: 12px;
+    }
+    .serch-list-item-songname {
+      line-height: 24px;
+    }
   }
 }
-
 </style>
