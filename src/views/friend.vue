@@ -7,7 +7,7 @@
                     <div class="friend-event-header">
                         <div class="friend-event-text">
                             <p class="friend-event-username">{{item.user.nickname}} </p>
-                            <p class="friend-event-operation">分享{{item.data.video ? '视频' : '单曲'}}：</p>                            
+                            <p class="friend-event-operation">分享{{item.data.video ? '视频' : '单曲'}}：</p>
                         </div>
                         <p class="friend-event-followers">{{item.user.followeds}} 粉丝</p>
                     </div>
@@ -40,29 +40,29 @@
     </div>
 </template>
 <script>
-    import { requestEvent } from '../api'
+import { requestEvent } from '../api';
 
 
-    export default {
-        data() {
-            return {
-                events: []
-            }
-        },
-        methods: {
+export default {
+  data() {
+    return {
+      events: [],
+    };
+  },
+  methods: {
 
-        },
-        mounted() {
-            requestEvent().then(data => {
-                if(+data.code === 200) {
-                    this.events = data.event.map(item => {
-                        item.data = JSON.parse(item.json)
-                        return item
-                    })
-                }
-            })
-        }
-    }
+  },
+  mounted() {
+    requestEvent().then((data) => {
+      if (+data.code === 200) {
+        this.events = data.event.map((item) => {
+          item.data = JSON.parse(item.json);
+          return item;
+        });
+      }
+    });
+  },
+};
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
@@ -153,7 +153,7 @@
             padding-right: 5px;
         }
     }
-    
+
 }
 
 .friend-event-song-wrap {

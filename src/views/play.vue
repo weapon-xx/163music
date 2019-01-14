@@ -5,9 +5,9 @@
         <div class="player-topbar">
             <i class="player-back wif icon-left" @click="back"></i>
             <div class="player-song-text">
-                <p class="player-topbar-title single-line-overflow">{{song && song.name}}</p>    
+                <p class="player-topbar-title single-line-overflow">{{song && song.name}}</p>
                 <p class="player-topbar-singer">{{song && song.ar[0].name}}</p>
-            </div>            
+            </div>
             <div></div>
         </div>
         <div class="player-cover-box">
@@ -33,169 +33,164 @@
         <div class="play-mask player-bottom-mask"></div>
     </div>
 </template>
-<script>    
-    import { mapGetters } from 'vuex'
-    import { handleTime } from '../javascript/util'
-    import { requestSongDetail, requestSongUrl, requestLyric } from '../api'
-    import eventbus from '../javascript/eventbus'
+<script>
+import { mapGetters } from 'vuex';
+import { handleTime } from '../javascript/util';
+import { requestSongDetail, requestSongUrl, requestLyric } from '../api';
+import eventbus from '../javascript/eventbus';
 
-    export default {
-        data() {
-            return {
-                song: undefined,
-                showDragTime: undefined
-            }
-        },
-        computed: {
-            ...mapGetters(['isPlay', 'songId', 'duration', 'currentTime', 'tracks']),
-            songDuration() {
-                const _duration = this.duration !== undefined ?  parseInt(this.duration) : undefined
-                return handleTime(_duration)
-            },
-            songCurrTime() {
-                const _currentTime = this.currentTime !== undefined ?  parseInt(this.currentTime) : undefined
-                return handleTime(_currentTime)
-            },
-            playScale() {
-                if(this.duration !== undefined && this.currentTime !== undefined) {
-                    return `${parseInt(this.currentTime / this.duration * 100)}%`
-                } else {
-                    return `0%`
-                }
-            }
-        },
-        methods: {
-            back() {
-                this.$router.go(-1)
-            },
-            nextSong() {
-                let index
-                this.tracks.filter((song, idx) => {
-                    if(song.id === this.songId) {
-                        index = idx
-                    }
-                })[0]
-                if(index === this.tracks.length - 1) {
-                    index = 1
-                }
-                const lastSong = this.tracks.slice(index + 1, index + 2)[0]
-                this.updateSongInfo(lastSong.id)
-            },  
-            lastSong() {
-                let index
-                this.tracks.filter((song, idx) => {
-                    if(song.id === this.songId) {
-                        index = idx
-                    }
-                })[0]
-                if(index === 0) {
-                    index = this.tracks.length - 1
-                }
-                const lastSong = this.tracks.slice(index - 1, index)[0]
-                this.updateSongInfo(lastSong.id)
-            },
-            operate() {
-                if(this.isPlay) {
-                    this.$store.commit('operate', false)
-                } else {
-                    this.$store.commit('operate', true)
-                }
-            },
-            updateSongInfo(songId) {
-                this.$store.commit('updateSongId', songId)
-                this.requestSongUrl(songId).then(data => {
-                    this.$store.commit('updateSongUrl', data.data[0].url)
-                })
-                this.requestSongDetail(songId).then(data => {
-                    this.song = data.songs[0]
-                })
-            },
-            requestSongDetail(songId) {
-                return requestSongDetail(songId).then(data => {
-                    if(data && +data.code === 200) {
-                        return data
-                    } else {
-                        console.error()
-                    }
-                })
-            },
-            requestSongUrl(songId) {
-                return requestSongUrl(songId).then(data => {
-                    if(data && +data.code === 200) {
-                        return data
-                    } else {
-                        console.error()
-                    }
-                })
-            },
-            initDrag() {
-                const _this = this
-                const wrapWidth = 240
-                const point = document.querySelector('.player-progress-point')
-                const playedProgress = document.querySelector('.player-progress-played')
-                const offsetLeft = document.querySelector('.player-progress-wrap').offsetLeft
-                
-                point.addEventListener('touchstart', function(event) {
-                    const originX = parseInt(event.touches[0].clientX)
-                    
-                    let dragTime
-                    document.addEventListener('touchmove', function(event) {
-                        let currentX = parseInt(event.touches[0].clientX)
-                        const distance = currentX - originX
-                        if(currentX < offsetLeft) {
-                            currentX = offsetLeft
-                        }
-                        if(currentX > offsetLeft + wrapWidth) {
-                            currentX = offsetLeft + wrapWidth
-                        }
-                        let progressPos = (currentX  - offsetLeft)/ 240
-                        dragTime = parseInt(_this.duration * progressPos)
-                        _this.showDragTime = handleTime(dragTime)
-                        point.style.left = `${parseInt(progressPos * 100)}%`
-                        playedProgress.style.width = `${parseInt(progressPos * 100)}%`
-                    }, false)
-                    
-                    document.addEventListener('touchend', function(event) {
-                        _this.$store.commit('currentTime', dragTime)
-                        _this.showDragTime = undefined                  // 重置拖拽时进度条时间
-                    }, false)
-                }, false)
-            }
-        },
-        mounted() {
-            const LCKEY = `music163`
-            let songId
-            let urlId = +this.$route.params.id
-            if(urlId) {
-                // url
-                if(urlId !== this.songId) {
-                    songId = urlId
-                    if(!this.isPlay) {
-                        this.operate()      // 暂停时自动播放
-                    }
-                    this.$store.commit('currentTime', 0)
-                    localStorage.setItem(LCKEY, JSON.stringify({songId: songId}))        // 设置缓存
-                } else {
-                    songId = this.songId
-                }
-            } else {
-                if(!!this.songId) {
-                    // vuex
-                    songId = this.songId                    
-                } else {
-                    // localStorage
-                    songId = (JSON.parse(localStorage.getItem(LCKEY)) || {}).songId  
-                    this.operate()      // 自动播放
-                }
-            }
-            this.updateSongInfo(songId);
-            this.initDrag()
-            // 监听结束事件
-            eventbus.$on('songEnd', () => {
-                this.nextSong()
-            })
+export default {
+  data() {
+    return {
+      song: undefined,
+      showDragTime: undefined,
+    };
+  },
+  computed: {
+    ...mapGetters(['isPlay', 'songId', 'duration', 'currentTime', 'tracks']),
+    songDuration() {
+      const _duration = this.duration !== undefined ? parseInt(this.duration) : undefined;
+      return handleTime(_duration);
+    },
+    songCurrTime() {
+      const _currentTime = this.currentTime !== undefined ? parseInt(this.currentTime) : undefined;
+      return handleTime(_currentTime);
+    },
+    playScale() {
+      if (this.duration !== undefined && this.currentTime !== undefined) {
+        return `${parseInt(this.currentTime / this.duration * 100)}%`;
+      }
+      return '0%';
+    },
+  },
+  methods: {
+    back() {
+      this.$router.go(-1);
+    },
+    nextSong() {
+      let index;
+      this.tracks.filter((song, idx) => {
+        if (song.id === this.songId) {
+          index = idx;
         }
+      })[0];
+      if (index === this.tracks.length - 1) {
+        index = 1;
+      }
+      const lastSong = this.tracks.slice(index + 1, index + 2)[0];
+      this.updateSongInfo(lastSong.id);
+    },
+    lastSong() {
+      let index;
+      this.tracks.filter((song, idx) => {
+        if (song.id === this.songId) {
+          index = idx;
+        }
+      })[0];
+      if (index === 0) {
+        index = this.tracks.length - 1;
+      }
+      const lastSong = this.tracks.slice(index - 1, index)[0];
+      this.updateSongInfo(lastSong.id);
+    },
+    operate() {
+      if (this.isPlay) {
+        this.$store.commit('operate', false);
+      } else {
+        this.$store.commit('operate', true);
+      }
+    },
+    updateSongInfo(songId) {
+      this.$store.commit('updateSongId', songId);
+      this.requestSongUrl(songId).then((data) => {
+        this.$store.commit('updateSongUrl', data.data[0].url);
+      });
+      this.requestSongDetail(songId).then((data) => {
+        this.song = data.songs[0];
+      });
+    },
+    requestSongDetail(songId) {
+      return requestSongDetail(songId).then((data) => {
+        if (data && +data.code === 200) {
+          return data;
+        }
+        console.error();
+      });
+    },
+    requestSongUrl(songId) {
+      return requestSongUrl(songId).then((data) => {
+        if (data && +data.code === 200) {
+          return data;
+        }
+        console.error();
+      });
+    },
+    initDrag() {
+      const _this = this;
+      const wrapWidth = 240;
+      const point = document.querySelector('.player-progress-point');
+      const playedProgress = document.querySelector('.player-progress-played');
+      const offsetLeft = document.querySelector('.player-progress-wrap').offsetLeft;
+
+      point.addEventListener('touchstart', (event) => {
+        const originX = parseInt(event.touches[0].clientX);
+
+        let dragTime;
+        document.addEventListener('touchmove', (event) => {
+          let currentX = parseInt(event.touches[0].clientX);
+          const distance = currentX - originX;
+          if (currentX < offsetLeft) {
+            currentX = offsetLeft;
+          }
+          if (currentX > offsetLeft + wrapWidth) {
+            currentX = offsetLeft + wrapWidth;
+          }
+          const progressPos = (currentX - offsetLeft) / 240;
+          dragTime = parseInt(_this.duration * progressPos);
+          _this.showDragTime = handleTime(dragTime);
+          point.style.left = `${parseInt(progressPos * 100)}%`;
+          playedProgress.style.width = `${parseInt(progressPos * 100)}%`;
+        }, false);
+
+        document.addEventListener('touchend', (event) => {
+          _this.$store.commit('currentTime', dragTime);
+          _this.showDragTime = undefined; // 重置拖拽时进度条时间
+        }, false);
+      }, false);
+    },
+  },
+  mounted() {
+    const LCKEY = 'music163';
+    let songId;
+    const urlId = +this.$route.params.id;
+    if (urlId) {
+      // url
+      if (urlId !== this.songId) {
+        songId = urlId;
+        if (!this.isPlay) {
+          this.operate(); // 暂停时自动播放
+        }
+        this.$store.commit('currentTime', 0);
+        localStorage.setItem(LCKEY, JSON.stringify({ songId })); // 设置缓存
+      } else {
+        songId = this.songId;
+      }
+    } else if (this.songId) {
+      // vuex
+      songId = this.songId;
+    } else {
+      // localStorage
+      songId = (JSON.parse(localStorage.getItem(LCKEY)) || {}).songId;
+      this.operate(); // 自动播放
     }
+    this.updateSongInfo(songId);
+    this.initDrag();
+    // 监听结束事件
+    eventbus.$on('songEnd', () => {
+      this.nextSong();
+    });
+  },
+};
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
@@ -300,7 +295,7 @@
     }
     .active {
         animation-play-state: running;
-    }        
+    }
 }
 
 @keyframes coverRotate {

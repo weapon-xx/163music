@@ -14,33 +14,33 @@
     </div>
 </template>
 <script>
-    import * as util from '../javascript/util'
+import * as util from '../javascript/util';
 
-    export default {
-        props: ['title', 'list', 'showCount'],
-        data() {
-            return {}
-        },
-        computed: {
-            handleList() {
-                if(this.list.length > 6) {
-                    return this.list.slice(0, 6)
-                }
-                return this.list
-            }
-        },
-        methods: {
-            goPlaylist(id) {
-                id && this.$router.push(`/playlist/${id}`)
-            },
-            handleCount(num) {
-                return util.handleCount(num)
-            }
-        },
-        mounted() {
-
-        }
+export default {
+  props: ['title', 'list', 'showCount'],
+  data() {
+    return {};
+  },
+  computed: {
+    handleList() {
+      if (this.list.length > 6) {
+        return this.list.slice(0, 6);
+      }
+      return this.list;
     }
+  },
+  methods: {
+    goPlaylist(id) {
+      id && this.$router.push(`/playlist/${id}`);
+    },
+    handleCount(num) {
+      return util.handleCount(num);
+    }
+  },
+  mounted() {
+
+  }
+};
 </script>
 <style lang="scss" scoped>
 @import "../style/common.scss";

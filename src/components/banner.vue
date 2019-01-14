@@ -7,43 +7,40 @@
   </swiper>
 </template>
 <script>
-    import 'swiper/dist/css/swiper.css'
-    import { swiper, swiperSlide } from 'vue-awesome-swiper'
-    import { requestBanner } from '../api/index'
+import 'swiper/dist/css/swiper.css';
+import { swiper, swiperSlide } from 'vue-awesome-swiper';
+import { requestBanner } from '../api/index';
 
-    export default {
-      name: 'banner',
-      components: {swiper, swiperSlide},
-      data() {
-        const _this = this
-        return {
-          swiperOption: {
-              pagination: {
-                  el: '.swiper-pagination',
-                  bulletActiveClass: 'bullet-active',
-                  clickable :true,
-                  // dynamicBullets: true
-              },
-              on: {
-                tap(event) {}
-              }
-          },
-          banners: []
+export default {
+  name: 'banner',
+  components: { swiper, swiperSlide },
+  data() {
+    const _this = this;
+    return {
+      swiperOption: {
+        pagination: {
+          el: '.swiper-pagination',
+          bulletActiveClass: 'bullet-active',
+          clickable: true,
+          // dynamicBullets: true
         }
       },
-      methods: {
-        goPlaylist(slide) {
-          debugger
-        }
-      },
-      mounted() {
-        requestBanner().then(data => {
-          if(data && +data.code === 200) {
-            this.banners = data.banners
-          }
-        })
-      }
+      banners: [],
+    };
+  },
+  methods: {
+    goPlaylist(slide) {
+      
     }
+  },
+  mounted() {
+    requestBanner().then((data) => {
+      if (data && +data.code === 200) {
+        this.banners = data.banners;
+      }
+    });
+  }
+};
 </script>
 <style lang="scss">
 @import "../style/common.scss";

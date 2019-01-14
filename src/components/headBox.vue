@@ -27,72 +27,72 @@
     </div>
 </template>
 <script>
-    import { requestSuggestKeyword, requestSearchByKeyword } from '../api'
+import { requestSuggestKeyword, requestSearchByKeyword } from '../api';
 
-    export default {
-        name: 'headBox',
-        computed: {
-            isPlay() {
-              return this.$store.getters.isPlay;
-            }
-        },
-        data() {
-            return {
-              custom: '',
-              keyword: undefined,
-              suggestList: [],
-              songs: [],
-              isFocus: false,     // 输入框是否聚焦
-              isOpen: false       // 是否进入搜索
-            }
-        },
-        watch: {
-          keyword(nval) {
-            if(!!nval) {
-              this.requestSuggestKeyword(nval)
-            } else {
-              this.suggestList = []
-            }
-          }
-        },
-        methods: {
-            goPlay(id) {
-              this.$router.push(`/play/${id}`)
-            },
-            clear() {
-              this.keyword = ''
-              this.$refs.input.focus()
-            },
-            cancel() {
-              this.isFocus = false
-              this.isOpen = false            
-            },
-            requestSuggestKeyword(keyword) {
-              requestSuggestKeyword(keyword).then(data => {
-                if(+data.code === 200) {
-                  this.suggestList = data.result.albums
-                }
-              })
-            },
-            search(keyword) {
-              this.isFocus = false
-              requestSearchByKeyword(keyword).then(data => {
-                if(+data.code === 200) {
-                  this.songs = data.result.songs
-                }
-              })
-            }
-        },
-        mounted() {
-          const _this = this
-          this.$refs.input.addEventListener('focus', function() {
-            _this.isFocus = true
-            if(!_this.isOpen) {
-              _this.isOpen = true     // 开启搜索
-            }
-          }, false)
-        }
+export default {
+  name: 'headBox',
+  computed: {
+    isPlay() {
+      return this.$store.getters.isPlay;
     }
+  },
+  data() {
+    return {
+      custom: '',
+      keyword: undefined,
+      suggestList: [],
+      songs: [],
+      isFocus: false, // 输入框是否聚焦
+      isOpen: false, // 是否进入搜索
+    };
+  },
+  watch: {
+    keyword(nval) {
+      if (nval) {
+        this.requestSuggestKeyword(nval);
+      } else {
+        this.suggestList = [];
+      }
+    },
+  },
+  methods: {
+    goPlay(id) {
+      this.$router.push(`/play/${id}`);
+    },
+    clear() {
+      this.keyword = '';
+      this.$refs.input.focus();
+    },
+    cancel() {
+      this.isFocus = false;
+      this.isOpen = false;
+    },
+    requestSuggestKeyword(keyword) {
+      requestSuggestKeyword(keyword).then((data) => {
+        if (+data.code === 200) {
+          this.suggestList = data.result.albums;
+        }
+      });
+    },
+    search(keyword) {
+      this.isFocus = false;
+      requestSearchByKeyword(keyword).then((data) => {
+        if (+data.code === 200) {
+          this.songs = data.result.songs;
+        }
+      });
+    }
+  },
+  mounted() {
+    const _this = this;
+    this.$refs.input.addEventListener('focus', () => {
+      _this.isFocus = true;
+      if (!_this.isOpen) {
+        _this.isOpen = true; // 开启搜索
+      }
+    }, false);
+  }
+};
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">

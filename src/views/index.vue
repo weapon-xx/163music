@@ -7,37 +7,37 @@
 </template>
 
 <script>
-import headBox from '../components/headBox'
-import banner from '../components//banner'
-import listBlock from '../components/listBlock'
-import player from '../components/player'
-import {requestResource} from '../api'
+import headBox from '../components/headBox';
+import banner from '../components/banner';
+import listBlock from '../components/listBlock';
+import player from '../components/player';
+import { requestResource } from '../api';
 
 export default {
   name: 'index',
   props: {
-    msg: String
+    msg: String,
   },
-  components: {headBox, banner, listBlock},
+  components: { headBox, banner, listBlock },
   computed: {},
   data() {
     return {
       recommendTitle: '推荐标题',
       recommend: [],
-      recommendShowCount: true
-    }
+      recommendShowCount: true,
+    };
   },
   methods: {
- 
+
   },
   mounted() {
-    requestResource().then(data => {
-      if(+data.code === 200) {
+    requestResource().then((data) => {
+      if (+data.code === 200) {
         this.recommend = data.recommend;
       }
-    })
-  }
-}
+    });
+  },
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

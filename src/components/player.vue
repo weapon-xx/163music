@@ -5,62 +5,62 @@
     </div>
 </template>
 <script>
-    import { mapGetters } from 'vuex'
-    import eventbus from '../javascript/eventbus'
+import { mapGetters } from 'vuex';
+import eventbus from '../javascript/eventbus';
 
-    export default {
-        data() {
-            return {
-                audio: undefined
-            }
-        },
-        computed: {
-            ...mapGetters(['isPlay', 'songUrl', 'currentTime'])
-        },
-        watch: {
-            songUrl() {
-                // this.load()
-                // this.play()
-            },
-            isPlay(nval) {
-                if(nval) {
-                    this.play()
-                } else {
-                    this.pause()
-                }
-            },
-            currentTime(nval, oval) {
-                if(Math.abs(nval - oval) > 1) {
-                    this.audio.currentTime = nval
-                }
-            }
-        },
-        methods: {
-            play() {
-                this.audio && this.audio.play()
-            },
-            pause() {
-                this.audio && this.audio.pause()
-            }
-        },
-        mounted() {
-            const _this = this
-            this.audio = this.$el.querySelector('audio')
+export default {
+  data() {
+    return {
+      audio: undefined,
+    };
+  },
+  computed: {
+    ...mapGetters(['isPlay', 'songUrl', 'currentTime']),
+  },
+  watch: {
+    songUrl() {
+      // this.load()
+      // this.play()
+    },
+    isPlay(nval) {
+      if (nval) {
+        this.play();
+      } else {
+        this.pause();
+      }
+    },
+    currentTime(nval, oval) {
+      if (Math.abs(nval - oval) > 1) {
+        this.audio.currentTime = nval;
+      }
+    },
+  },
+  methods: {
+    play() {
+      this.audio && this.audio.play();
+    },
+    pause() {
+      this.audio && this.audio.pause();
+    },
+  },
+  mounted() {
+    const _this = this;
+    this.audio = this.$el.querySelector('audio');
 
-            this.audio.oncanplay = function() {  
-                _this.$store.commit('duration', parseInt(this.duration))
-            }
+    this.audio.oncanplay = function () {
+      _this.$store.commit('duration', parseInt(this.duration));
+    };
 
-            this.audio.addEventListener('timeupdate', function(event) {
-                _this.$store.commit('currentTime', parseInt(event.currentTarget.currentTime))
-            }, false) 
+    this.audio.addEventListener('timeupdate', (event) => {
+      _this.$store.commit('currentTime', parseInt(event.currentTarget.currentTime));
+    }, false);
 
-            this.audio.addEventListener('ended', function(event) {  
-                // 触发结束事件
-                eventbus.$emit('songEnd')
-            })
-        }
-    }
+    this.audio.addEventListener('ended', (event) => {
+      // 触发结束事件
+      eventbus.$emit('songEnd');
+    });
+  }
+};
 </script>
 <style scoped>
 .player-box {

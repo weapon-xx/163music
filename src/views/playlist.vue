@@ -39,44 +39,44 @@
     </div>
 </template>
 <script>
-    import {requestPlaylistDetail} from '../api'
-    import * as util from '../javascript/util'
+import { requestPlaylistDetail } from '../api';
+import * as util from '../javascript/util';
 
-    export default {
-        props: [],
-        computed: {
-            isPlay() {
-                return this.$store.getters.isPlay;
-            }
-        },
-        data() {
-            return {
-                playlist: {
-                    tracks: [],
-                    creator: {}
-                }
-            }
-        },
-        methods: {
-            goBack() {
-                this.$router.go(-1)
-            },
-            goPlay(id) {
-                this.$router.push(`/play/${id}`)
-                this.$store.commit('updatePlaylist', this.playlist)
-            },
-            handleCount(num) {
-                return util.handleCount(num)
-            }
-        }, 
-        mounted() {
-            requestPlaylistDetail(this.$route.params.id).then(data => {
-                if(data && +data.code === 200) {
-                    this.playlist = data.playlist   
-                }
-            })
-        }
-    }
+export default {
+  props: [],
+  computed: {
+    isPlay() {
+      return this.$store.getters.isPlay;
+    },
+  },
+  data() {
+    return {
+      playlist: {
+        tracks: [],
+        creator: {},
+      },
+    };
+  },
+  methods: {
+    goBack() {
+      this.$router.go(-1);
+    },
+    goPlay(id) {
+      this.$router.push(`/play/${id}`);
+      this.$store.commit('updatePlaylist', this.playlist);
+    },
+    handleCount(num) {
+      return util.handleCount(num);
+    },
+  },
+  mounted() {
+    requestPlaylistDetail(this.$route.params.id).then((data) => {
+      if (data && +data.code === 200) {
+        this.playlist = data.playlist;
+      }
+    });
+  },
+};
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
@@ -227,10 +227,10 @@
         .list-item-song-name {
             font-size: 16px;
             margin-bottom: 5px;
-        }   
+        }
         .list-item-song-singer {
             font-size: 12px;
-        } 
+        }
     }
 }
 </style>

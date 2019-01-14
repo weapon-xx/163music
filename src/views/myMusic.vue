@@ -2,7 +2,7 @@
     <div class="myMusic-container">
         <p class="myMusic-title">我创建的歌单({{userPlayList.length}})</p>
         <ul class="user-list">
-            <li class="user-list-item" v-for="(item, index) in userPlayList" :key="index" @click="goPlaylist(item.id)"> 
+            <li class="user-list-item" v-for="(item, index) in userPlayList" :key="index" @click="goPlaylist(item.id)">
                 <img class="user-list-item-cover" :src="item && item.coverImgUrl" alt="">
                 <div class="user-list-text-wrap">
                     <p class="user-list-item-name">{{item.name}}</p>
@@ -13,36 +13,37 @@
     </div>
 </template>
 <script>
-    import { mapGetters } from 'vuex'
-    import { requestUserPlaylist } from '../api'
-    export default {
-        computed: {
-            ...mapGetters(['userId', 'userPlayList'])
-        },
-        watch: {
-            userId(nval) {
-                !!nval && this.requestUserPlaylist()
-            }
-        },
-        data() {
-            return {}
-        },
-        methods: {
-            requestUserPlaylist() {
-                requestUserPlaylist(this.userId).then(data => {
-                    if(+data.code === 200) {
-                        this.$store.commit('updateUserPlayList', data.playlist)
-                    }
-                })
-            },
-            goPlaylist(id) {
-                id && this.$router.push(`/playlist/${id}`)
-            }
-        },
-        mounted() {
-            !!this.userId && this.requestUserPlaylist()
+import { mapGetters } from 'vuex';
+import { requestUserPlaylist } from '../api';
+
+export default {
+  computed: {
+    ...mapGetters(['userId', 'userPlayList']),
+  },
+  watch: {
+    userId(nval) {
+      !!nval && this.requestUserPlaylist();
+    },
+  },
+  data() {
+    return {};
+  },
+  methods: {
+    requestUserPlaylist() {
+      requestUserPlaylist(this.userId).then((data) => {
+        if (+data.code === 200) {
+          this.$store.commit('updateUserPlayList', data.playlist);
         }
-    }
+      });
+    },
+    goPlaylist(id) {
+      id && this.$router.push(`/playlist/${id}`);
+    },
+  },
+  mounted() {
+    !!this.userId && this.requestUserPlaylist();
+  },
+};
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>

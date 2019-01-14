@@ -27,36 +27,36 @@
     </div>
 </template>
 <script>
-    import { requestUserDetail } from '../api'
-    import { mapGetters } from 'vuex'
+import { mapGetters } from 'vuex';
+import { requestUserDetail } from '../api';
 
-    export default {
-        computed: {
-            ...mapGetters(['userId'])
-        },
-        watch: {
-            userId(nval) {
-                !!nval && this.requestUserDetail(nval)
-            }
-        },
-        data() {
-            return {
-                profile: {}
-            }
-        },
-        methods: {
-            requestUserDetail(userId) {
-                requestUserDetail(userId).then(data => {
-                    if(+data.code === 200) {
-                        this.profile = data.profile
-                    }
-                })
-            }
-        },
-        mounted() {
-            !!this.userId && this.requestUserDetail(this.userId)
+export default {
+  computed: {
+    ...mapGetters(['userId']),
+  },
+  watch: {
+    userId(nval) {
+      !!nval && this.requestUserDetail(nval);
+    },
+  },
+  data() {
+    return {
+      profile: {},
+    };
+  },
+  methods: {
+    requestUserDetail(userId) {
+      requestUserDetail(userId).then((data) => {
+        if (+data.code === 200) {
+          this.profile = data.profile;
         }
-    }    
+      });
+    },
+  },
+  mounted() {
+    !!this.userId && this.requestUserDetail(this.userId);
+  },
+};
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>

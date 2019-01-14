@@ -16,36 +16,36 @@
     </div>
 </template>
 <script>
-import { login } from '../api/index'
-import { getCookie, isLogin } from '../javascript/util'
+import { login } from '../api/index';
+import { getCookie, isLogin } from '../javascript/util';
 
 export default {
-    data() {
-        return {
-            phone: '',
-            password: ''
-        }
+  data() {
+    return {
+      phone: '',
+      password: '',
+    };
+  },
+  methods: {
+    login() {
+      if (!!this.phone && !!this.password) {
+        login({
+          phone: this.phone,
+          password: this.password,
+        }).then((data) => {
+          if (data && +data.code === 200) {
+            this.$router.push('/');
+          } else {
+            alert(data && data.data && data.data.msg || '登录失败');
+          }
+        }).catch((err) => {});
+      } else {
+        alert('手机号码或者密码不能为空');
+      }
     },
-    methods: {
-        login() {
-            if(!!this.phone && !!this.password) {
-                login({
-                    phone: this.phone,
-                    password: this.password
-                }).then(data => {
-                    if(data && +data.code === 200) {
-                        this.$router.push('/')
-                    } else {
-                        alert(data && data.data && data.data.msg || '登录失败')
-                    }
-                }).catch(err => {})
-            } else {
-                alert('手机号码或者密码不能为空')
-            }
-        }
-    },
-    mounted() {}   
-}
+  },
+  mounted() {},
+};
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
@@ -96,7 +96,7 @@ $bg_color: #e6e6e6;
         border-radius: 5px;
         text-indent: 5px;
         outline: none;
-    } 
+    }
 }
 
 .login-btn {

@@ -1,5 +1,5 @@
-import Vue from 'vue'
+import Vue from 'vue';
 
-const eb = new Vue()
+const eb = new Vue();
 
-export default eb
+export default eb;
