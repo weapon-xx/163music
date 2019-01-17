@@ -126,7 +126,7 @@ export default {
       });
     },
     initDrag() {
-      const _this = this;
+      const vm = this;
       const wrapWidth = 240;
       const point = document.querySelector('.player-progress-point');
       const playedProgress = document.querySelector('.player-progress-played');
@@ -146,15 +146,15 @@ export default {
             currentX = offsetLeft + wrapWidth;
           }
           const progressPos = (currentX - offsetLeft) / 240;
-          dragTime = parseInt(_this.duration * progressPos);
-          _this.showDragTime = handleTime(dragTime);
+          dragTime = parseInt(vm.duration * progressPos);
+          vm.showDragTime = handleTime(dragTime);
           point.style.left = `${parseInt(progressPos * 100)}%`;
           playedProgress.style.width = `${parseInt(progressPos * 100)}%`;
         }, false);
 
         document.addEventListener('touchend', (event) => {
-          _this.$store.commit('currentTime', dragTime);
-          _this.showDragTime = undefined; // 重置拖拽时进度条时间
+          vm.$store.commit('currentTime', dragTime);
+          vm.showDragTime = undefined; // 重置拖拽时进度条时间
         }, false);
       }, false);
     },

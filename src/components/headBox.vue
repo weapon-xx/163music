@@ -84,12 +84,10 @@ export default {
     }
   },
   mounted() {
-    const _this = this;
+    const vm = this;
     this.$refs.input.addEventListener('focus', () => {
-      _this.isFocus = true;
-      if (!_this.isOpen) {
-        _this.isOpen = true; // 开启搜索
-      }
+      vm.isFocus = true;
+      vm.isOpen = true;     // 开启搜索框
     }, false);
   }
 };

@@ -15,7 +15,6 @@ export default {
   name: 'banner',
   components: { swiper, swiperSlide },
   data() {
-    const _this = this;
     return {
       swiperOption: {
         pagination: {

@@ -44,15 +44,15 @@ export default {
     },
   },
   mounted() {
-    const _this = this;
+    const vm = this;
     this.audio = this.$el.querySelector('audio');
 
     this.audio.oncanplay = function () {
-      _this.$store.commit('duration', parseInt(this.duration));
+      vm.$store.commit('duration', parseInt(this.duration));
     };
 
     this.audio.addEventListener('timeupdate', (event) => {
-      _this.$store.commit('currentTime', parseInt(event.currentTarget.currentTime));
+      vm.$store.commit('currentTime', parseInt(event.currentTarget.currentTime));
     }, false);
 
     this.audio.addEventListener('ended', (event) => {
