@@ -49,16 +49,16 @@ export default {
   computed: {
     ...mapGetters(['isPlay', 'songId', 'duration', 'currentTime', 'tracks']),
     songDuration() {
-      const _duration = this.duration !== undefined ? parseInt(this.duration) : undefined;
+      const _duration = this.duration !== undefined ? parseInt(this.duration, 10) : undefined;
       return handleTime(_duration);
     },
     songCurrTime() {
-      const _currentTime = this.currentTime !== undefined ? parseInt(this.currentTime) : undefined;
+      const _currentTime = this.currentTime !== undefined ? parseInt(this.currentTime, 10) : undefined;
       return handleTime(_currentTime);
     },
     playScale() {
       if (this.duration !== undefined && this.currentTime !== undefined) {
-        return `${parseInt(this.currentTime / this.duration * 100)}%`;
+        return `${parseInt(this.currentTime / this.duration * 100, 10)}%`;
       }
       return '0%';
     },
@@ -114,7 +114,6 @@ export default {
         if (data && +data.code === 200) {
           return data;
         }
-        console.error();
       });
     },
     requestSongUrl(songId) {
@@ -122,7 +121,6 @@ export default {
         if (data && +data.code === 200) {
           return data;
         }
-        console.error();
       });
     },
     initDrag() {
@@ -132,13 +130,10 @@ export default {
       const playedProgress = document.querySelector('.player-progress-played');
       const offsetLeft = document.querySelector('.player-progress-wrap').offsetLeft;
 
-      point.addEventListener('touchstart', (event) => {
-        const originX = parseInt(event.touches[0].clientX);
-
+      point.addEventListener('touchstart', () => {
         let dragTime;
         document.addEventListener('touchmove', (event) => {
-          let currentX = parseInt(event.touches[0].clientX);
-          const distance = currentX - originX;
+          let currentX = parseInt(event.touches[0].clientX, 10);
           if (currentX < offsetLeft) {
             currentX = offsetLeft;
           }
@@ -146,13 +141,13 @@ export default {
             currentX = offsetLeft + wrapWidth;
           }
           const progressPos = (currentX - offsetLeft) / 240;
-          dragTime = parseInt(vm.duration * progressPos);
+          dragTime = parseInt(vm.duration * progressPos, 10);
           vm.showDragTime = handleTime(dragTime);
-          point.style.left = `${parseInt(progressPos * 100)}%`;
-          playedProgress.style.width = `${parseInt(progressPos * 100)}%`;
+          point.style.left = `${parseInt(progressPos * 100, 10)}%`;
+          playedProgress.style.width = `${parseInt(progressPos * 100, 10)}%`;
         }, false);
 
-        document.addEventListener('touchend', (event) => {
+        document.addEventListener('touchend', () => {
           vm.$store.commit('currentTime', dragTime);
           vm.showDragTime = undefined; // 重置拖拽时进度条时间
         }, false);

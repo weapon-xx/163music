@@ -32,15 +32,16 @@ export const isLogin = () => {
  * @return {String}
  */
 export const handleCount = (num) => {
-  if (!num) {
-    console.error('参数不能为空');
-    return;
+  if (!!num) {
+    const str = String(num);
+    if (str.length > 5) {
+      return str.replace(/\d{4}$/, '万');
+    }
+    return str;
+  } else {
+    return '';
   }
-  const str = String(num);
-  if (str.length > 5) {
-    return str.replace(/\d{4}$/, '万');
-  }
-  return str;
+  
 };
 
 /**
