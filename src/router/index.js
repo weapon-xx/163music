@@ -11,6 +11,11 @@ import userDetail from '../views/userDetail';
 
 Vue.use(Router);
 
+Router.prototype.back = function() {
+  this.isBack = true
+  this.go(-1)
+}
+
 const router = new Router({
   routes: [
     {
