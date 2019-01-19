@@ -8,14 +8,16 @@
                 <p class="player-topbar-title single-line-overflow">{{song && song.name}}</p>
                 <p class="player-topbar-singer">{{song && song.ar[0].name}}</p>
             </div>
-            <div></div>
         </div>
-        <div class="player-cover-box">
+        <div :class="[{hide: isShowLyric}, 'player-cover-box']">
             <img class="player-cover-rod" :class="[isPlay ? 'active' : '']" src="../img/rod.png" alt="">
             <div class="player-cover-wrap">
-                <img class="player-cover-cd" src="../img/cd.png" alt="">
+                <img class="player-cover-cd" src="../img/cd.png" alt="" @click="switchLyric">
                 <img class="player-cover" :class="[isPlay ? 'active' : '']" :src="song && song.al.picUrl" alt="">
             </div>
+        </div>
+        <div :class="[{active: isShowLyric}, 'player-lyric-wrap']" @click="switchLyric">
+          <p :key="index" v-for="(item, index) in lyric">{{item && item.lyric}}</p>
         </div>
         <div class="player-progress-box">
             <p class="player-progress-currtime">{{showDragTime ? showDragTime : songCurrTime}}</p>
@@ -44,6 +46,8 @@ export default {
     return {
       song: undefined,
       showDragTime: undefined,
+      lyric: undefined,
+      isShowLyric: false,
     };
   },
   computed: {
@@ -100,6 +104,9 @@ export default {
         this.$store.commit('operate', true);
       }
     },
+    switchLyric() {
+      this.isShowLyric = !this.isShowLyric;
+    },
     updateSongInfo(songId) {
       this.$store.commit('updateSongId', songId);
       this.requestSongUrl(songId).then((data) => {
@@ -108,6 +115,27 @@ export default {
       this.requestSongDetail(songId).then((data) => {
         this.song = data.songs[0];
       });
+      this.requestLyric(songId).then(data => {
+        if (data.nolyric) {
+          this.lyric = false;
+        } else {
+          this.lyric = data.lrc.lyric.split('\n').map(item => {
+            const arr = item.match(/(\[.*\])(.*)/);
+            if (arr == null) { return; }
+            if (!!arr[2]) {
+              return {
+                time: arr[1],
+                lyric: arr[2],
+              };
+            } else {
+              return {
+                time: 0,
+                lyric: arr[1],
+              };
+            }
+          });
+        }
+      })
     },
     requestSongDetail(songId) {
       return requestSongDetail(songId).then((data) => {
@@ -118,6 +146,13 @@ export default {
     },
     requestSongUrl(songId) {
       return requestSongUrl(songId).then((data) => {
+        if (data && +data.code === 200) {
+          return data;
+        }
+      });
+    },
+    requestLyric(songId) {
+      return requestLyric(songId).then(data => {
         if (data && +data.code === 200) {
           return data;
         }
@@ -248,6 +283,9 @@ export default {
     position: relative;
     overflow: hidden;
     padding: 60px 0;
+    &.hide {
+      display: none;
+    }
     .player-cover-rod {
         position: absolute;
         top: -15px;
@@ -302,8 +340,27 @@ export default {
     }
 }
 
+.player-lyric-wrap {
+  display: none;
+  position: relative;
+  width: 80%;
+  height: 440px;
+  margin: 20px auto 0;
+  padding: 20px 0;
+  overflow-y: scroll;
+  &.active {
+    display: block;
+  }
+  p {
+    text-align: center;
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+}
+
 .player-progress-box {
-    position: relative;
+    position: absolute;
+    bottom: 120px;
     box-sizing: border-box;
     width: 100%;
     padding: 0 10px;

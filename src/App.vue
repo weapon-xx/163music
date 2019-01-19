@@ -17,21 +17,21 @@ export default {
   components: { player, footBox },
   data() {
     return {
-      transitionName: ''
-    }
+      transitionName: '',
+    };
   },
   watch: {
     '$route'(to, from) {
       const firstScreenArr = ['index', 'myMusic', 'friend', 'userDetail'];
-      if(!firstScreenArr.includes(from.name) || !firstScreenArr.includes(to.name)) {
-        if(this.$router.isBack) {
-          this.transitionName = 'slide-right'; 
+      if (!firstScreenArr.includes(from.name) || !firstScreenArr.includes(to.name)) {
+        if (this.$router.isBack) {
+          this.transitionName = 'slide-right';
         } else {
           this.transitionName = 'slide-left';
         }
       }
-      this.$router.isBack = false;    // 重置
-    }
+      this.$router.isBack = false;// 重置
+    },
   },
   mounted() {
     requestLoginStatus().then((data) => {
@@ -52,39 +52,23 @@ export default {
 }
 
 .component {
-    width: 100%;
-    overflow: hidden;
+  width: 100%;
+  overflow: hidden;
 }
 
-.slide-left-enter { 
-  transform: translate(100px, 0); 
+.slide-left-enter {
+  transform: translate(100px, 0);
 }
 
-.slide-left-enter-active { 
+.slide-left-enter-active {
   transition: all .5s ease;
 }
 
-.slide-left-enter-to { 
-
-}
- 
-// .slide-left-leave {
-//   opacity: 0; 
-// }
-
-.slide-right-enter { 
-  transform: translate(-100px, 0); 
+.slide-right-enter {
+  transform: translate(-100px, 0);
 }
 
 .slide-right-enter-active {
   transition: all .5s ease;
 }
-
-// .slide-right-leave {
-//   opacity: 0;
-// }
-
-// .slide-right-leave-active {
-//   transition: all .1s linear;
-// }
 </style>
