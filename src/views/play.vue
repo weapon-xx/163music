@@ -53,12 +53,12 @@ export default {
   computed: {
     ...mapGetters(['isPlay', 'songId', 'duration', 'currentTime', 'tracks']),
     songDuration() {
-      const _duration = this.duration !== undefined ? parseInt(this.duration, 10) : undefined;
-      return handleTime(_duration);
+      const duration = this.duration !== undefined ? parseInt(this.duration, 10) : undefined;
+      return handleTime(duration);
     },
     songCurrTime() {
-      const _currentTime = this.currentTime !== undefined ? parseInt(this.currentTime, 10) : undefined;
-      return handleTime(_currentTime);
+      const currentTime = this.currentTime !== undefined ? parseInt(this.currentTime, 10) : undefined;
+      return handleTime(currentTime);
     },
     playScale() {
       if (this.duration !== undefined && this.currentTime !== undefined) {
@@ -72,12 +72,7 @@ export default {
       this.$router.back();
     },
     nextSong() {
-      let index;
-      this.tracks.filter((song, idx) => {
-        if (song.id === this.songId) {
-          index = idx;
-        }
-      })[0];
+      let index = this.tracks.findIndex(song => +song.id === +this.songId);
       if (index === this.tracks.length - 1) {
         index = 1;
       }
@@ -85,12 +80,7 @@ export default {
       this.updateSongInfo(lastSong.id);
     },
     lastSong() {
-      let index;
-      this.tracks.filter((song, idx) => {
-        if (song.id === this.songId) {
-          index = idx;
-        }
-      })[0];
+      let index = this.tracks.filter(song => +song.id === +this.songId);
       if (index === 0) {
         index = this.tracks.length - 1;
       }
@@ -110,60 +100,49 @@ export default {
     updateSongInfo(songId) {
       this.$store.commit('updateSongId', songId);
       this.requestSongUrl(songId).then((data) => {
-        this.$store.commit('updateSongUrl', data.data[0].url);
+        if (data && +data.code === 200) {
+          this.$store.commit('updateSongUrl', data.data[0].url);
+        }
       });
       this.requestSongDetail(songId).then((data) => {
-        this.song = data.songs[0];
-      });
-      this.requestLyric(songId).then(data => {
-        if (data.nolyric) {
-          this.lyric = false;
-        } else {
-          this.lyric = data.lrc.lyric.split('\n').map(item => {
-            const arr = item.match(/(\[.*\])(.*)/);
-            if (arr == null) { return; }
-            if (!!arr[2]) {
-              return {
-                time: arr[1],
-                lyric: arr[2],
-              };
-            } else {
-              return {
-                time: 0,
-                lyric: arr[1],
-              };
-            }
-          });
+        if (data && +data.code === 200) {
+          [this.song] = data.songs;
         }
-      })
+      });
+      this.requestLyric(songId).then((data) => {
+        if (data && +data.code === 200) {
+          if (data.nolyric) {
+            this.lyric = false;
+          } else {
+            const lyricArr = [];
+            data.lrc.lyric.split('\n').forEach((item) => {
+              const arr = item.match(/(\[.*\])(.*)/);
+              const obj = {};
+              if (!arr) { return; }
+              obj.time = arr[2] ? arr[1] : 0;
+              obj.time = arr[2] ? arr[2] : arr[1];
+              lyricArr.push(obj);
+            });
+            this.lyric = lyricArr;
+          }
+        }
+      });
     },
     requestSongDetail(songId) {
-      return requestSongDetail(songId).then((data) => {
-        if (data && +data.code === 200) {
-          return data;
-        }
-      });
+      return requestSongDetail(songId).then(data => data);
     },
     requestSongUrl(songId) {
-      return requestSongUrl(songId).then((data) => {
-        if (data && +data.code === 200) {
-          return data;
-        }
-      });
+      return requestSongUrl(songId).then(data => data);
     },
     requestLyric(songId) {
-      return requestLyric(songId).then(data => {
-        if (data && +data.code === 200) {
-          return data;
-        }
-      });
+      return requestLyric(songId).then(data => data);
     },
     initDrag() {
       const vm = this;
       const wrapWidth = 240;
       const point = document.querySelector('.player-progress-point');
       const playedProgress = document.querySelector('.player-progress-played');
-      const offsetLeft = document.querySelector('.player-progress-wrap').offsetLeft;
+      const { offsetLeft } = document.querySelector('.player-progress-wrap');
 
       point.addEventListener('touchstart', () => {
         let dragTime;
@@ -203,14 +182,14 @@ export default {
         this.$store.commit('currentTime', 0);
         localStorage.setItem(LCKEY, JSON.stringify({ songId })); // 设置缓存
       } else {
-        songId = this.songId;
+        ({ songId } = this);
       }
     } else if (this.songId) {
       // vuex
-      songId = this.songId;
+      ({ songId } = this);
     } else {
       // localStorage
-      songId = (JSON.parse(localStorage.getItem(LCKEY)) || {}).songId;
+      ({ songId } = (JSON.parse(localStorage.getItem(LCKEY)) || {}));
       this.operate(); // 自动播放
     }
     this.updateSongInfo(songId);
