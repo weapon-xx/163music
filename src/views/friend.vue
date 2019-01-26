@@ -1,6 +1,17 @@
 <template>
     <div class="friend-container">
         <ul class="friend-event-list">
+            <div :class="[{loading: requesting}, 'pulldown-wrapper']">
+                <div class="pulldown-wrapper-box">
+                    <i :class="[{active: requesting}, 'wif', 'icon-loading', 'friend-loading']"></i>
+                    <span v-show="pulldown.status === 0">{{pulldown.text.default}}</span>
+                    <span v-show="pulldown.status === 1">{{pulldown.text.ready}}</span>
+                    <span v-show="pulldown.status === 2">{{pulldown.text.loading}}</span>
+                    <span v-show="pulldown.status === 3">{{pulldown.text.succuess}}</span>
+                    <span v-show="pulldown.status === 4">{{pulldown.text.error}}</span>
+                </div>
+                <p v-show="pulldown.time">最后更新:{{pulldown.time}}</p>
+            </div>
             <li class="friend-event" v-for="(item, index) in events" :key="index">
                 <img class="friend-event-avatart" :src="item.user.avatarUrl"/>
                 <div class="friend-event-box">
@@ -24,9 +35,9 @@
                             <img class="friend-event-video-cover" :src="item.data.video && item.data.video.coverUrl" alt="">
                         </div>
                         <div class="friend-event-img-wrap" v-show="item.pics">
-                            <img v-for="(pic, index) in item.pics" :key="index" :src="pic.squareUrl" alt="">
+                            <img v-for="(pic, index) in item.pics" :key="index" :src="pic.squareUrl" @click="viewBigPic(pic.squareUrl)">
                         </div>
-                        <div class="friend-event-song-wrap" v-show="item.data &&item.data.song">
+                        <div class="friend-event-song-wrap" v-show="item.data &&item.data.song" @click="goPlay(item.data.song.id)">
                             <img class="friend-event-song-cover" :src="item.data.song && item.data.song.album.picUrl" alt="">
                             <div class="friend-event-song-info">
                                 <p class="friend-event-song-name">{{item.data.song && item.data.song.album.name}}</p>
@@ -37,20 +48,112 @@
                 </div>
             </li>
         </ul>
+        <transition name="fade">
+            <div class="floating-wraper" v-show="floating.isShow" @click="closeFloating">
+                <div class="floating-wraper-mask"></div>
+                <img class="floating-img" :src="floating.src" alt="">
+            </div>
+        </transition>
     </div>
 </template>
 <script>
+import BScroll from 'better-scroll';
 import { requestEvent } from '../api';
+import { convertDateToTime } from '../javascript/util';
 
+// 0：初始状态；1：准备加载；2：正在加载；3：成功；4：失败
+const DEFAULT_STATUS = 0,
+      READY_STATUS = 1,
+      LOADING_STATUS = 2,
+      SUCCESS_STATUS = 3,
+      ERROR_STATUS = 4;
+
+// 浮层展示 - 1：图片；2：视频；
+const SHOW_IMG = 1,
+      SHOW_VIDEO = 2;
 
 export default {
   data() {
     return {
       events: [],
+      requesting: false,
+      pulldown: {
+          text: {
+            default: '下拉刷新',
+            ready: '开始释放',
+            succuess: '刷新成功',
+            error: '刷新失败(>_<)',
+            loading: '主人请稍等...',
+          },
+          time: undefined,
+          status: DEFAULT_STATUS,    
+      },
+      showFloating: false,
+      floating: {
+          isShow: false,
+          src: undefined,
+          type: SHOW_IMG
+      },
     };
   },
   methods: {
-
+      initScroll() {
+        const vm = this;
+        let scroll = new BScroll('.friend-container', {
+            scrollbar: true,        // 滚动条
+            pullDownRefresh: {      // 开启下拉刷新
+                threshold: 80,
+                stop: 60
+            },
+            click: true,
+        });
+        scroll.on('scroll', function(pos) {
+            if(!vm.requesting) {
+                if(pos.y > 0) {
+                    if(pos.y > 80) {
+                        vm.pulldown.status = 1;
+                    } else {
+                        vm.pulldown.status = 0;
+                    }
+                }
+            }
+        });
+        scroll.on('pullingDown', function() {
+            // 刷新请求
+            if(vm.requesting) { return; }
+            vm.pulldown.status = LOADING_STATUS;
+            vm.requesting = true;
+            requestEvent().then((data) => {
+                if (+data.code === 200) {
+                    vm.events = data.event.map((item) => {
+                        item.data = JSON.parse(item.json);
+                        return item;
+                    });
+                    vm.pulldown.status = SUCCESS_STATUS;
+                } else {
+                    vm.pulldown.status = ERROR_STATUS;
+                }
+                vm.pulldown.time = convertDateToTime(new Date());
+                setTimeout(function() {
+                    vm.requesting = false;                      // 重置更新开关
+                    vm.pulldown.status = DEFAULT_STATUS;        // 重置更新状态
+                    scroll.finishPullDown();
+                }, 1e3);
+            })
+        })
+      },
+      closeFloating() {
+          if(this.floating.isShow) {
+              this.floating.isShow = false;
+          }
+      },
+      viewBigPic(src) {
+          this.floating.isShow = true;
+          this.floating.src = src;
+      },
+      goPlay(id) {
+          id && this.$router.push(`/play/${id}`);
+      }
   },
   mounted() {
     requestEvent().then((data) => {
@@ -58,6 +161,9 @@ export default {
         this.events = data.event.map((item) => {
           item.data = JSON.parse(item.json);
           return item;
+        });
+        this.$nextTick(() => {
+            this.initScroll();
         });
       }
     });
@@ -67,7 +173,11 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 @import "../style/common.scss";
-
+.friend-container {
+    position: absolute;
+    top: 0;
+    bottom: 56px;
+}
 .friend-event-list {
     padding: 10px 10px 60px;
     .friend-event {
@@ -83,6 +193,7 @@ export default {
         }
     }
 }
+
 .friend-event-box {
     display: flex;
     flex: 1;
@@ -186,11 +297,91 @@ export default {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+    margin-bottom: 5px;
     img {
         display: block;
         width: 33%;
         height: 100%;
         margin-bottom: 2px;
+    }
+}
+
+.floating-wraper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;  
+    z-index: 10;
+    .floating-wraper-mask {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #000;
+        opacity: .8;
+    }
+    .floating-img {
+        position: absolute;
+        display: block;
+        width: 100%;
+        transform: translate(-50%, -50%);
+        left: 50%;
+        top: 50%;
+    }
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .3s;
+}
+
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
+
+// 下拉更新
+.pulldown-wrapper {
+    position: absolute;
+    top: -50px;
+    left: 0;
+    width: 100%;
+    margin-bottom: 5px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    &.loading {
+        top: -50px;
+    }
+    .pulldown-wrapper-box {
+        text-align: center;
+        height: 24px;
+        span {
+            display: inline-block;
+            height: 24px;
+            line-height: 24px;
+            font-size: 14px;
+            vertical-align: bottom;
+        }
+    }
+    p, span, i {
+        color: #d2d2d2;
+        text-align: center;
+    }
+    p {
+        font-size: 12px;
+    }
+}
+
+.friend-loading {
+    display: inline-block;
+    width: 24px;
+    font-size: 24px;
+    margin-right: 5px;
+    &.active {
+        animation: rorate 2s ease infinite;
     }
 }
 </style>

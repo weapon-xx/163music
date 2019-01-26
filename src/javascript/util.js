@@ -61,6 +61,17 @@ export const handleTime = (time) => {
 };
 
 /**
+ * 
+ * @param {Date} data 对象
+ * @return {String} 
+ */
+export const convertDateToTime = date => {
+  if(date.constructor !== Date) { return; }
+  const year = date.getFullYear();
+  return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}-${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
+}
+
+/**
  * 函数节流
  * @param {Function} fn 执行函数
  * @param {Number} delay 延时时长
@@ -80,3 +91,5 @@ export const debounce = (fn, delay) => {
     }, delay);
   };
 };
+
+

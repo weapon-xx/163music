@@ -8,3 +8,12 @@ $font_color: #212121;
     overflow: hidden;
     white-space: nowrap;
 }
+
+@keyframes rorate {
+    0% {
+        transform: rotate(0deg);
+    } 
+    100% {
+        transform: rotate(360deg);
+    }
+}
