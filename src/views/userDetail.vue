@@ -36,7 +36,9 @@ export default {
   },
   watch: {
     userId(nval) {
-      !!nval && this.requestUserDetail(nval);
+      if (nval) {
+        this.requestUserDetail(nval);
+      }
     },
   },
   data() {
@@ -54,7 +56,9 @@ export default {
     },
   },
   mounted() {
-    !!this.userId && this.requestUserDetail(this.userId);
+    if (this.userId) {
+      this.requestUserDetail(this.userId);
+    }
   },
 };
 </script>

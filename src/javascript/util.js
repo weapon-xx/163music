@@ -32,16 +32,14 @@ export const isLogin = () => {
  * @return {String}
  */
 export const handleCount = (num) => {
-  if (!!num) {
+  if (num) {
     const str = String(num);
     if (str.length > 5) {
       return str.replace(/\d{4}$/, '万');
     }
     return str;
-  } else {
-    return '';
   }
-  
+  return '';
 };
 
 /**
@@ -51,7 +49,7 @@ export const handleCount = (num) => {
  */
 export const handleTime = (time) => {
   if (time) {
-    let minutes = `${parseInt(time / 60)}`;
+    let minutes = `${parseInt(time / 60, 10)}`;
     minutes = minutes.length > 1 ? minutes : `0${minutes}`;
     let seconds = `${time % 60}`;
     seconds = seconds.length > 1 ? seconds : `0${seconds}`;
@@ -61,15 +59,14 @@ export const handleTime = (time) => {
 };
 
 /**
- * 
+ * 将 Date 对象转换为时间 ymd-hms
  * @param {Date} data 对象
- * @return {String} 
+ * @return {String}
  */
-export const convertDateToTime = date => {
-  if(date.constructor !== Date) { return; }
-  const year = date.getFullYear();
-  return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}-${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
-}
+export const convertDateToTime = function convertDateToTime(date) {
+  if (date.constructor !== Date) { return ''; }
+  return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}-${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+};
 
 /**
  * 函数节流
@@ -80,16 +77,14 @@ export const convertDateToTime = date => {
  */
 export const debounce = (fn, delay) => {
   let timer = null;
-  return function () {
+  return function callback() {
     if (timer) {
       clearTimeout(timer);
       timer = null;
     }
-    timer = setTimeout(function () {
-      fn.apply(this, arguments);
+    timer = setTimeout(function handler(...args) {
+      fn.apply(this, args);
       timer = null;
     }, delay);
   };
 };
-
-

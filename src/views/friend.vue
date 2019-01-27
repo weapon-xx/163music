@@ -63,15 +63,25 @@ import { requestEvent, getVideoUrl } from '../api';
 import { convertDateToTime } from '../javascript/util';
 
 // 0：初始状态；1：准备加载；2：正在加载；3：成功；4：失败
-const DEFAULT_STATUS = 0,
-      READY_STATUS = 1,
-      LOADING_STATUS = 2,
-      SUCCESS_STATUS = 3,
-      ERROR_STATUS = 4;
+const DEFAULT_STATUS = 0;
+
+
+const READY_STATUS = 1;
+
+
+const LOADING_STATUS = 2;
+
+
+const SUCCESS_STATUS = 3;
+
+
+const ERROR_STATUS = 4;
 
 // 浮层展示 - 1：图片；2：视频；
-const SHOW_IMG = 1,
-      SHOW_VIDEO = 2;
+const SHOW_IMG = 1;
+
+
+const SHOW_VIDEO = 2;
 
 export default {
   data() {
@@ -79,95 +89,95 @@ export default {
       events: [],
       requesting: false,
       pulldown: {
-          text: {
-            default: '下拉刷新',
-            ready: '开始释放',
-            succuess: '刷新成功',
-            error: '刷新失败(>_<)',
-            loading: '主人请稍等...',
-          },
-          time: undefined,
-          status: DEFAULT_STATUS,    
+        text: {
+          default: '下拉刷新',
+          ready: '开始释放',
+          succuess: '刷新成功',
+          error: '刷新失败(>_<)',
+          loading: '主人请稍等...',
+        },
+        time: undefined,
+        status: DEFAULT_STATUS,
       },
       showFloating: false,
       floating: {
-          isShow: false,
-          src: undefined,
-          type: SHOW_IMG
+        isShow: false,
+        src: undefined,
+        type: SHOW_IMG,
       },
     };
   },
   methods: {
-      initScroll() {
-        const vm = this;
-        let scroll = new BScroll('.friend-container', {
-            scrollbar: true,        // 滚动条
-            pullDownRefresh: {      // 开启下拉刷新
-                threshold: 80,      // 下拉距离
-                stop: 60            // 回弹距离
-            },
-            click: true,            // 开启点击事件
-        });
-        scroll.on('scroll', function(pos) {
-            if(!vm.requesting) {
-                if(pos.y > 0) {
-                    if(pos.y > 80) {
-                        vm.pulldown.status = 1;
-                    } else {
-                        vm.pulldown.status = 0;
-                    }
-                }
+    initScroll() {
+      const vm = this;
+      const scroll = new BScroll('.friend-container', {
+        scrollbar: true, // 滚动条
+        pullDownRefresh: { // 开启下拉刷新
+          threshold: 80, // 下拉距离
+          stop: 60, // 回弹距离
+        },
+        click: true, // 开启点击事件
+      });
+      scroll.on('scroll', (pos) => {
+        if (!vm.requesting) {
+          if (pos.y > 0) {
+            if (pos.y > 80) {
+              vm.pulldown.status = 1;
+            } else {
+              vm.pulldown.status = 0;
             }
+          }
+        }
+      });
+      scroll.on('pullingDown', () => {
+        // 刷新请求
+        if (vm.requesting) { return; }
+        vm.pulldown.status = LOADING_STATUS;
+        vm.requesting = true;
+        requestEvent().then((data) => {
+          if (+data.code === 200) {
+            vm.events = data.event.map((item) => {
+              item.data = JSON.parse(item.json);
+              return item;
+            });
+            vm.pulldown.status = SUCCESS_STATUS;
+          } else {
+            vm.pulldown.status = ERROR_STATUS;
+          }
+          vm.pulldown.time = convertDateToTime(new Date());
+          setTimeout(() => {
+            vm.requesting = false; // 重置更新开关
+            vm.pulldown.status = DEFAULT_STATUS; // 重置更新状态
+            scroll.finishPullDown();
+          }, 1e3);
         });
-        scroll.on('pullingDown', function() {
-            // 刷新请求
-            if(vm.requesting) { return; }
-            vm.pulldown.status = LOADING_STATUS;
-            vm.requesting = true;
-            requestEvent().then((data) => {
-                if (+data.code === 200) {
-                    vm.events = data.event.map((item) => {
-                        item.data = JSON.parse(item.json);
-                        return item;
-                    });
-                    vm.pulldown.status = SUCCESS_STATUS;
-                } else {
-                    vm.pulldown.status = ERROR_STATUS;
-                }
-                vm.pulldown.time = convertDateToTime(new Date());
-                setTimeout(function() {
-                    vm.requesting = false;                      // 重置更新开关
-                    vm.pulldown.status = DEFAULT_STATUS;        // 重置更新状态
-                    scroll.finishPullDown();
-                }, 1e3);
-            })
-        })
-      },
-      closeFloating() {
-          if(this.floating.isShow) {
-              this.floating.isShow = false;
-          }
-          if(this.floating.type === 2) {
-              this.$refs.floatingVideo.pause();
-          }
-      },
-      viewBigPic(src) {
-          this.floating.isShow = true;
-          this.floating.src = src;
-          this.floating.type = 1;
-      },
-      viewVideo(id) {
-          getVideoUrl(id).then(data => {
-            if(data.data && +data.data.code === 200) {
-                this.floating.type = 2;
-                this.floating.isShow = true;
-                this.floating.src = data.data.urls[0].url;
-            }
-          })
-      },
-      goPlay(id) {
-          id && this.$router.push(`/play/${id}`);
+      });
+    },
+    closeFloating() {
+      if (this.floating.isShow) {
+        this.floating.isShow = false;
       }
+      if (this.floating.type === 2) {
+        this.$refs.floatingVideo.pause();
+      }
+    },
+    viewBigPic(src) {
+      this.floating.isShow = true;
+      this.floating.src = src;
+      this.floating.type = 1;
+    },
+    viewVideo(id) {
+      getVideoUrl(id).then((data) => {
+        if (data.data && +data.data.code === 200) {
+          this.floating.type = 2;
+          this.floating.isShow = true;
+          this.floating.src = data.data.urls[0].url;
+        }
+      });
+    },
+    goPlay(id) {
+      id && this.$router.push(`/play/${id}`);
+    },
   },
   mounted() {
     requestEvent().then((data) => {
@@ -177,7 +187,7 @@ export default {
           return item;
         });
         this.$nextTick(() => {
-            this.initScroll();
+          this.initScroll();
         });
       }
     });
@@ -326,7 +336,7 @@ export default {
     left: 0;
     bottom: 0;
     width: 100%;
-    height: 100%;  
+    height: 100%;
     z-index: 10;
     .floating-wraper-mask {
         position: absolute;

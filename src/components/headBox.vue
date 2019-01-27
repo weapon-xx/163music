@@ -2,7 +2,7 @@
     <div :class="[{focus: isOpen}, 'head']">
         <i :class="[{focus: isOpen}, 'wif', 'icon-voice', 'i-voice']" ></i>
         <div :class="[{focus: isOpen}, 'search-box']">
-          <input ref="input" type="text" v-model="keyword" placeholder="🔍 输入关键字搜索单曲">
+          <input ref="input" type="text" v-model="keyword" placeholder="输入关键字搜索单曲">
           <i :class="[{focus: isOpen}, 'clear-btn']" @click="clear">✘</i>
         </div>
         <div :class="[{active: isPlay}, {focus: isOpen}, 'voice-box']" @click="goPlay(0)" ref="voice_box">
@@ -14,8 +14,8 @@
         <p :class="[{focus: isOpen}, 'cancel-btn']" @click="cancel">取消</p>
         <div :class="[{focus: isOpen}, 'serch-box']">
           <ul :class="[{active: isFocus}, 'search-word-box']">
-            <li class="search-word first single-line-overflow" v-show="keyword" @click="search(keyword)">🔍 搜索 “{{keyword}}”</li>
-            <li class="search-word single-line-overflow" :key="index" v-for="(item, index) in suggestList" @click="search(item.name)">🔍 {{item.name}} - {{item.artist.name}}</li>
+            <li class="search-word first single-line-overflow" v-show="keyword" @click="search(keyword)"><i class="wif icon-search"></i>搜索 “{{keyword}}”</li>
+            <li class="search-word single-line-overflow" :key="index" v-for="(item, index) in suggestList" @click="search(item.name)"><i class="wif icon-search"></i> {{item.name}} - {{item.artist.name}}</li>
           </ul>
           <ul ref="searchList" :class="[{active: !isFocus}, 'serch-list-box']">
             <li :class="[isFocus ? 'focus' : 'blur', 'serch-list-item']" :key="index" v-for="(item, index) in songs" @click="goPlay(item.id)">
@@ -34,7 +34,7 @@ export default {
   computed: {
     isPlay() {
       return this.$store.getters.isPlay;
-    }
+    },
   },
   data() {
     return {
@@ -81,15 +81,15 @@ export default {
           this.songs = data.result.songs;
         }
       });
-    }
+    },
   },
   mounted() {
     const vm = this;
     this.$refs.input.addEventListener('focus', () => {
       vm.isFocus = true;
-      vm.isOpen = true;     // 开启搜索框
+      vm.isOpen = true; // 开启搜索框
     }, false);
-  }
+  },
 };
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -265,12 +265,17 @@ export default {
       display: block;
   }
   .search-word {
+      display: flex;
+      align-items: center;
       line-height: 34px;
       font-size: 14px;
       color: $font_color;
       border-bottom: 1px solid #f1f1f1;
       &.first {
         color: #0868b5;
+      }
+      i {
+        margin-right: 5px;
       }
     }
 }

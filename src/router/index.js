@@ -1,20 +1,20 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import { isLogin } from '../javascript/util';
-import index from '../views/index';
-import login from '../views/login';
-import play from '../views/play';
-import playlist from '../views/playlist';
-import myMusic from '../views/myMusic';
-import friend from '../views/friend';
-import userDetail from '../views/userDetail';
+import index from '../views/index.vue';
+import login from '../views/login.vue';
+import play from '../views/play.vue';
+import playlist from '../views/playlist.vue';
+import myMusic from '../views/myMusic.vue';
+import friend from '../views/friend.vue';
+import userDetail from '../views/userDetail.vue';
 
 Vue.use(Router);
 
-Router.prototype.back = function() {
-  this.isBack = true
-  this.go(-1)
-}
+Router.prototype.back = function back() {
+  this.isBack = true;
+  this.go(-1);
+};
 
 const router = new Router({
   routes: [
@@ -58,14 +58,14 @@ const router = new Router({
 
 router.beforeEach((to, from, next) => {
   // 依赖 cookie 校验登录态
-  const _islogin = isLogin();
+  const islogin = isLogin();
   if (to.name === 'login') {
-    if (_islogin) {
+    if (islogin) {
       next('/');
     } else {
       next();
     }
-  } else if (_islogin) {
+  } else if (islogin) {
     next();
   } else {
     next('/login');

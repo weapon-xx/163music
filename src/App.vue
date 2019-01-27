@@ -21,7 +21,7 @@ export default {
     };
   },
   watch: {
-    '$route'(to, from) {
+    $route(to, from) {
       const firstScreenArr = ['index', 'myMusic', 'friend', 'userDetail'];
       if (!firstScreenArr.includes(from.name) || !firstScreenArr.includes(to.name)) {
         if (this.$router.isBack) {

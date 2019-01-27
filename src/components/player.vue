@@ -59,7 +59,7 @@ export default {
       // 触发结束事件
       eventbus.$emit('songEnd');
     });
-  }
+  },
 };
 </script>
 <style scoped>

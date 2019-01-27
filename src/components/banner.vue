@@ -22,15 +22,15 @@ export default {
           bulletActiveClass: 'bullet-active',
           clickable: true,
           // dynamicBullets: true
-        }
+        },
       },
       banners: [],
     };
   },
   methods: {
     goPlaylist(slide) {
-      
-    }
+
+    },
   },
   mounted() {
     requestBanner().then((data) => {
@@ -38,7 +38,7 @@ export default {
         this.banners = data.banners;
       }
     });
-  }
+  },
 };
 </script>
 <style lang="scss">

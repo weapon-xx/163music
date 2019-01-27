@@ -5,7 +5,8 @@
             <i class="wif icon-right title-icon"></i>
         </h4>
         <ul class="list-block-wrap">
-            <li class="list-block-item" :key="index" v-for="(item, index) in handleList" @click="goPlaylist(item.id)">
+            <li class="list-block-item" :key="index"
+                v-for="(item, index) in handleList" @click="goPlaylist(item.id)">
                 <i class="wif icon-headset count-icon">{{handleCount(item.playcount)}}</i>
                 <img class="list-item-cover" :src="item.picUrl" alt="">
                 <p class="list-item-title">{{item.copywriter}}</p>
@@ -27,19 +28,19 @@ export default {
         return this.list.slice(0, 6);
       }
       return this.list;
-    }
+    },
   },
   methods: {
     goPlaylist(id) {
-      id && this.$router.push(`/playlist/${id}`);
+      if (id) {
+        this.$router.push(`/playlist/${id}`);
+      }
     },
     handleCount(num) {
       return util.handleCount(num);
-    }
+    },
   },
-  mounted() {
-
-  }
+  mounted() {},
 };
 </script>
 <style lang="scss" scoped>

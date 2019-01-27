@@ -132,4 +132,4 @@ export const requestSearchByKeyword = async keywords => axios.get(`${domain}/sea
  * 获取视频播放地址
  * @param {Number} id 视频id
  */
-export const getVideoUrl = promiseCache( id => axios.get(`${domain}/video/url?id=${id}`), id => `videoUrl-${id}`)
+export const getVideoUrl = promiseCache(id => axios.get(`${domain}/video/url?id=${id}`), id => `videoUrl-${id}`);
