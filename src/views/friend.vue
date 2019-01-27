@@ -24,7 +24,7 @@
                     </div>
                     <div class="friend-event-content-box">
                         <p class="friend-event-content">{{item.data.msg}}</p>
-                        <div class="friend-event-video-wrap" v-show="item.data && item.data.video">
+                        <div class="friend-event-video-wrap" v-show="item.data && item.data.video" @click="viewVideo(item.data.video.videoId)">
                             <div class="friend-event-video-info">
                                 <div class="friend-event-video-info-left">
                                     <i class="wif icon-play friend-event-video-btn"></i>
@@ -35,7 +35,7 @@
                             <img class="friend-event-video-cover" :src="item.data.video && item.data.video.coverUrl" alt="">
                         </div>
                         <div class="friend-event-img-wrap" v-show="item.pics">
-                            <img v-for="(pic, index) in item.pics" :key="index" :src="pic.squareUrl" @click="viewBigPic(pic.squareUrl)">
+                            <img v-for="(pic, index) in item.pics" :key="index" :src="pic.squareUrl" @click="viewBigPic(pic.originUrl)">
                         </div>
                         <div class="friend-event-song-wrap" v-show="item.data &&item.data.song" @click="goPlay(item.data.song.id)">
                             <img class="friend-event-song-cover" :src="item.data.song && item.data.song.album.picUrl" alt="">
@@ -51,14 +51,15 @@
         <transition name="fade">
             <div class="floating-wraper" v-show="floating.isShow" @click="closeFloating">
                 <div class="floating-wraper-mask"></div>
-                <img class="floating-img" :src="floating.src" alt="">
+                <img v-show="floating.type === 1" class="floating-img absolute-center" :src="floating.src" alt="">
+                <video ref="floatingVideo" v-show="floating.type === 2" class="floating-video absolute-center" :src="floating.src" controls autoplay></video>
             </div>
         </transition>
     </div>
 </template>
 <script>
 import BScroll from 'better-scroll';
-import { requestEvent } from '../api';
+import { requestEvent, getVideoUrl } from '../api';
 import { convertDateToTime } from '../javascript/util';
 
 // 0：初始状态；1：准备加载；2：正在加载；3：成功；4：失败
@@ -102,10 +103,10 @@ export default {
         let scroll = new BScroll('.friend-container', {
             scrollbar: true,        // 滚动条
             pullDownRefresh: {      // 开启下拉刷新
-                threshold: 80,
-                stop: 60
+                threshold: 80,      // 下拉距离
+                stop: 60            // 回弹距离
             },
-            click: true,
+            click: true,            // 开启点击事件
         });
         scroll.on('scroll', function(pos) {
             if(!vm.requesting) {
@@ -146,10 +147,23 @@ export default {
           if(this.floating.isShow) {
               this.floating.isShow = false;
           }
+          if(this.floating.type === 2) {
+              this.$refs.floatingVideo.pause();
+          }
       },
       viewBigPic(src) {
           this.floating.isShow = true;
           this.floating.src = src;
+          this.floating.type = 1;
+      },
+      viewVideo(id) {
+          getVideoUrl(id).then(data => {
+            if(data.data && +data.data.code === 200) {
+                this.floating.type = 2;
+                this.floating.isShow = true;
+                this.floating.src = data.data.urls[0].url;
+            }
+          })
       },
       goPlay(id) {
           id && this.$router.push(`/play/${id}`);
@@ -322,14 +336,6 @@ export default {
         height: 100%;
         background-color: #000;
         opacity: .8;
-    }
-    .floating-img {
-        position: absolute;
-        display: block;
-        width: 100%;
-        transform: translate(-50%, -50%);
-        left: 50%;
-        top: 50%;
     }
 }
 

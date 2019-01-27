@@ -9,6 +9,16 @@ $font_color: #212121;
     white-space: nowrap;
 }
 
+.absolute-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    display: block;
+    width: 100%;
+    transform: translate(-50%, -50%);
+}
+
+// css3 动画
 @keyframes rorate {
     0% {
         transform: rotate(0deg);

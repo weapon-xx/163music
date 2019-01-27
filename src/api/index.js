@@ -9,9 +9,10 @@ const domain = '//jacksonx.cn:3000';
  * promise 缓存函数
  * @param {Function} fn 执行函数
  * @param {Function} convertParam 缓存 key 生成函数
+ * @param {Object} ctx 指向上下文
  * @return {Function}
  */
-function promiseCache(fn, convertParam) {
+function promiseCache(fn, convertParam, ctx) {
   if (typeof fn !== 'function') {
     console.error('first argument is not a function');
     return;
@@ -19,8 +20,8 @@ function promiseCache(fn, convertParam) {
   if (!promiseCache._cache) {
     promiseCache._cache = {};
   }
-  const cachKey = convertParam();
   return function (...args) {
+    const cachKey = convertParam.apply(ctx, args);
     if (!promiseCache._cache[cachKey]) {
       promiseCache._cache[cachKey] = fn(args);
     }
@@ -126,3 +127,9 @@ export const requestSuggestKeyword = async keywords => axios.get(`${domain}/sear
  * @return {Promise}
  */
 export const requestSearchByKeyword = async keywords => axios.get(`${domain}/search?keywords= ${keywords}`).then(data => data.data);
+
+/**
+ * 获取视频播放地址
+ * @param {Number} id 视频id
+ */
+export const getVideoUrl = promiseCache( id => axios.get(`${domain}/video/url?id=${id}`), id => `videoUrl-${id}`)
