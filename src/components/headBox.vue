@@ -5,7 +5,8 @@
           <input ref="input" type="text" v-model="keyword" placeholder="输入关键字搜索单曲">
           <i :class="[{focus: isOpen}, 'clear-btn']" @click="clear">✘</i>
         </div>
-        <div :class="[{active: isPlay}, {focus: isOpen}, 'voice-box']" @click="goPlay(0)" ref="voice_box">
+        <div :class="[{active: isPlay}, {focus: isOpen}, 'voice-box']"
+        @click="goPlay(0)" ref="voice_box">
           <i></i>
           <i></i>
           <i></i>
@@ -14,13 +15,23 @@
         <p :class="[{focus: isOpen}, 'cancel-btn']" @click="cancel">取消</p>
         <div :class="[{focus: isOpen}, 'serch-box']">
           <ul :class="[{active: isFocus}, 'search-word-box']">
-            <li class="search-word first single-line-overflow" v-show="keyword" @click="search(keyword)"><i class="wif icon-search"></i>搜索 “{{keyword}}”</li>
-            <li class="search-word single-line-overflow" :key="index" v-for="(item, index) in suggestList" @click="search(item.name)"><i class="wif icon-search"></i> {{item.name}} - {{item.artist.name}}</li>
+            <li class="search-word first single-line-overflow"
+            v-show="keyword" @click="search(keyword)">
+              <i class="wif icon-search"></i>搜索 “{{keyword}}”
+            </li>
+            <li class="search-word single-line-overflow"
+            :key="index" v-for="(item, index) in suggestList" @click="search(item.name)">
+              <i class="wif icon-search"></i>
+              {{item.name}} - {{item.artist.name}}
+            </li>
           </ul>
           <ul ref="searchList" :class="[{active: !isFocus}, 'serch-list-box']">
-            <li :class="[isFocus ? 'focus' : 'blur', 'serch-list-item']" :key="index" v-for="(item, index) in songs" @click="goPlay(item.id)">
+            <li :class="[isFocus ? 'focus' : 'blur', 'serch-list-item']"
+            :key="index" v-for="(item, index) in songs" @click="goPlay(item.id)">
               <p class="serch-list-item-songname single-line-overflow">{{item.name}}</p>
-              <p class="serch-list-item-songinfo single-line-overflow">{{item.artists && item.artists[0].name}} - {{item.album && item.album.name}}</p>
+              <p class="serch-list-item-songinfo single-line-overflow">
+                {{item.artists && item.artists[0].name}} - {{item.album && item.album.name}}
+              </p>
             </li>
           </ul>
         </div>

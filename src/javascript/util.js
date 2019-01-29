@@ -6,8 +6,8 @@
  * @return {String} cookie值
  */
 export const getCookie = (key) => {
-  const reg = new RegExp(`(^|; )${key}=([^;]*)(;|$)`); let
-    arr;
+  const reg = new RegExp(`(^|; )${key}=([^;]*)(;|$)`);
+  let arr;
   if (arr = document.cookie.match(reg)) {
     return decodeURIComponent(arr[2]);
   }
