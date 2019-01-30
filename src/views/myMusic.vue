@@ -22,7 +22,9 @@ export default {
   },
   watch: {
     userId(nval) {
-      !!nval && this.requestUserPlaylist();
+      if (nval) {
+        this.requestUserPlaylist();
+      }
     },
   },
   data() {
@@ -37,11 +39,15 @@ export default {
       });
     },
     goPlaylist(id) {
-      id && this.$router.push(`/playlist/${id}`);
+      if (id) {
+        this.$router.push(`/playlist/${id}`);
+      }
     },
   },
   mounted() {
-    !!this.userId && this.requestUserPlaylist();
+    if (this.userId) {
+      this.requestUserPlaylist();
+    }
   },
 };
 </script>

@@ -7,10 +7,9 @@
 </template>
 
 <script>
-import headBox from '../components/headBox';
-import banner from '../components/banner';
-import listBlock from '../components/listBlock';
-import player from '../components/player';
+import headBox from '../components/headBox.vue';
+import banner from '../components/banner.vue';
+import listBlock from '../components/listBlock.vue';
 import { requestResource } from '../api';
 
 export default {

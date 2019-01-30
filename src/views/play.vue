@@ -1,7 +1,8 @@
 <template>
     <div class="play-box">
         <div class="play-mask player-top-mask"></div>
-        <div class="player-cover-bg" :style="{backgroundImage: `url(${song && song.al.picUrl})`}"></div>
+        <div class="player-cover-bg" :style="{backgroundImage: `url(${song && song.al.picUrl})`}">
+        </div>
         <div class="player-topbar">
             <i class="player-back wif icon-left" @click="back"></i>
             <div class="player-song-text">
@@ -10,10 +11,12 @@
             </div>
         </div>
         <div :class="[{hide: isShowLyric}, 'player-cover-box']">
-            <img class="player-cover-rod" :class="[isPlay ? 'active' : '']" src="../img/rod.png" alt="">
+            <img class="player-cover-rod" :class="[isPlay ? 'active' : '']"
+             src="../img/rod.png" alt="">
             <div class="player-cover-wrap">
                 <img class="player-cover-cd" src="../img/cd.png" alt="" @click="switchLyric">
-                <img class="player-cover" :class="[isPlay ? 'active' : '']" :src="song && song.al.picUrl" alt="">
+                <img class="player-cover" :class="[isPlay ? 'active' : '']"
+                 :src="song && song.al.picUrl" alt="">
             </div>
         </div>
         <div :class="[{active: isShowLyric}, 'player-lyric-wrap']" @click="switchLyric">
@@ -29,7 +32,8 @@
         </div>
         <div class="player-control-box">
             <div class="player-control-last wif icon-left" @click="lastSong"></div>
-            <div ref="operateBtn" class="player-control-operate wif operate-btn" :class="[isPlay ? 'icon-pause' : 'icon-play']" @click="operate"></div>
+            <div ref="operateBtn" class="player-control-operate wif operate-btn"
+             :class="[isPlay ? 'icon-pause' : 'icon-play']" @click="operate"></div>
             <div class="player-control-last wif icon-right" @click="nextSong"></div>
         </div>
         <div class="play-mask player-bottom-mask"></div>
@@ -57,7 +61,8 @@ export default {
       return handleTime(duration);
     },
     songCurrTime() {
-      const currentTime = this.currentTime !== undefined ? parseInt(this.currentTime, 10) : undefined;
+      const currentTime = this.currentTime !== undefined
+        ? parseInt(this.currentTime, 10) : undefined;
       return handleTime(currentTime);
     },
     playScale() {

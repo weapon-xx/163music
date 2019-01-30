@@ -3,4 +3,10 @@ module.exports = {
   devServer: {
     disableHostCheck: true,
   },
+  pages: {
+    index: {
+      // 入口文件
+      entry: 'src/entry-client.js',
+    },
+  },
 };

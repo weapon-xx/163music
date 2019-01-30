@@ -5,8 +5,11 @@ import router from './router';
 
 Vue.config.productionTip = false;
 
-new Vue({
-  router,
-  store,
-  render: h => h(App),
-}).$mount('#app');
+export default function createApp() {
+  const app = new Vue({
+    router,
+    store,
+    render: h => h(App),
+  });
+  return { app };
+}

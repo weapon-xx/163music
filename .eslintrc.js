@@ -37,6 +37,9 @@ module.exports = {
 
     // 函数嵌套层数，最大3层
     'max-nested-callbacks': ['error', 3],
+
+    // 行最大字符数 150
+    'max-len': [1, 150, 4]
   },
   parserOptions: {
     parser: 'babel-eslint',

@@ -37,10 +37,14 @@ export default {
   },
   methods: {
     play() {
-      this.audio && this.audio.play();
+      if (this.audio) {
+        this.audio.play();
+      }
     },
     pause() {
-      this.audio && this.audio.pause();
+      if (this.audio) {
+        this.audio.pause();
+      }
     },
   },
   mounted() {
@@ -55,7 +59,7 @@ export default {
       vm.$store.commit('currentTime', parseInt(event.currentTarget.currentTime));
     }, false);
 
-    this.audio.addEventListener('ended', (event) => {
+    this.audio.addEventListener('ended', () => {
       // 触发结束事件
       eventbus.$emit('songEnd');
     });

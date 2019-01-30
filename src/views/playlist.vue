@@ -32,7 +32,9 @@
                 <p class="list-item-index">{{index + 1}}</p>
                 <div class="list-item-song-wrap">
                     <p class="list-item-song-name single-line-overflow">{{song.name}}</p>
-                    <p class="list-item-song-singer single-line-overflow">{{song.ar[0].name}} - {{song.al.name}}</p>
+                    <p class="list-item-song-singer single-line-overflow">
+                        {{song.ar[0].name}} - {{song.al.name}}
+                    </p>
                 </div>
             </li>
         </ul>

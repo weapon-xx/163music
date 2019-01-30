@@ -10,38 +10,56 @@
                     <span v-show="pulldown.status === 3">{{pulldown.text.succuess}}</span>
                     <span v-show="pulldown.status === 4">{{pulldown.text.error}}</span>
                 </div>
-                <p v-show="pulldown.time">最后更新:{{pulldown.time}}</p>
+                <p v-show="pulldown.time">
+                    最后更新:{{pulldown.time}}
+                </p>
             </div>
             <li class="friend-event" v-for="(item, index) in events" :key="index">
                 <img class="friend-event-avatart" :src="item.user.avatarUrl"/>
                 <div class="friend-event-box">
                     <div class="friend-event-header">
                         <div class="friend-event-text">
-                            <p class="friend-event-username">{{item.user.nickname}} </p>
-                            <p class="friend-event-operation">分享{{item.data.video ? '视频' : '单曲'}}：</p>
+                            <p class="friend-event-username">
+                                {{item.user.nickname}}
+                            </p>
+                            <p class="friend-event-operation">
+                                分享{{item.data.video ? '视频' : '单曲'}}：
+                            </p>
                         </div>
-                        <p class="friend-event-followers">{{item.user.followeds}} 粉丝</p>
+                        <p class="friend-event-followers">
+                            {{item.user.followeds}} 粉丝
+                        </p>
                     </div>
                     <div class="friend-event-content-box">
-                        <p class="friend-event-content">{{item.data.msg}}</p>
+                        <p class="friend-event-content">
+                            {{item.data.msg}}
+                        </p>
                         <div class="friend-event-video-wrap" v-show="item.data && item.data.video" @click="viewVideo(item.data.video.videoId)">
                             <div class="friend-event-video-info">
                                 <div class="friend-event-video-info-left">
                                     <i class="wif icon-play friend-event-video-btn"></i>
-                                    <p class="friend-event-video-playTime">{{item.data.video && item.data.video.playTime}}</p>
+                                    <p class="friend-event-video-playTime">
+                                        {{item.data.video && item.data.video.playTime}}
+                                    </p>
                                 </div>
-                                <p class="friend-event-video-durationms">{{item.data.video && item.data.video.durationms}}</p>
+                                <p class="friend-event-video-durationms">
+                                    {{item.data.video && item.data.video.durationms}}
+                                </p>
                             </div>
-                            <img class="friend-event-video-cover" :src="item.data.video && item.data.video.coverUrl" alt="">
+                            <img class="friend-event-video-cover" :src="item.data.video && item.data.video.coverUrl" alt="" />
                         </div>
                         <div class="friend-event-img-wrap" v-show="item.pics">
-                            <img v-for="(pic, index) in item.pics" :key="index" :src="pic.squareUrl" @click="viewBigPic(pic.originUrl)">
+                            <img v-for="(pic, index) in item.pics" :key="index" :src="pic.squareUrl" @click="viewBigPic(pic.originUrl)" />
                         </div>
                         <div class="friend-event-song-wrap" v-show="item.data &&item.data.song" @click="goPlay(item.data.song.id)">
                             <img class="friend-event-song-cover" :src="item.data.song && item.data.song.album.picUrl" alt="">
                             <div class="friend-event-song-info">
-                                <p class="friend-event-song-name">{{item.data.song && item.data.song.album.name}}</p>
-                                <p class="friend-event-song-singer">{{item.data.song && item.data.song.album.artists[0].name}}</p>
+                                <p class="friend-event-song-name">
+                                    {{item.data.song && item.data.song.album.name}}
+                                </p>
+                                <p class="friend-event-song-singer">
+                                    {{item.data.song && item.data.song.album.artists[0].name}}
+                                </p>
                             </div>
                         </div>
                     </div>

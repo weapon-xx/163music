@@ -27,11 +27,7 @@ export default {
       banners: [],
     };
   },
-  methods: {
-    goPlaylist(slide) {
-
-    },
-  },
+  methods: {},
   mounted() {
     requestBanner().then((data) => {
       if (data && +data.code === 200) {
