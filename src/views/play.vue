@@ -10,18 +10,20 @@
                 <p class="player-topbar-singer">{{song && song.ar[0].name}}</p>
             </div>
         </div>
-        <div :class="[{hide: isShowLyric}, 'player-cover-box']">
-            <img class="player-cover-rod" :class="[isPlay ? 'active' : '']"
-             src="../img/rod.png" alt="">
+        <transition name="fade">
+          <div v-show="!isShowLyric" class="player-cover-box">
+            <img class="player-cover-rod" :class="[isPlay ? 'active' : '']" src="../img/rod.png" alt="">
             <div class="player-cover-wrap">
                 <img class="player-cover-cd" src="../img/cd.png" alt="" @click="switchLyric">
-                <img class="player-cover" :class="[isPlay ? 'active' : '']"
-                 :src="song && song.al.picUrl" alt="">
+                <img class="player-cover" :class="[isPlay ? 'active' : '']" :src="song && song.al.picUrl" alt="">
             </div>
-        </div>
-        <div :class="[{active: isShowLyric}, 'player-lyric-wrap']" @click="switchLyric">
-          <p :key="index" v-for="(item, index) in lyric">{{item && item.lyric}}</p>
-        </div>
+          </div>
+        </transition>
+        <transition name="fade">
+          <div v-show="isShowLyric" class="player-lyric-wrap" @click="switchLyric">
+            <p :key="index" v-for="(item, index) in lyric">{{item && item.lyric}}</p>
+          </div>
+        </transition>
         <div class="player-progress-box">
             <p class="player-progress-currtime">{{showDragTime ? showDragTime : songCurrTime}}</p>
             <div class="player-progress-wrap">
@@ -61,8 +63,7 @@ export default {
       return handleTime(duration);
     },
     songCurrTime() {
-      const currentTime = this.currentTime !== undefined
-        ? parseInt(this.currentTime, 10) : undefined;
+      const currentTime = this.currentTime !== undefined ? parseInt(this.currentTime, 10) : undefined;
       return handleTime(currentTime);
     },
     playScale() {
@@ -125,7 +126,7 @@ export default {
               const obj = {};
               if (!arr) { return; }
               obj.time = arr[2] ? arr[1] : 0;
-              obj.time = arr[2] ? arr[2] : arr[1];
+              obj.lyric = arr[2] ? arr[2] : arr[1];
               lyricArr.push(obj);
             });
             this.lyric = lyricArr;
@@ -267,9 +268,6 @@ export default {
     position: relative;
     overflow: hidden;
     padding: 60px 0;
-    &.hide {
-      display: none;
-    }
     .player-cover-rod {
         position: absolute;
         top: -15px;
@@ -325,19 +323,14 @@ export default {
 }
 
 .player-lyric-wrap {
-  display: none;
   position: relative;
   width: 80%;
-  height: 440px;
+  height: 400px;
   margin: 20px auto 0;
-  padding: 20px 0;
   overflow-y: scroll;
-  &.active {
-    display: block;
-  }
   p {
     text-align: center;
-    font-size: 20px;
+    font-size: 14px;
     margin-bottom: 10px;
   }
 }

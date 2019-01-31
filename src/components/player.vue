@@ -51,12 +51,12 @@ export default {
     const vm = this;
     this.audio = this.$el.querySelector('audio');
 
-    this.audio.oncanplay = function () {
-      vm.$store.commit('duration', parseInt(this.duration));
+    this.audio.oncanplay = function oncanplay() {
+      vm.$store.commit('duration', parseInt(this.duration, 10));
     };
 
     this.audio.addEventListener('timeupdate', (event) => {
-      vm.$store.commit('currentTime', parseInt(event.currentTarget.currentTime));
+      vm.$store.commit('currentTime', parseInt(event.currentTarget.currentTime, 10));
     }, false);
 
     this.audio.addEventListener('ended', () => {

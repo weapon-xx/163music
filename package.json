@@ -10,6 +10,7 @@
     "commit": "commit"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "better-scroll": "^1.14.1",
     "node-sass": "^4.9.4",
     "sass-loader": "^7.1.0",
@@ -28,7 +29,6 @@
     "@vue/cli-plugin-eslint": "^3.3.0",
     "@vue/cli-service": "^3.0.5",
     "@vue/eslint-config-airbnb": "^4.0.0",
-    "axios": "^0.18.0",
     "babel-eslint": "^10.0.1",
     "eslint": "^5.8.0",
     "eslint-plugin-vue": "^5.0.0",

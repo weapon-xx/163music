@@ -14,18 +14,17 @@ const domain = '//jacksonx.cn:3000';
  */
 function promiseCache(fn, convertParam, ctx) {
   if (typeof fn !== 'function') {
-    console.error('first argument is not a function');
-    return;
+    return new TypeError('first argument is not a function', 10);
   }
-  if (!promiseCache._cache) {
-    promiseCache._cache = {};
+  if (!promiseCache.cache) {
+    promiseCache.cache = {};
   }
-  return function (...args) {
+  return function handle(...args) {
     const cachKey = convertParam.apply(ctx, args);
-    if (!promiseCache._cache[cachKey]) {
-      promiseCache._cache[cachKey] = fn(args);
+    if (!promiseCache.cache[cachKey]) {
+      promiseCache.cache[cachKey] = fn(args);
     }
-    return promiseCache._cache[cachKey];
+    return promiseCache.cache[cachKey];
   };
 }
 
@@ -43,7 +42,7 @@ export const requestBanner = promiseCache(() => axios.get(`${domain}/banner`).th
 export const login = (params) => {
   const { phone, password } = params;
   if (!phone || !password) {
-    return Promise.reject({ code: -1, msg: '手机号或者密码不能为空' });
+    return Promise.reject(new Error('手机号或者密码不能为空'));
   }
   return axios.get(`${domain}/login/cellphone?phone=${phone}&password=${password}`).then(data => data.data).catch(err => err.response);
 };

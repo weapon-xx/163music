@@ -1,6 +1,6 @@
-import createApp from './app';
+import createApp from '../src/main';
 
-export default (context) => {
+export default () => {
   const { app } = createApp();
   return app;
 };

@@ -70,7 +70,8 @@
             <div class="floating-wraper" v-show="floating.isShow" @click="closeFloating">
                 <div class="floating-wraper-mask"></div>
                 <img v-show="floating.type === 1" class="floating-img absolute-center" :src="floating.src" alt="">
-                <video ref="floatingVideo" v-show="floating.type === 2" class="floating-video absolute-center" :src="floating.src" controls autoplay></video>
+                <video ref="floatingVideo" v-show="floating.type === 2"
+                class="floating-video absolute-center" :src="floating.src" controls autoplay></video>
             </div>
         </transition>
     </div>
@@ -140,9 +141,9 @@ export default {
         if (!vm.requesting) {
           if (pos.y > 0) {
             if (pos.y > 80) {
-              vm.pulldown.status = 1;
+              vm.pulldown.status = READY_STATUS;
             } else {
-              vm.pulldown.status = 0;
+              vm.pulldown.status = DEFAULT_STATUS;
             }
           }
         }
@@ -175,26 +176,28 @@ export default {
       if (this.floating.isShow) {
         this.floating.isShow = false;
       }
-      if (this.floating.type === 2) {
+      if (this.floating.type === SHOW_VIDEO) {
         this.$refs.floatingVideo.pause();
       }
     },
     viewBigPic(src) {
       this.floating.isShow = true;
       this.floating.src = src;
-      this.floating.type = 1;
+      this.floating.type = SHOW_IMG;
     },
     viewVideo(id) {
       getVideoUrl(id).then((data) => {
         if (data.data && +data.data.code === 200) {
-          this.floating.type = 2;
+          this.floating.type = SHOW_VIDEO;
           this.floating.isShow = true;
           this.floating.src = data.data.urls[0].url;
         }
       });
     },
     goPlay(id) {
-      id && this.$router.push(`/play/${id}`);
+      if (id) {
+        this.$router.push(`/play/${id}`);
+      }
     },
   },
   mounted() {
