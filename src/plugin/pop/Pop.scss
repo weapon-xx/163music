@@ -1,0 +1,51 @@
+.pop-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.pop-container-mask {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background: #000;
+    opacity: .3;
+}
+
+.pop-msg-box {
+    width: 80%;
+    background: #fff;
+    border-radius: 5px;
+}
+
+.pop-msg-text {
+    color: #3a3a3a;
+    padding: 16px 14px;
+    border-bottom: 1px solid #c8c7cc;
+    overflow-wrap: break-word;
+    line-height: 20px;
+}
+
+.pop-msg-wrap {
+    display: flex;
+    justify-content: space-between;
+    height: 50px;
+    .pop-msg-button {
+        flex: 1;
+        text-align: center;
+        color: #0079ff;
+        font-size: 18px;
+        &:first-of-type {
+            border: none;
+            border-right: 1px solid #c8c7cc;
+            background: #fff;
+            border-bottom-left-radius: 5px;
+            outline: none;
+        }
+    }
+}
