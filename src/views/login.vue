@@ -35,11 +35,11 @@ export default {
           if (data && +data.code === 200) {
             this.$router.push('/');
           } else {
-            this.$pop.show((data && data.data && data.data.msg) || '登录失败');
+            this.$pop.prompt((data && data.data && data.data.msg) || '登录失败');
           }
         }).catch(() => {});
       } else {
-        this.$pop.show('手机号码或者密码不能为空');
+        this.$pop.prompt('手机号码或者密码不能为空');
       }
     },
   },

@@ -34,18 +34,35 @@
 .pop-msg-wrap {
     display: flex;
     justify-content: space-between;
-    height: 50px;
+    height: 46px;
     .pop-msg-button {
         flex: 1;
         text-align: center;
         color: #0079ff;
-        font-size: 18px;
-        &:first-of-type {
-            border: none;
-            border-right: 1px solid #c8c7cc;
+        font-size: 16px;
+        &:last-of-type {
             background: #fff;
-            border-bottom-left-radius: 5px;
+            border: none;
+            border-left: 1px solid #c8c7cc;
+            border-top-right-radius: 5px;
+            border-bottom-right-radius: 5px;
             outline: none;
         }
+    }
+}
+
+.pop-loading-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100px;
+    height: 100px;
+    z-index: 1001;
+    background: rgba(43, 43, 43, 0.8);
+    border-radius: 5px;
+    .pop-loading-icon {
+        font-size: 40px;
+        color: #fff;
+        animation: rorate 3s linear infinite;
     }
 }

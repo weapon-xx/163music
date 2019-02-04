@@ -34,7 +34,9 @@ export default {
     },
   },
   mounted() {
-    requestLoginStatus().then((data) => {
+    this.$pop.loadingShow();
+    requestLoginStatus().then(data => {
+      this.$pop.loadingHide();
       if (+data.code === 200) {
         this.$store.commit('updateUserId', data.bindings[1].userId);
       }

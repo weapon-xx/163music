@@ -10,20 +10,16 @@
                 <p class="player-topbar-singer">{{song && song.ar[0].name}}</p>
             </div>
         </div>
-        <transition name="fade">
-          <div v-show="!isShowLyric" class="player-cover-box">
-            <img class="player-cover-rod" :class="[isPlay ? 'active' : '']" src="../img/rod.png" alt="">
-            <div class="player-cover-wrap">
-                <img class="player-cover-cd" src="../img/cd.png" alt="" @click="switchLyric">
-                <img class="player-cover" :class="[isPlay ? 'active' : '']" :src="song && song.al.picUrl" alt="">
-            </div>
+        <div v-show="!isShowLyric" class="player-cover-box">
+          <img class="player-cover-rod" :class="[isPlay ? 'active' : '']" src="../img/rod.png" alt="">
+          <div class="player-cover-wrap">
+              <img class="player-cover-cd" src="../img/cd.png" alt="" @click="switchLyric">
+              <img class="player-cover" :class="[isPlay ? 'active' : '']" :src="song && song.al.picUrl" alt="">
           </div>
-        </transition>
-        <transition name="fade">
-          <div v-show="isShowLyric" class="player-lyric-wrap" @click="switchLyric">
-            <p :key="index" v-for="(item, index) in lyric">{{item && item.lyric}}</p>
-          </div>
-        </transition>
+        </div>
+        <div v-show="isShowLyric" class="player-lyric-wrap" @click="switchLyric">
+          <p :key="index" v-for="(item, index) in lyric">{{item && item.lyric}}</p>
+        </div>
         <div class="player-progress-box">
             <p class="player-progress-currtime">{{showDragTime ? showDragTime : songCurrTime}}</p>
             <div class="player-progress-wrap">
@@ -33,7 +29,7 @@
             <p class="player-progress-totaltime">{{songDuration}}</p>
         </div>
         <div class="player-control-box">
-            <div class="player-control-last wif icon-left" @click="lastSong"></div>
+            <div class="player-control-last wif icon-left" @click="preSong"></div>
             <div ref="operateBtn" class="player-control-operate wif operate-btn"
              :class="[isPlay ? 'icon-pause' : 'icon-play']" @click="operate"></div>
             <div class="player-control-last wif icon-right" @click="nextSong"></div>
@@ -78,20 +74,28 @@ export default {
       this.$router.back();
     },
     nextSong() {
+      if (this.tracks.length === 0) {
+        this.$pop.prompt('抱歉，当前未选中任何歌单');
+        return 
+      }
       let index = this.tracks.findIndex(song => +song.id === +this.songId);
       if (index === this.tracks.length - 1) {
         index = 1;
       }
-      const lastSong = this.tracks.slice(index + 1, index + 2)[0];
-      this.updateSongInfo(lastSong.id);
+      const nextSong = this.tracks.slice(index + 1, index + 2)[0];
+      this.updateSongInfo(nextSong.id);
     },
-    lastSong() {
+    preSong() {
+      if (this.tracks.length === 0) {
+        this.$pop.prompt('抱歉，当前未选中任何歌单');
+        return 
+      }
       let index = this.tracks.filter(song => +song.id === +this.songId);
       if (index === 0) {
         index = this.tracks.length - 1;
       }
-      const lastSong = this.tracks.slice(index - 1, index)[0];
-      this.updateSongInfo(lastSong.id);
+      const preSong = this.tracks.slice(index - 1, index)[0];
+      this.updateSongInfo(preSong.id);
     },
     operate() {
       if (this.isPlay) {
@@ -105,17 +109,20 @@ export default {
     },
     updateSongInfo(songId) {
       this.$store.commit('updateSongId', songId);
-      this.requestSongUrl(songId).then((data) => {
+      // 获取歌曲链接
+      this.requestSongUrl(songId).then(data => {
         if (data && +data.code === 200) {
           this.$store.commit('updateSongUrl', data.data[0].url);
         }
       });
-      this.requestSongDetail(songId).then((data) => {
+      // 获取歌曲详情
+      this.requestSongDetail(songId).then(data => {
         if (data && +data.code === 200) {
           [this.song] = data.songs;
         }
       });
-      this.requestLyric(songId).then((data) => {
+      // 获取歌词
+      this.requestLyric(songId).then(data => {
         if (data && +data.code === 200) {
           if (data.nolyric) {
             this.lyric = false;
@@ -183,7 +190,7 @@ export default {
       if (urlId !== this.songId) {
         songId = urlId;
         if (!this.isPlay) {
-          this.operate(); // 暂停时自动播放
+          this.operate();
         }
         this.$store.commit('currentTime', 0);
         localStorage.setItem(LCKEY, JSON.stringify({ songId })); // 设置缓存
