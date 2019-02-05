@@ -72,10 +72,12 @@ export default {
     },
   },
   mounted() {
-    requestPlaylistDetail(this.$route.params.id).then((data) => {
-      if (data && +data.code === 200) {
-        this.playlist = data.playlist;
-      }
+    this.$pop.loadingShow();
+    requestPlaylistDetail(this.$route.params.id).then(data => {
+        this.$pop.loadingHide();
+        if (data && +data.code === 200) {
+            this.playlist = data.playlist;
+        }
     });
   },
 };

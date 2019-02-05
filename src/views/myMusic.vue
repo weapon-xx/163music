@@ -32,7 +32,9 @@ export default {
   },
   methods: {
     requestUserPlaylist() {
+      this.$pop.loadingShow();
       requestUserPlaylist(this.userId).then((data) => {
+        this.$pop.loadingHide();
         if (+data.code === 200) {
           this.$store.commit('updateUserPlayList', data.playlist);
         }

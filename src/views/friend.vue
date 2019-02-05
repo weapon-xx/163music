@@ -201,16 +201,18 @@ export default {
     },
   },
   mounted() {
+    this.$pop.loadingShow();
     requestEvent().then((data) => {
-      if (+data.code === 200) {
-        this.events = data.event.map((item) => {
-          item.data = JSON.parse(item.json);
-          return item;
-        });
-        this.$nextTick(() => {
-          this.initScroll();
-        });
-      }
+        this.$pop.loadingHide();
+        if (+data.code === 200) {
+            this.events = data.event.map((item) => {
+            item.data = JSON.parse(item.json);
+            return item;
+            });
+            this.$nextTick(() => {
+            this.initScroll();
+            });
+        }
     });
   },
 };
@@ -402,6 +404,10 @@ export default {
             font-size: 14px;
             vertical-align: bottom;
         }
+    }
+    .floating-img, .floating-video {
+        display: block;
+        width: 100%;
     }
     p, span, i {
         color: #d2d2d2;
