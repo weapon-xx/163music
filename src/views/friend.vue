@@ -210,7 +210,7 @@ export default {
             return item;
             });
             this.$nextTick(() => {
-            this.initScroll();
+                this.initScroll();
             });
         }
     });
@@ -370,14 +370,10 @@ export default {
         background-color: #000;
         opacity: .8;
     }
-}
-
-.fade-enter-active, .fade-leave-active {
-  transition: opacity .3s;
-}
-
-.fade-enter, .fade-leave-to {
-  opacity: 0;
+    .floating-img, .floating-video {
+        display: block;
+        width: 100%;
+    }
 }
 
 // 下拉更新
@@ -404,10 +400,6 @@ export default {
             font-size: 14px;
             vertical-align: bottom;
         }
-    }
-    .floating-img, .floating-video {
-        display: block;
-        width: 100%;
     }
     p, span, i {
         color: #d2d2d2;

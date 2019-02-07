@@ -29,6 +29,8 @@ export default {
         } else {
           this.transitionName = 'slide-left';
         }
+      } else {
+        this.transitionName = 'custom';
       }
       this.$router.isBack = false;// 重置
     },
@@ -72,5 +74,9 @@ export default {
 
 .slide-right-enter-active {
   transition: all .5s ease;
+}
+
+.custom-enter {
+  opacity: 0;
 }
 </style>

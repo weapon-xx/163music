@@ -1,6 +1,7 @@
 import Vue from 'vue';
+import { sync } from 'vuex-router-sync';
 import App from './App.vue';
-import store from './store';
+import createStore from './store';
 import createRouter from './router';
 import pop from './plugin/pop';
 import { isLogin } from './javascript/util';
@@ -9,6 +10,8 @@ Vue.config.productionTip = false;
 
 export default function createApp() {
   const router = createRouter();
+  const store = createStore();
+
   router.beforeEach((to, from, next) => {
     // 校验登录态
     const islogin = isLogin();
@@ -31,5 +34,5 @@ export default function createApp() {
     pop,
     render: h => h(App),
   });
-  return { app, router };
+  return { app, router, store };
 }
