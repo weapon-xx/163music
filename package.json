@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "dev": "node server/server.js",
     "serve": "vue-cli-service serve",
     "build:client": "vue-cli-service build --no-clean",
     "build:server": "cross-env TARGET=node vue-cli-service build --no-clean",
@@ -17,6 +18,7 @@
     "better-scroll": "^1.14.1",
     "cross-env": "^5.2.0",
     "koa": "^2.7.0",
+    "koa-static": "^5.0.0",
     "lodash.merge": "^4.6.1",
     "node-sass": "^4.9.4",
     "sass-loader": "^7.1.0",

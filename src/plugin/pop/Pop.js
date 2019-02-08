@@ -5,13 +5,14 @@ import PopTemplate from './Pop.vue';
 const PopConstructor = Vue.extend(PopTemplate);
 
 function Pop(options) {
+  const isBrowser = typeof document === 'object' ? true : false;
   const pop = new PopConstructor({
-    el: document.createElement('div'),
+    el: isBrowser && document.createElement('div'),
     data: options,
   });
 
   if (pop.$el) {
-    document.querySelector('body').appendChild(pop.$el);
+    isBrowser && document.querySelector('body').appendChild(pop.$el);
   }
 
   if (options && options.name) {
