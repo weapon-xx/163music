@@ -6,7 +6,10 @@
 module.exports = {
   root: true,
   env: {
-    node: true,
+    node: true
+  },
+  globals: {
+    isBrowser: true
   },
   extends: [
     'plugin:vue/essential',

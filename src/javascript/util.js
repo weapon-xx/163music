@@ -6,7 +6,7 @@
  * @return {String} cookie值
  */
 export const getCookie = (key) => {
-  const isBrowser = typeof document === 'object' ? true : false;
+  // const isBrowser = typeof document === 'object' ? true : false;
   const reg = new RegExp(`(^|; )${key}=([^;]*)(;|$)`);
   if (isBrowser) {
     const arr = document.cookie.match(reg);
@@ -14,9 +14,8 @@ export const getCookie = (key) => {
       return decodeURIComponent(arr[2]);
     }
     return '';
-  } else {
-    return '';
   }
+  return '';
 };
 
 /**

@@ -4,7 +4,7 @@ import * as api from '../api';
 
 Vue.use(Vuex);
 
-export function createStore () {
+export function createStore() {
   return new Vuex.Store({
     state: {
       user: {
@@ -80,9 +80,13 @@ export function createStore () {
       },
     },
     actions: {
-      requestBanner() {
-        
-      }
+      requestBanner({ commit }) {
+        return api.requestBanner().then((data) => {
+          if (data && data.code === 200) {
+            commit(data.banners);
+          }
+        });
+      },
     },
   });
 }

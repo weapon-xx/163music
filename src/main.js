@@ -1,10 +1,8 @@
 import Vue from 'vue';
-import { sync } from 'vuex-router-sync';
 import App from './App.vue';
 import createStore from './store';
 import createRouter from './router';
 import pop from './plugin/pop';
-import { isLogin } from './javascript/util';
 
 Vue.config.productionTip = false;
 

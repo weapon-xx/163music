@@ -65,7 +65,7 @@ export default {
       this.btns = {
         left: {
           text: '确定',
-        }
+        },
       };
       this.show();
     },

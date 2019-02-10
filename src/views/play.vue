@@ -76,7 +76,7 @@ export default {
     nextSong() {
       if (this.tracks.length === 0) {
         this.$pop.prompt('抱歉，当前未选中任何歌单');
-        return 
+        return;
       }
       let index = this.tracks.findIndex(song => +song.id === +this.songId);
       if (index === this.tracks.length - 1) {
@@ -88,7 +88,7 @@ export default {
     preSong() {
       if (this.tracks.length === 0) {
         this.$pop.prompt('抱歉，当前未选中任何歌单');
-        return 
+        return;
       }
       let index = this.tracks.filter(song => +song.id === +this.songId);
       if (index === 0) {
@@ -110,19 +110,19 @@ export default {
     updateSongInfo(songId) {
       this.$store.commit('updateSongId', songId);
       // 获取歌曲链接
-      this.requestSongUrl(songId).then(data => {
+      this.requestSongUrl(songId).then((data) => {
         if (data && +data.code === 200) {
           this.$store.commit('updateSongUrl', data.data[0].url);
         }
       });
       // 获取歌曲详情
-      this.requestSongDetail(songId).then(data => {
+      this.requestSongDetail(songId).then((data) => {
         if (data && +data.code === 200) {
           [this.song] = data.songs;
         }
       });
       // 获取歌词
-      this.requestLyric(songId).then(data => {
+      this.requestLyric(songId).then((data) => {
         if (data && +data.code === 200) {
           if (data.nolyric) {
             this.lyric = false;
@@ -151,7 +151,7 @@ export default {
       return requestLyric(songId).then(data => data);
     },
     initDrag() {
-      const isBrowser = typeof document === 'object' ? true : false;
+      // const isBrowser = typeof document === 'object' ? true : false;
       const vm = this;
       const wrapWidth = 240;
       const point = isBrowser && document.querySelector('.player-progress-point');

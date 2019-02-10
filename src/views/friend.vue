@@ -203,16 +203,16 @@ export default {
   mounted() {
     this.$pop.loadingShow();
     requestEvent().then((data) => {
-        this.$pop.loadingHide();
-        if (+data.code === 200) {
-            this.events = data.event.map((item) => {
-            item.data = JSON.parse(item.json);
-            return item;
-            });
-            this.$nextTick(() => {
-                this.initScroll();
-            });
-        }
+      this.$pop.loadingHide();
+      if (+data.code === 200) {
+        this.events = data.event.map((item) => {
+          item.data = JSON.parse(item.json);
+          return item;
+        });
+        this.$nextTick(() => {
+          this.initScroll();
+        });
+      }
     });
   },
 };
