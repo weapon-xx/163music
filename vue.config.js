@@ -2,10 +2,9 @@ const VueSSRServerPlugin = require('vue-server-renderer/server-plugin');
 const VueSSRClientPlugin = require('vue-server-renderer/client-plugin');
 const nodeExternals = require('webpack-node-externals');
 const webpack = require('webpack');
-
 const IS_NODE = process.env.TARGET === 'node';
 
-module.exports = {
+const config = {
   // 解决开发环境配置 host 而导致 'Invalid Host Header'
   devServer: {
     disableHostCheck: true,
@@ -20,13 +19,6 @@ module.exports = {
     output: {
       libraryTarget: IS_NODE ? 'commonjs2' : undefined,
     },
-    // https://webpack.js.org/configuration/externals/#function
-    // https://github.com/liady/webpack-node-externals
-    // 外置化应用程序依赖模块。可以使服务器构建速度更快，并生成较小的 bundle 文件。
-    externals: nodeExternals({
-      // do not externalize CSS files in case we need to import it from a dep
-      whitelist: /\.css$/,
-    }),
     plugins: [
       IS_NODE ? new VueSSRServerPlugin() : new VueSSRClientPlugin(),
       new webpack.DefinePlugin({
@@ -35,6 +27,18 @@ module.exports = {
     ],
   },
   css: {
-    extract: false,
+    extract: false    // 不分离单独 css 文件，防止 mini-css-extract-plugin 在插入样式文件时报错
   },
 };
+
+if(IS_NODE) {
+  // https://webpack.js.org/configuration/externals/#function
+  // https://github.com/liady/webpack-node-externals
+  // 外置化应用程序依赖模块。可以使服务器构建速度更快，并生成较小的 bundle 文件。
+  config.configureWebpack.externals = nodeExternals({
+    // do not externalize CSS files in case we need to import it from a dep
+    whitelist: /\.css$/,
+  });  
+}
+
+module.exports = config;

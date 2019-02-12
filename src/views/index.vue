@@ -14,16 +14,20 @@ import { requestResource } from '../api';
 
 export default {
   name: 'index',
-  props: {
-    msg: String,
-  },
   components: { headBox, banner, listBlock },
-  computed: {},
+  asyncData ({ store, route }) {
+    return store.dispatch('requestResource');
+  },
+  computed: {
+    // recommend() {
+    //   return this.$store.state.recommend;
+    // },
+  },
   data() {
     return {
       recommendTitle: '推荐标题',
-      recommend: [],
       recommendShowCount: true,
+      recommend: [],
     };
   },
   methods: {

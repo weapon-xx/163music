@@ -23,6 +23,7 @@ export function createStore() {
         tracks: [],
         id: undefined,
       },
+      recommend: [],    // 推荐歌单
     },
     getters: {
       userId(state) {
@@ -78,12 +79,15 @@ export function createStore() {
           state.playlist.tracks = playlist.tracks;
         }
       },
+      updateRecommend(state, recommend) {
+        state.recommend = recommend;
+      }
     },
     actions: {
-      requestBanner({ commit }) {
-        return api.requestBanner().then((data) => {
-          if (data && data.code === 200) {
-            commit(data.banners);
+      requestResource({ commit }) {
+        return api.requestResource().then((data) => {
+          if (+data.code === 200) {
+            commit('updateRecommend', data.recommend);
           }
         });
       },
