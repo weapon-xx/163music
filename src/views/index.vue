@@ -15,7 +15,7 @@ import { requestResource } from '../api';
 export default {
   name: 'index',
   components: { headBox, banner, listBlock },
-  asyncData ({ store, route }) {
+  asyncData({ store, route }) {
     return store.dispatch('requestResource');
   },
   computed: {

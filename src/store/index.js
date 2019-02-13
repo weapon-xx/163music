@@ -23,7 +23,7 @@ export function createStore() {
         tracks: [],
         id: undefined,
       },
-      recommend: [],    // 推荐歌单
+      recommend: [], // 推荐歌单
     },
     getters: {
       userId(state) {
@@ -81,7 +81,7 @@ export function createStore() {
       },
       updateRecommend(state, recommend) {
         state.recommend = recommend;
-      }
+      },
     },
     actions: {
       requestResource({ commit }) {

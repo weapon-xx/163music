@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "cross-env ENV=dev node server/server.js",
+    "dev": "concurrently \"npm run serve\" \"npm run dev:serve\" ",
+    "dev:serve": "cross-env NODE_ENV=dev node ./server/server.js",
+    "start": "cross-env NODE_ENV=production node server/server.js",
     "serve": "vue-cli-service serve",
     "build:client": "vue-cli-service build --no-clean",
     "build:server": "cross-env TARGET=node vue-cli-service build --no-clean",
@@ -16,8 +18,11 @@
   "dependencies": {
     "axios": "^0.18.0",
     "better-scroll": "^1.14.1",
+    "child_process": "^1.0.2",
+    "concurrently": "^4.1.0",
     "cross-env": "^5.2.0",
     "koa": "^2.7.0",
+    "koa-bodyparser": "^4.2.1",
     "koa-router": "^7.4.0",
     "koa-static": "^5.0.0",
     "lodash.merge": "^4.6.1",
@@ -45,6 +50,7 @@
     "babel-eslint": "^10.0.1",
     "eslint": "^5.8.0",
     "eslint-plugin-vue": "^5.0.0",
+    "memory-fs": "^0.4.1",
     "vue-template-compiler": "^2.5.17"
   },
   "postcss": {
