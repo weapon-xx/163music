@@ -3,8 +3,7 @@ import Router from 'vue-router';
 
 Vue.use(Router);
 
-
-export function createRouter() {
+export default function createRouter() {
   return new Router({
     mode: 'history',
     routes: [
@@ -51,5 +50,3 @@ Router.prototype.back = function back() {
   this.isBack = true;
   this.go(-1);
 };
-
-export default createRouter;

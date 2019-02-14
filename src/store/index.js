@@ -4,7 +4,7 @@ import * as api from '../api';
 
 Vue.use(Vuex);
 
-export function createStore() {
+export default function createStore() {
   return new Vuex.Store({
     state: {
       user: {
@@ -94,5 +94,3 @@ export function createStore() {
     },
   });
 }
-
-export default createStore;

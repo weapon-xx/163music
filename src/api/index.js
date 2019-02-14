@@ -2,8 +2,8 @@ import axios from 'axios';
 
 axios.defaults.withCredentials = true;
 
-// const domain = '//163music.jacksonx.cn/api'
-const domain = '//jacksonx.cn:3000';
+const domain = '//163music.jacksonx.cn/api';
+
 
 /**
  * promise 缓存函数

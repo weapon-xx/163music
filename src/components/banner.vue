@@ -1,19 +1,20 @@
 <template>
-  <swiper ref="swiper" :options="swiperOption" class="swiper-container">
-    <swiper-slide v-for="(slide, index) in banners" :key="index">
-      <img :src="slide.imageUrl" alt="" style="width: 100%;">
-    </swiper-slide>
-    <div class="swiper-pagination" slot="pagination"></div>
-  </swiper>
+  <div class="swiper-container" ref="swiper" v-swiper:mySwiper="swiperOption">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide" v-for="(slide, index) in banners" :key="index">
+        <img :src="slide.imageUrl" alt="" style="width: 100%;">
+      </div>
+    </div>
+    <div class="swiper-pagination swiper-pagination-bullets" slot="pagination"></div>
+  </div>
 </template>
 <script>
-import { swiper, swiperSlide } from 'vue-awesome-swiper';
 import 'swiper/dist/css/swiper.css';
 import { requestBanner } from '../api/index';
 
 export default {
   name: 'banner',
-  components: { swiper, swiperSlide },
+  components: {},
   data() {
     return {
       swiperOption: {

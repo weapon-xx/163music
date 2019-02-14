@@ -66,7 +66,7 @@ export default {
   },
 };
 </script>
-<style scoped>
+<style lang="scss" scoped>
 .player-box {
     display: none;
 }

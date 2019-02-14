@@ -15,8 +15,8 @@ import { requestResource } from '../api';
 export default {
   name: 'index',
   components: { headBox, banner, listBlock },
-  asyncData({ store, route }) {
-    return store.dispatch('requestResource');
+  asyncData() {
+    // return store.dispatch('requestResource');
   },
   computed: {
     // recommend() {
@@ -44,7 +44,7 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style lang="scss" scoped>
 .container {
   padding-top: 50px;
 }

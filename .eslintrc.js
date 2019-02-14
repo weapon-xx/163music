@@ -14,7 +14,7 @@ module.exports = {
   extends: [
     'plugin:vue/essential',
     'eslint:recommended',
-    '@vue/airbnb',
+    'airbnb',
   ],
   rules: {
     // 部分变量允许使用下划线开头和结尾定义变量（主要是因为__INITIAL_STATE__没法改）
@@ -26,11 +26,11 @@ module.exports = {
     }],
 
     /**
-         * 覆盖airbnb不允许对参数赋值的规则，可以对参数的属性进行修改
-         *
-         * @see https://github.com/airbnb/javascript/issues/1217
-         * @see https://github.com/airbnb/javascript#functions--mutate-params
-         */
+     * 覆盖airbnb不允许对参数赋值的规则，可以对参数的属性进行修改
+     *
+     * @see https://github.com/airbnb/javascript/issues/1217
+     * @see https://github.com/airbnb/javascript#functions--mutate-params
+     */
     'no-param-reassign': [
       'error',
       {

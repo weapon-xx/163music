@@ -151,16 +151,15 @@ export default {
       return requestLyric(songId).then(data => data);
     },
     initDrag() {
-      // const isBrowser = typeof document === 'object' ? true : false;
       const vm = this;
       const wrapWidth = 240;
-      const point = isBrowser && document.querySelector('.player-progress-point');
-      const playedProgress = isBrowser && document.querySelector('.player-progress-played');
-      const { offsetLeft } = isBrowser && document.querySelector('.player-progress-wrap');
+      const point = document.querySelector('.player-progress-point');
+      const playedProgress = document.querySelector('.player-progress-played');
+      const { offsetLeft } = document.querySelector('.player-progress-wrap');
 
       point.addEventListener('touchstart', () => {
         let dragTime;
-        isBrowser && document.addEventListener('touchmove', (event) => {
+        document.addEventListener('touchmove', (event) => {
           let currentX = parseInt(event.touches[0].clientX, 10);
           if (currentX < offsetLeft) {
             currentX = offsetLeft;
@@ -175,7 +174,7 @@ export default {
           playedProgress.style.width = `${parseInt(progressPos * 100, 10)}%`;
         }, false);
 
-        isBrowser && document.addEventListener('touchend', () => {
+        document.addEventListener('touchend', () => {
           vm.$store.commit('currentTime', dragTime);
           vm.showDragTime = undefined; // 重置拖拽时进度条时间
         }, false);
