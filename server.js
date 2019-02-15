@@ -54,10 +54,11 @@ if (isProd) {
     app,
     templatePath,
     (bundle, options) => {
+      // finish compile callback 
       try {
         renderer = createRenderer(bundle, options);
       } catch(err) {
-        console.log(err)
+        console.log(err);
       }
     },
   );
@@ -100,9 +101,11 @@ function render(req, res) {
   };
 
   const context = {
-    title: '163music', // default title
+    title: '163music',
     url: req.url,
+    headers: req.headers
   };
+
   renderer.renderToString(context, (err, html) => {
     if (err) {
       return handleError(err);
@@ -114,8 +117,9 @@ function render(req, res) {
   });
 }
 
-app.get('*', isProd ? render : (req, res) => {
-  readyPromise.then(() => render(req, res));
+app.get('*', isProd ? render : async (req, res) => {
+  await readyPromise;
+  render(req, res);
 });
 
 const port = process.env.PORT || 8080;

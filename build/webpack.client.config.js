@@ -12,7 +12,6 @@ const clientConfig = merge(base, {
   output: {
     path: path.resolve('dist'),
     filename: 'js/[name].[hash:8].bundle.js',
-    publicPath: '/dist/',
   },
   plugins: [
     // strip dev-only code in Vue source

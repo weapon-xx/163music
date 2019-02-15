@@ -13,6 +13,9 @@ function resolve(dir) {
 module.exports = {
   mode: isProd ? 'production' : 'development',
   devtool: isProd ? false : '#cheap-module-source-map',
+  output: {
+    publicPath: '/dist/',
+  },
   resolve: {
     extensions: ['.mjs', '.js', '.jsx', '.vue', '.json', '.wasm', '.scss'],
     alias: {
@@ -55,7 +58,12 @@ module.exports = {
         loader: 'url-loader',
         options: {
           limit: inlineLimit,
-          name: 'img/[name].[hash:8].[ext]'
+          fallback: {
+            loader: 'file-loader',
+            options: {
+              name: 'img/[name].[hash:8].[ext]'
+            }
+          }
         },
       },
       {
@@ -63,7 +71,12 @@ module.exports = {
         loader: 'url-loader',
         options: {
           limit: inlineLimit,
-          name: 'fonts/[name].[hash:8].[ext]'
+          fallback: {
+            loader: 'file-loader',
+            options: {
+              name: 'fonts/[name].[hash:8].[ext]' 
+            }
+          }
         },
       },
       {
@@ -71,7 +84,12 @@ module.exports = {
         loader: 'url-loader',
         options: {
           limit: inlineLimit,
-          name: 'media/[name].[hash:8].[ext]'
+          fallback: {
+            loader: 'file-loader',
+            options: {
+              name: 'media/[name].[hash:8].[ext]'
+            }
+          }
         },
       },
       {
