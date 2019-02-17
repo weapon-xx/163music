@@ -23,7 +23,8 @@ export default function createStore() {
         tracks: [],
         id: undefined,
       },
-      recommend: [], // 推荐歌单
+      recommend: [],
+      banners: [],
     },
     getters: {
       userId(state) {
@@ -82,12 +83,18 @@ export default function createStore() {
       updateRecommend(state, recommend) {
         state.recommend = recommend;
       },
+      updateBanners(state, banners) {
+        state.banners = banners;
+      },
     },
     actions: {
-      requestResource({ commit }) {
-        return api.requestResource().then((data) => {
-          if (+data.code === 200) {
-            commit('updateRecommend', data.recommend);
+      requestIndex({ commit }, cookie) {
+        return Promise.all([api.requestResource(cookie), api.requestBanner(cookie)]).then((dataArr) => {
+          if (dataArr[0].code === 200) {
+            commit('updateRecommend', dataArr[0].recommend);
+          }
+          if (dataArr[1].code === 200) {
+            commit('updateBanners', dataArr[1].banners);
           }
         });
       },

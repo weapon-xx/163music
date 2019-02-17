@@ -1,9 +1,8 @@
 import axios from 'axios';
 
-axios.defaults.withCredentials = true;
+axios.defaults.withCredentials = true;// request with cookie
 
-const domain = '//163music.jacksonx.cn/api';
-
+const domain = 'http://163music.jacksonx.cn/api';
 
 /**
  * promise 缓存函数
@@ -22,7 +21,7 @@ function promiseCache(fn, convertParam, ctx) {
   return function handle(...args) {
     const cachKey = convertParam.apply(ctx, args);
     if (!promiseCache.cache[cachKey]) {
-      promiseCache.cache[cachKey] = fn(args);
+      promiseCache.cache[cachKey] = fn.apply(ctx, args);
     }
     return promiseCache.cache[cachKey];
   };
@@ -51,10 +50,16 @@ export const login = (params) => {
  * 获取推荐歌单
  * @return {Promise}
  */
-export const requestResource = promiseCache(() => axios.request({
-  method: 'get',
-  url: `${domain}/recommend/resource`,
-}).then(data => data.data), () => 'resource');
+export const requestResource = promiseCache((cookie) => {
+  const params = {
+    method: 'get',
+    url: `${domain}/recommend/resource`,
+    headers: {
+      cookie,
+    },
+  };
+  return axios.request(params).then(data => data.data);
+}, () => 'resource');
 
 /**
  * 获取歌单详情

@@ -25,6 +25,7 @@ export default context => new Promise((resolve, reject) => {
         return Component.asyncData({
           store,
           route: router.currentRoute,
+          cookie: context.headers.cookie,
         });
       }
       return {};

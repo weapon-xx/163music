@@ -1,6 +1,6 @@
 <template>
-  <div class="swiper-container" ref="swiper" v-swiper:mySwiper="swiperOption">
-    <div class="swiper-wrapper">
+  <div class="swiper-container" ref="swiper" v-swiper:mySwiper="swiperOption" >
+    <div :class="['swiper-wrapper', 'banner-wrapper', {'transparent': !isInit}]">
       <div class="swiper-slide" v-for="(slide, index) in banners" :key="index">
         <img :src="slide.imageUrl" alt="" style="width: 100%;">
       </div>
@@ -10,11 +10,9 @@
 </template>
 <script>
 import 'swiper/dist/css/swiper.css';
-import { requestBanner } from '../api/index';
 
 export default {
-  name: 'banner',
-  components: {},
+  props: ['banners'],
   data() {
     return {
       swiperOption: {
@@ -25,16 +23,12 @@ export default {
           // dynamicBullets: true
         },
       },
-      banners: [],
+      isInit: false,
     };
   },
   methods: {},
   mounted() {
-    requestBanner().then((data) => {
-      if (data && +data.code === 200) {
-        this.banners = data.banners;
-      }
-    });
+    this.isInit = true;
   },
 };
 </script>
@@ -47,5 +41,15 @@ export default {
     background-color: $main_color;
     opacity: 1;
   }
+}
+
+.banner-wrapper {
+  opacity: 1;
+  transition: opacity .3 ease;
+}
+
+.transparent {
+  opacity: 0;
+  height: 180px;
 }
 </style>
