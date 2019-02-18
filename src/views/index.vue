@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="index-container">
       <headBox></headBox>
       <banner :banners='banners'></banner>
       <listBlock ref="recommend" :title="recommendTitle" :list="recommend" :showCount="recommendShowCount"></listBlock>
@@ -37,7 +37,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
-.container {
+.index-container {
   padding-top: 50px;
 }
 </style>

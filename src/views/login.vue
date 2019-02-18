@@ -17,6 +17,7 @@
 </template>
 <script>
 import { login } from '../api/index';
+import { isLogin } from '../javascript/util';
 
 export default {
   data() {
@@ -43,7 +44,14 @@ export default {
       }
     },
   },
-  mounted() {},
+  mounted() {
+    const loginFlag = isLogin();
+    if (loginFlag) {
+      setTimeout(() => {
+        window.location.href = '/';
+      }, 1e3);
+    }
+  },
 };
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
