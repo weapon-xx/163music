@@ -110,10 +110,10 @@ export default {
       pulldown: {
         text: {
           default: '下拉刷新',
-          ready: '开始释放',
+          ready: '松开更新',
           succuess: '刷新成功',
           error: '刷新失败(>_<)',
-          loading: '主人请稍等...',
+          loading: '更新中...',
         },
         time: undefined,
         status: DEFAULT_STATUS,
@@ -150,7 +150,7 @@ export default {
       });
       scroll.on('pullingDown', () => {
         // 刷新请求
-        if (vm.requesting) { return; }
+        if (vm.requesting) return;
         vm.pulldown.status = LOADING_STATUS;
         vm.requesting = true;
         requestEvent().then((data) => {
@@ -393,6 +393,7 @@ export default {
     .pulldown-wrapper-box {
         text-align: center;
         height: 24px;
+        margin-bottom: 5px;
         span {
             display: inline-block;
             height: 24px;

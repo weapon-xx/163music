@@ -16,7 +16,7 @@
     </div>
 </template>
 <script>
-import { login } from '../api/index';
+import { login, cleanPromiseCache } from '../api/index';
 import { isLogin } from '../javascript/util';
 
 export default {
@@ -35,6 +35,7 @@ export default {
         }).then((data) => {
           if (data && +data.code === 200) {
             this.$router.push('/');
+            cleanPromiseCache();
           } else {
             this.$pop.prompt((data && data.data && data.data.msg) || '登录失败');
           }
@@ -45,8 +46,7 @@ export default {
     },
   },
   mounted() {
-    const loginFlag = isLogin();
-    if (loginFlag) {
+    if (isLogin()) {
       setTimeout(() => {
         window.location.href = '/';
       }, 1e3);
@@ -103,6 +103,7 @@ $bg_color: #e6e6e6;
         border-radius: 5px;
         text-indent: 5px;
         outline: none;
+        font-size: 16px;
     }
 }
 

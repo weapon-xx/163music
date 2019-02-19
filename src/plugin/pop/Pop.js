@@ -1,4 +1,5 @@
 import './Pop.scss';
+import '../../style/common.scss';
 import Vue from 'vue';
 import PopTemplate from './Pop.vue';
 

@@ -1,8 +1,8 @@
 // Karma configuration
 // Generated on Sun Feb 17 2019 18:21:38 GMT+0800 (GMT+08:00)
-const webpackConfig = require('../../build/webpack.test.config')
+const webpackConfig = require('../../build/webpack.test.config');
 
-module.exports = function(config) {
+module.exports = function (config) {
   config.set({
     // frameworks to use
     // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
@@ -64,7 +64,7 @@ module.exports = function(config) {
 
     webpack: webpackConfig,
     webpackMiddleware: {
-      noInfo: true
+      noInfo: true,
     },
 
     plugins: [
@@ -91,8 +91,8 @@ module.exports = function(config) {
       reporters: [
         // { type: 'html', subdir: 'report-html' },
         { type: 'lcov', subdir: '.' },
-        { type: 'text-summary' }
-      ]
+        { type: 'text-summary' },
+      ],
     },
-  })
-}
+  });
+};
