@@ -6,9 +6,9 @@ const chokidar = require('chokidar');
 const clientConfig = require('./webpack.client.config');
 const serverConfig = require('./webpack.server.config');
 
-const readFile = (fs, file) => {
+const readFile = (fileSystem, file) => {
   try {
-    return fs.readFileSync(path.join(clientConfig.output.path, file), 'utf-8');
+    return fileSystem.readFileSync(path.join(clientConfig.output.path, file), 'utf-8');
   } catch (e) {
     console.log(e);
   }
@@ -23,7 +23,7 @@ module.exports = function setupDevServer(app, templatePath, cb) {
   // export ready promise
   const readyPromise = new Promise((resolve) => { ready = resolve; });
   const update = () => {
-    // when bundle and clientManifest were compiled completely, then call resolve method of promise 
+    // when bundle and clientManifest were compiled completely, then call resolve method of promise
     if (bundle && clientManifest) {
       ready();
       cb(bundle, {
@@ -56,7 +56,7 @@ module.exports = function setupDevServer(app, templatePath, cb) {
     noInfo: true,
   });
   app.use(devMiddleware);
-  clientCompiler.hooks.done.tap('done', stats => {
+  clientCompiler.hooks.done.tap('done', (stats) => {
     stats = stats.toJson();
     stats.errors.forEach(err => console.error(err));
     stats.warnings.forEach(err => console.warn(err));

@@ -1,6 +1,6 @@
 const merge = require('webpack-merge');
-const baseConfig = require('./webpack.base.config');
 const webpack = require('webpack');
+const baseConfig = require('./webpack.base.config');
 
 const webpackConfig = merge(baseConfig, {
   // use inline sourcemap for karma-sourcemap-loader
@@ -9,7 +9,7 @@ const webpackConfig = merge(baseConfig, {
     // strip dev-only code in Vue source
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': '"testing"',
-      'process.env.VUE_ENV': '"client"'
+      'process.env.VUE_ENV': '"client"',
     }),
   ],
 });
@@ -18,4 +18,3 @@ const webpackConfig = merge(baseConfig, {
 delete webpackConfig.entry;
 
 module.exports = webpackConfig;
-

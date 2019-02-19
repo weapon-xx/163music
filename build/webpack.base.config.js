@@ -61,9 +61,9 @@ module.exports = {
           fallback: {
             loader: 'file-loader',
             options: {
-              name: 'img/[name].[hash:8].[ext]'
-            }
-          }
+              name: 'img/[name].[hash:8].[ext]',
+            },
+          },
         },
       },
       {
@@ -74,9 +74,9 @@ module.exports = {
           fallback: {
             loader: 'file-loader',
             options: {
-              name: 'fonts/[name].[hash:8].[ext]' 
-            }
-          }
+              name: 'fonts/[name].[hash:8].[ext]',
+            },
+          },
         },
       },
       {
@@ -87,31 +87,32 @@ module.exports = {
           fallback: {
             loader: 'file-loader',
             options: {
-              name: 'media/[name].[hash:8].[ext]'
-            }
-          }
+              name: 'media/[name].[hash:8].[ext]',
+            },
+          },
         },
       },
       {
-          enforce: 'pre',
-          test: /\.(vue|(j|t)sx?)$/,
-          exclude: /node_modules/,
-          use: [
-               {
-                  loader: 'eslint-loader',
-                  options: {
-                    extensions: ['.js', '.jsx', '.vue'],
-                    cache: true,
-                    emitWarning:true,
-                    emitError:false,
-                }
-              }
-          ]
-      }
+        enforce: 'pre',
+        test: /\.(vue|(j|t)sx?)$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: 'eslint-loader',
+            options: {
+              extensions: ['.js', '.vue'],
+              cache: true,
+              emitWarning: true,
+              emitError: false,
+            },
+          },
+        ],
+      },
     ],
   },
+  // https://webpack.docschina.org/configuration/performance/#src/components/Sidebar/Sidebar.jsx
   performance: {
-    maxEntrypointSize: 300000,
+    // maxEntrypointSize: 300000,
     hints: isProd ? 'warning' : false,
   },
   plugins: isProd

@@ -4,7 +4,7 @@ const LRU = require('lru-cache');
 const express = require('express');
 const compression = require('compression');
 const microcache = require('route-cache');
-const favicon = require('serve-favicon')
+const favicon = require('serve-favicon');
 
 const resolve = file => path.resolve(__dirname, file);
 const { createBundleRenderer } = require('vue-server-renderer');
@@ -18,6 +18,7 @@ const app = express();
 
 function createRenderer(bundle, options) {
   // https://github.com/vuejs/vue/blob/dev/packages/vue-server-renderer/README.md#why-use-bundlerenderer
+  // https://ssr.vuejs.org/zh/guide/caching.html
   return createBundleRenderer(bundle, Object.assign(options, {
     // for component caching
     cache: new LRU({
@@ -54,10 +55,10 @@ if (isProd) {
     app,
     templatePath,
     (bundle, options) => {
-      // finish compile callback 
+      // finish compile callback
       try {
         renderer = createRenderer(bundle, options);
-      } catch(err) {
+      } catch (err) {
         console.log(err);
       }
     },
@@ -68,8 +69,8 @@ const serve = (serverPath, cache) => express.static(resolve(serverPath), {
   maxAge: cache && isProd ? 1000 * 60 * 60 * 24 * 30 : 0,
 });
 
-app.use(compression({ threshold: 0 }));
-app.use(favicon('./public/logo.ico'))
+app.use(compression({ threshold: 1024 })); // use express compression to improve response
+app.use(favicon('./public/logo.ico'));
 app.use('/public', serve('./public', true));
 app.use('/dist', serve('./dist', true));
 
@@ -103,7 +104,7 @@ function render(req, res) {
   const context = {
     title: '163music',
     url: req.url,
-    headers: req.headers
+    headers: req.headers,
   };
 
   renderer.renderToString(context, (err, html) => {

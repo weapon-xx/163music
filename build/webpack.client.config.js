@@ -17,15 +17,10 @@ const clientConfig = merge(base, {
     // strip dev-only code in Vue source
     new webpack.DefinePlugin({
       'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
-      'process.env.VUE_ENV': '"client"'
+      'process.env.VUE_ENV': '"client"',
     }),
     new VueSSRClientPlugin(),
-  ],
-  optimization: {
-    splitChunks: {
-      chunks: 'all',
-    },
-  },
+  ]
 });
 
 module.exports = clientConfig;
