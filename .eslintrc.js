@@ -44,13 +44,8 @@ module.exports = {
       ],
     }],
 
-    // allow reassign param
-    'no-param-reassign': [
-      'error',
-      {
-          'props': false,
-      }
-    ],
+    // allow modify param property
+    'no-param-reassign': ['error', { 'props': false }],
   },
   parserOptions: {
     parser: 'babel-eslint',

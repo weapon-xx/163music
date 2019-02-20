@@ -20,7 +20,7 @@ const clientConfig = merge(base, {
       'process.env.VUE_ENV': '"client"',
     }),
     new VueSSRClientPlugin(),
-  ]
+  ],
 });
 
 module.exports = clientConfig;

@@ -110,7 +110,9 @@ module.exports = {
       },
     ],
   },
-  // https://webpack.docschina.org/configuration/performance/#src/components/Sidebar/Sidebar.jsx
+  /**
+   * @see https://webpack.docschina.org/configuration/performance/#src/components/Sidebar/Sidebar.jsx
+   */
   performance: {
     // maxEntrypointSize: 300000,
     hints: isProd ? 'warning' : false,
@@ -118,6 +120,10 @@ module.exports = {
   plugins: isProd
     ? [
       new VueLoaderPlugin(),
+
+      /**
+       * @see https://webpack.docschina.org/plugins/module-concatenation-plugin/#src/components/Sidebar/Sidebar.jsx
+       */
       new webpack.optimize.ModuleConcatenationPlugin(),
     ]
     : [

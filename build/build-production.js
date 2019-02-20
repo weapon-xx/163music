@@ -30,8 +30,8 @@ function handle(err, stats) {
   const result = stats.toJson();
   if (stats.hasErrors()) {
     log(chalk.red('ERROR: '));
-    result.errors.forEach((err) => {
-      log(chalk.red(err));
+    result.errors.forEach((error) => {
+      log(chalk.red(error));
       log('--------');
     });
   }
