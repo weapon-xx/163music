@@ -7,8 +7,7 @@ const { app, router } = createApp();
 describe('Plugin', () => {
     const vm = app.$mount();
 
-    // pop plugin test 
-    it('pop load', () => {
+    it('pop plugin is load correctly', () => {
         expect(typeof vm.$pop !== undefined).to.be.equal(true);
     }) 
 

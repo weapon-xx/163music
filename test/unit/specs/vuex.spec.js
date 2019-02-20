@@ -1,36 +1,34 @@
 /* eslint-disable */
 
-import comp from '@/views/index.vue';
-import banner from '../../../src/components/banner.vue';
 import Vuex from 'vuex';
-import { mount, createLocalVue } from '@vue/test-utils'
-
-const localVue = createLocalVue()
+import { mount, createLocalVue } from '@vue/test-utils';
+import mutations from '@/store/mutations';
+import getters from '@/store/getters';
+import state from '@/store/state';
 
 describe('Vuex', () => {
-    let store;
+    let storeConfig = {
+        state, getters, mutations, 
+        actions: {
+            requestIndex({ state }) {
+                state.banners = ['test'];
+                state.recommend = ['test'];
+            }
+        }
+    }; 
+    const localVue = createLocalVue();
+    localVue.use(Vuex);
+    const store = new Vuex.Store(storeConfig);
 
-    beforeEach(() => {
-        store = new Vuex.Store({
-            state: {
-                recommend: [],
-                banners: []
-            },
-            actions: {
-                requestIndex() {
-
-                }
-            } 
-        })
-    })
-
-    //
-    it('async data', () => {
-        const component = mount(comp, {
-            store, localVue
-        });
-
-        // expect(typeof router.back === 'function').to.be.equal(true);
+    it('commit mutation modify user id', () => {
+        expect(store.state.user.id).to.be.equal(0);
+        store.commit('updateUserId', 'testid');
+        expect(store.state.user.id).to.be.equal('testid');
     });
 
+    it('commit mutation modify playlist', () => {
+        expect(store.state.user.playList.length).to.be.equal(0);
+        store.commit('updateUserPlayList', ['test']);
+        expect(store.state.user.playList.length).to.be.equal(1);
+    });
 });

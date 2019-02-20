@@ -6,13 +6,11 @@ const { app } = createApp();
 describe('App', () => {
     const vm = app.$mount();
 
-    // test render
-    it('app render', () => {
+    it('app can render correctly', () => {
       expect(vm.$el.outerHTML).contain('<div id="app">');
     });
 
-    // test childnodes
-    it('app childnodes', () => {
+    it('app has 3 childnodes', () => {
       expect(vm.$el.childNodes.length).to.be.equal(3);
     });
 
