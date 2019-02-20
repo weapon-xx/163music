@@ -1,6 +1,16 @@
 import createApp from './main';
+import { isLogin } from './javascript/util';
 
 const { app, router, store } = createApp();
+
+const islogin = isLogin();
+if (router.currentRoute.path === '/login') {
+  if (islogin) {
+    router.push('/');
+  }
+} else if (!islogin) {
+  router.push('/login');
+}
 
 router.onReady(() => {
   app.$mount('#app');

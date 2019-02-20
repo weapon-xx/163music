@@ -87,6 +87,7 @@ export default {
         }
         .list-item-cover {
             width: 100%;
+            border-radius: 3px;
         }
         .list-item-title {
             font-size: 12px;

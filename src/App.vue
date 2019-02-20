@@ -42,7 +42,7 @@ export default {
       if (+data.code === 200) {
         this.$store.commit('updateUserId', data.bindings[1].userId);
       }
-    }).catch(e => {
+    }).catch((e) => {
       this.$pop.loadingHide();
       throw e;
     });

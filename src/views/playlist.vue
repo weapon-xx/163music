@@ -45,7 +45,6 @@ import { requestPlaylistDetail } from '../api';
 import * as util from '../javascript/util';
 
 export default {
-  props: [],
   computed: {
     isPlay() {
       return this.$store.getters.isPlay;
@@ -65,7 +64,9 @@ export default {
     },
     goPlay(id) {
       this.$router.push(`/play/${id}`);
-      this.$store.commit('updatePlaylist', this.playlist);
+      if (this.$store.state.playlist.id !== this.playlist.id) {
+        this.$store.commit('updatePlaylist', this.playlist);
+      }
     },
     handleCount(num) {
       return util.handleCount(num);

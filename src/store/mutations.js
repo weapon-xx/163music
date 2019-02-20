@@ -7,7 +7,6 @@ export default {
     state.user.playList = list;
   },
 
-
   // player
   operate(state, status) {
     state.song.isPlay = status;
@@ -27,5 +26,16 @@ export default {
   updatePlaylist(state, playlist) {
     state.playlist.id = playlist.id;
     state.playlist.tracks = playlist.tracks;
+  },
+
+  // ssr
+  updateRecommend(state, recommend) {
+    state.recommend = recommend;
+  },
+  updateBanners(state, banners) {
+    state.banners = banners;
+  },
+  updateEvents(state, events) {
+    state.events = events;
   },
 };

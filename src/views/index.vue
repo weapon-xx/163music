@@ -31,10 +31,14 @@ export default {
     };
   },
   methods: {},
-  mounted() {},
+  mounted() {
+    // if ssr fetch didn't work, fetch data again in mounted hook.
+    if (!this.recommend.length && !this.banners.length) {
+      this.$store.dispatch('requestIndex');
+    }
+  },
 };
 </script>
-
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 .index-container {

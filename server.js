@@ -69,7 +69,7 @@ const serve = (serverPath, cache) => express.static(resolve(serverPath), {
   maxAge: cache && isProd ? 1000 * 60 * 60 * 24 * 30 : 0,
 });
 
-app.use(compression({ threshold: 1024 })); // use express compression to improve response
+app.use(compression({ threshold: 0 })); // use express compression to improve response
 app.use(favicon('./public/logo.ico'));
 app.use('/public', serve('./public', true));
 app.use('/dist', serve('./dist', true));

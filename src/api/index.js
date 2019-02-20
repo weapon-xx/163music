@@ -2,7 +2,8 @@ import axios from 'axios';
 
 axios.defaults.withCredentials = true;// request with cookie
 
-const domain = 'http://163music.jacksonx.cn/api';
+// const domain = 'http://163music.jacksonx.cn/api';
+const domain = 'http://163api.jacksonx.cn';
 
 /**
  * promise 缓存函数
@@ -16,7 +17,7 @@ function promiseCache(fn, convertParam, ctx) {
     return new TypeError('first argument is not a function', 10);
   }
   if (!promiseCache.cache) {
-    promiseCache.cache = {};
+    promiseCache.cache = Object.create(null);
   }
   return function handle(...args) {
     const cachKey = convertParam.apply(ctx, args);
@@ -25,6 +26,15 @@ function promiseCache(fn, convertParam, ctx) {
     }
     return promiseCache.cache[cachKey];
   };
+}
+
+/**
+ * 清空 promise 缓存函数
+ */
+export function cleanPromiseCache() {
+  if (promiseCache.cache) {
+    promiseCache.cache = Object.create(null);
+  }
 }
 
 /**
@@ -43,7 +53,11 @@ export const login = (params) => {
   if (!phone || !password) {
     return Promise.reject(new Error('手机号或者密码不能为空'));
   }
-  return axios.get(`${domain}/login/cellphone?phone=${phone}&password=${password}`).then(data => data.data).catch(err => err.response);
+  const param = {
+    method: 'get',
+    url: `${domain}/login/cellphone?phone=${phone}&password=${password}`,
+  };
+  return axios.request(param).then(data => data.data).catch(err => err.response);
 };
 
 /**
@@ -54,10 +68,12 @@ export const requestResource = promiseCache((cookie) => {
   const params = {
     method: 'get',
     url: `${domain}/recommend/resource`,
-    headers: {
-      cookie,
-    },
   };
+  if (cookie) {
+    params.headers = {
+      cookie,
+    };
+  }
   return axios.request(params).then(data => data.data);
 }, () => 'resource');
 
@@ -89,33 +105,71 @@ export const requestSongUrl = promiseCache(id => axios.get(`${domain}/song/url?i
  * 获取登录状态
  * @return {Promise}
  */
-export const requestLoginStatus = () => axios.get(`${domain}/login/status`).then(data => data.data);
+export const requestLoginStatus = (cookie) => {
+  const param = {
+    method: 'get',
+    url: `${domain}/login/status`,
+  };
+  if (cookie) {
+    param.headers = {
+      cookie,
+    };
+  }
+  return axios.request(param).then(data => data.data);
+};
 
 /**
  * 获取用户创建歌单
  * @param {Number} useId 用户id
  * @return {Promise}
  */
-export const requestUserPlaylist = promiseCache(
-  uid => axios.get(`${domain}/user/playlist?uid=${uid}`).then(data => data.data),
-  uid => `userPlaylist-${uid}`,
-);
+export const requestUserPlaylist = promiseCache((uid, cookie) => {
+  const param = {
+    method: 'get',
+    url: `${domain}/user/playlist?uid=${uid}`,
+  };
+  if (cookie) {
+    param.headers = {
+      cookie,
+    };
+  }
+  return axios.request(param).then(data => data.data);
+}, uid => `userPlaylist-${uid}`);
 
 /**
  * 获取用户信息
  * @param {Number} useId 用户id
  * @return {Promise}
  */
-export const requestUserDetail = promiseCache(
-  uid => axios.get(`${domain}/user/detail?uid=${uid}`).then(data => data.data),
-  uid => `userDetail-${uid}`,
-);
+export const requestUserDetail = promiseCache((uid, cookie) => {
+  const param = {
+    method: 'get',
+    url: `${domain}/user/detail?uid=${uid}`,
+  };
+  if (cookie) {
+    param.headers = {
+      cookie,
+    };
+  }
+  return axios.request(param).then(data => data.data);
+}, uid => `userDetail-${uid}`);
 
 /**
  * 获取动态消息
  * @return {Promise}
  */
-export const requestEvent = () => axios.get(`${domain}/event`).then(data => data.data);
+export const requestEvent = (cookie) => {
+  const param = {
+    method: 'get',
+    url: `${domain}/event`,
+  };
+  if (cookie) {
+    param.headers = {
+      cookie,
+    };
+  }
+  return axios.request(param).then(data => data.data);
+};
 
 /**
  * 获取歌词

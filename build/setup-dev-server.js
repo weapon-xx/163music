@@ -6,9 +6,9 @@ const chokidar = require('chokidar');
 const clientConfig = require('./webpack.client.config');
 const serverConfig = require('./webpack.server.config');
 
-const readFile = (fileSystem, file) => {
+const readFile = (fs, file) => {
   try {
-    return fileSystem.readFileSync(path.join(clientConfig.output.path, file), 'utf-8');
+    return fs.readFileSync(path.join(clientConfig.output.path, file), 'utf-8');
   } catch (e) {
     console.log(e);
   }

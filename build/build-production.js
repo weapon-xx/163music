@@ -12,8 +12,10 @@ log(chalk.green('Start building...'));
 
 function handle(err, stats) {
   if (err) { throw err; }
-  // https://webpack.docschina.org/configuration/stats/#src/components/Sidebar/Sidebar.jsx
-  // stats config
+  /**
+   * @see https://webpack.docschina.org/configuration/stats/#src/components/Sidebar/Sidebar.jsx
+   * stats config
+   */
   process.stdout.write(stats.toString({
     colors: true,
     builtAt: true,

@@ -14,32 +14,19 @@
 </template>
 <script>
 import { mapGetters } from 'vuex';
-import { requestUserPlaylist } from '../api';
 
 export default {
+  asyncData({ store, cookie }) {
+    return store.dispatch('requestMyMusic', cookie);
+  },
   computed: {
     ...mapGetters(['userId', 'userPlayList']),
   },
-  watch: {
-    userId(nval) {
-      if (nval) {
-        this.requestUserPlaylist();
-      }
-    },
-  },
+  watch: {},
   data() {
     return {};
   },
   methods: {
-    requestUserPlaylist() {
-      this.$pop.loadingShow();
-      requestUserPlaylist(this.userId).then((data) => {
-        this.$pop.loadingHide();
-        if (+data.code === 200) {
-          this.$store.commit('updateUserPlayList', data.playlist);
-        }
-      });
-    },
     goPlaylist(id) {
       if (id) {
         this.$router.push(`/playlist/${id}`);
@@ -47,8 +34,9 @@ export default {
     },
   },
   mounted() {
-    if (this.userId) {
-      this.requestUserPlaylist();
+    // if ssr fetch didn't work, fetch data again in mounted hook.
+    if (this.userId && this.userPlayList.length === 0) {
+      this.$store.dispatch('requestMyMusic');
     }
   },
 };

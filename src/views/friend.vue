@@ -103,9 +103,16 @@ const SHOW_IMG = 1;
 const SHOW_VIDEO = 2;
 
 export default {
+  asyncData({ store, cookie }) {
+    return store.dispatch('requestFriend', cookie);
+  },
+  computed: {
+    events() {
+      return this.$store.state.events;
+    },
+  },
   data() {
     return {
-      events: [],
       requesting: false,
       pulldown: {
         text: {
@@ -155,10 +162,10 @@ export default {
         vm.requesting = true;
         requestEvent().then((data) => {
           if (+data.code === 200) {
-            vm.events = data.event.map((item) => {
+            this.$store.commit('updateEvents', data.event.map((item) => {
               item.data = JSON.parse(item.json);
               return item;
-            });
+            }));
             vm.pulldown.status = SUCCESS_STATUS;
           } else {
             vm.pulldown.status = ERROR_STATUS;
@@ -202,18 +209,23 @@ export default {
   },
   mounted() {
     this.$pop.loadingShow();
-    requestEvent().then((data) => {
+    if (this.events.length === 0) {
+      requestEvent().then((data) => {
+        this.$pop.loadingHide();
+        if (+data.code === 200) {
+          this.$store.commit('updateEvents', data.event.map((item) => {
+            item.data = JSON.parse(item.json);
+            return item;
+          }));
+          this.$nextTick(() => {
+            this.initScroll();
+          });
+        }
+      });
+    } else {
       this.$pop.loadingHide();
-      if (+data.code === 200) {
-        this.events = data.event.map((item) => {
-          item.data = JSON.parse(item.json);
-          return item;
-        });
-        this.$nextTick(() => {
-          this.initScroll();
-        });
-      }
-    });
+      this.initScroll();
+    }
   },
 };
 </script>
