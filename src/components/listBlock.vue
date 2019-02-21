@@ -9,7 +9,7 @@
                 v-for="(item, index) in handleList" @click="goPlaylist(item.id)">
                 <i class="wif icon-headset count-icon">{{handleCount(item.playcount)}}</i>
                 <img class="list-item-cover" :src="item.picUrl" alt="">
-                <p class="list-item-title">{{item.copywriter}}</p>
+                <p class="list-item-title">{{item.name}}</p>
             </li>
         </ul>
     </div>
@@ -72,7 +72,7 @@ export default {
     overflow: hidden;
     li {
         position: relative;
-        width: 32%;
+        width: 32vw;
         margin-bottom: 10px;
         .count-icon {
             position: absolute;
@@ -92,8 +92,8 @@ export default {
         .list-item-title {
             font-size: 12px;
             overflow: hidden;
-            height: 24px;
-            line-height: 13px;
+            height: 26px;
+            line-height: 14px;
             white-space: pre-wrap;
             overflow: hidden;
             text-overflow: ellipsis;

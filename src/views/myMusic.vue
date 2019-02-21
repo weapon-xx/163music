@@ -35,8 +35,13 @@ export default {
   },
   mounted() {
     // if ssr fetch didn't work, fetch data again in mounted hook.
+    this.$pop.loadingShow();
     if (this.userId && this.userPlayList.length === 0) {
-      this.$store.dispatch('requestMyMusic');
+      this.$store.dispatch('requestMyMusic').then(() => {
+        this.$pop.loadingHide();
+      });
+    } else {
+      this.$pop.loadingHide();
     }
   },
 };

@@ -17,10 +17,10 @@ export default {
   updateSongId(state, id) {
     state.song.id = id;
   },
-  duration(state, time) {
+  updateDuration(state, time) {
     state.song.duration = time;
   },
-  currentTime(state, time) {
+  updateCurrentTime(state, time) {
     state.song.currentTime = time;
   },
   updatePlaylist(state, playlist) {

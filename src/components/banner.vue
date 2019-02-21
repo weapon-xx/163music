@@ -36,7 +36,6 @@ export default {
 @import "../style/common.scss";
 
 .swiper-container {
-  min-height: 120px;
   .bullet-active {
     background-color: $main_color;
     opacity: 1;

@@ -1,7 +1,7 @@
 <template>
     <div class="player-box">
-        {{isPlay}}
-        <audio :src="songUrl"  autoplay="true" muted="muted"></audio>
+      <!-- <audio :src="songUrl" muted autoplay></audio> -->
+      <audio :src="songUrl" controls></audio>
     </div>
 </template>
 <script>
@@ -18,11 +18,20 @@ export default {
     ...mapGetters(['isPlay', 'songUrl', 'currentTime']),
   },
   watch: {
-    songUrl() {
-      // this.load()
-      // this.play()
+    songUrl(nval) {
+      // url updated
+      if (nval) {
+        this.play().then(() => {
+          if(!this.isPlay) {
+            this.$store.commit('', true);
+          }
+        }).catch((e) => {
+          console.error(e.message);
+        });
+      }
     },
     isPlay(nval) {
+      // flag updated
       if (nval) {
         this.play();
       } else {
@@ -37,14 +46,10 @@ export default {
   },
   methods: {
     play() {
-      if (this.audio) {
-        this.audio.play();
-      }
+      return this.audio.play();
     },
     pause() {
-      if (this.audio) {
-        this.audio.pause();
-      }
+      return this.audio.pause();
     },
   },
   mounted() {
@@ -52,11 +57,11 @@ export default {
     this.audio = this.$el.querySelector('audio');
 
     this.audio.oncanplay = function oncanplay() {
-      vm.$store.commit('duration', parseInt(this.duration, 10));
+      vm.$store.commit('updateDuration', parseInt(this.duration, 10));
     };
 
     this.audio.addEventListener('timeupdate', (event) => {
-      vm.$store.commit('currentTime', parseInt(event.currentTarget.currentTime, 10));
+      vm.$store.commit('updateCurrentTime', parseInt(event.currentTarget.currentTime, 10));
     }, false);
 
     this.audio.addEventListener('ended', () => {

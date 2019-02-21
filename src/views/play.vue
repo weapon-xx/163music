@@ -12,9 +12,9 @@
         </div>
         <div v-show="!isShowLyric" class="player-cover-box">
           <img class="player-cover-rod" :class="[isPlay ? 'active' : '']" src="../img/rod.png" alt="">
-          <div class="player-cover-wrap">
+          <div class="player-cover-wrap" :class="[isPlay ? 'active' : '']">
               <img class="player-cover-cd" src="../img/cd.png" alt="" @click="switchLyric">
-              <img class="player-cover" :class="[isPlay ? 'active' : '']" :src="song && song.al.picUrl" alt="">
+              <img class="player-cover" :src="song && song.al.picUrl" alt="">
           </div>
         </div>
         <div v-show="isShowLyric" class="player-lyric-wrap" @click="switchLyric">
@@ -175,7 +175,7 @@ export default {
         }, false);
 
         document.addEventListener('touchend', () => {
-          vm.$store.commit('currentTime', dragTime);
+          vm.$store.commit('updateCurrentTime', dragTime);
           vm.showDragTime = undefined; // 重置拖拽时进度条时间
         }, false);
       }, false);
@@ -189,10 +189,7 @@ export default {
       // url
       if (urlId !== this.songId) {
         songId = urlId;
-        if (!this.isPlay) {
-          this.operate();
-        }
-        this.$store.commit('currentTime', 0);
+        this.$store.commit('updateCurrentTime', 0);
         localStorage.setItem(LCKEY, JSON.stringify({ songId })); // 设置缓存
       } else {
         ({ songId } = this);
@@ -203,7 +200,10 @@ export default {
     } else {
       // localStorage
       ({ songId } = (JSON.parse(localStorage.getItem(LCKEY)) || {}));
-      this.operate(); // 自动播放
+    }
+    if (!songId) {
+      this.$pop.prompt('当前没有选中任何歌曲哦');
+      return;
     }
     this.updateSongInfo(songId);
     this.initDrag();
@@ -274,7 +274,7 @@ export default {
 .player-cover-box {
     position: relative;
     overflow: hidden;
-    padding: 60px 0;
+    padding: 70px 0;
     .player-cover-rod {
         position: absolute;
         top: -15px;
@@ -294,10 +294,12 @@ export default {
 
 .player-cover-wrap {
     position: relative;
-    width: 80%;
+    width: 90%;
     margin: 0 auto;
     border-radius: 50%;
     border: 1px solid #ccc;
+    animation: coverRotate 10s linear infinite running;
+    animation-play-state: paused;
     .player-cover-cd {
         display: block;
         width: 100%;
@@ -312,10 +314,8 @@ export default {
         margin-left: -32%;
         margin-top: -32%;
         z-index: -1;
-        animation: coverRotate 10s linear infinite running;
-        animation-play-state: paused;
     }
-    .active {
+    &.active {
         animation-play-state: running;
     }
 }
@@ -332,9 +332,10 @@ export default {
 .player-lyric-wrap {
   position: relative;
   width: 80%;
-  height: 400px;
+  height: 150px;
   margin: 20px auto 0;
   overflow-y: scroll;
+  padding-top: 250px;
   p {
     text-align: center;
     font-size: 14px;

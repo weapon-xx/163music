@@ -3,16 +3,13 @@
         <ul class="friend-event-list">
             <div :class="[{loading: requesting}, 'pulldown-wrapper']">
                 <div class="pulldown-wrapper-box">
-                    <i :class="[{active: requesting}, 'wif', 'icon-loading', 'friend-loading']"></i>
+                    <i :class="[{active: pulldown.status === 1}, 'wif', 'friend-arrow', pulldown.status === 2 ? 'icon-loading friend-loading' : 'icon-arrow']"></i>
                     <span v-show="pulldown.status === 0">{{pulldown.text.default}}</span>
                     <span v-show="pulldown.status === 1">{{pulldown.text.ready}}</span>
                     <span v-show="pulldown.status === 2">{{pulldown.text.loading}}</span>
                     <span v-show="pulldown.status === 3">{{pulldown.text.succuess}}</span>
                     <span v-show="pulldown.status === 4">{{pulldown.text.error}}</span>
                 </div>
-                <p v-show="pulldown.time">
-                    最后更新:{{pulldown.time}}
-                </p>
             </div>
             <li class="friend-event" v-for="(item, index) in events" :key="index">
                 <img class="friend-event-avatart" :src="item.user.avatarUrl"/>
@@ -34,6 +31,7 @@
                         <p class="friend-event-content">
                             {{item.data.msg}}
                         </p>
+                        <!-- a -->
                         <div class="friend-event-video-wrap" v-show="item.data && item.data.video" @click="viewVideo(item.data.video.videoId)">
                             <div class="friend-event-video-info">
                                 <div class="friend-event-video-info-left">
@@ -48,9 +46,11 @@
                             </div>
                             <img class="friend-event-video-cover" :src="item.data.video && item.data.video.coverUrl" alt="" />
                         </div>
+                        <!-- img -->
                         <div class="friend-event-img-wrap" v-show="item.pics">
                             <img v-for="(pic, index) in item.pics" :key="index" :src="pic.squareUrl" @click="viewBigPic(pic.originUrl)" />
                         </div>
+                        <!-- song -->
                         <div class="friend-event-song-wrap" v-show="item.data &&item.data.song" @click="goPlay(item.data.song.id)">
                             <img class="friend-event-song-cover" :src="item.data.song && item.data.song.album.picUrl" alt="">
                             <div class="friend-event-song-info">
@@ -67,9 +67,10 @@
             </li>
         </ul>
         <transition name="fade">
-            <div class="floating-wraper" v-show="floating.isShow" @click="closeFloating">
-                <div class="floating-wraper-mask"></div>
-                <img v-show="floating.type === 1" class="floating-img absolute-center" :src="floating.src" alt="">
+            <div class="floating-wraper" v-show="floating.isShow">
+                <div class="floating-wraper-mask" @click="closeFloating"></div>
+                <i class="wif icon-error friend-floating-close" @click="closeFloating"></i>
+                <img v-show="floating.type === 1" class="floating-img absolute-center" :src="floating.src" alt=""> -->
                 <video ref="floatingVideo" v-show="floating.type === 2"
                 class="floating-video absolute-center" :src="floating.src" controls autoplay></video>
             </div>
@@ -79,7 +80,6 @@
 <script>
 import BScroll from 'better-scroll';
 import { requestEvent, getVideoUrl } from '../api';
-import { convertDateToTime } from '../javascript/util';
 
 // 0：初始状态；1：准备加载；2：正在加载；3：成功；4：失败
 const DEFAULT_STATUS = 0;
@@ -122,7 +122,6 @@ export default {
           error: '刷新失败(>_<)',
           loading: '更新中...',
         },
-        time: undefined,
         status: DEFAULT_STATUS,
       },
       showFloating: false,
@@ -170,7 +169,6 @@ export default {
           } else {
             vm.pulldown.status = ERROR_STATUS;
           }
-          vm.pulldown.time = convertDateToTime(new Date());
           setTimeout(() => {
             vm.requesting = false; // 重置更新开关
             vm.pulldown.status = DEFAULT_STATUS; // 重置更新状态
@@ -359,8 +357,9 @@ export default {
     margin-bottom: 5px;
     img {
         display: block;
-        width: 33%;
+        width: 32%;
         height: 100%;
+        margin-right: 1%;
         margin-bottom: 2px;
     }
 }
@@ -385,6 +384,13 @@ export default {
     .floating-img, .floating-video {
         display: block;
         width: 100%;
+    }
+    .friend-floating-close {
+      position: absolute;
+      top: 5px;
+      left: 5px;
+      color: #fff;
+      font-size: 30px;
     }
 }
 
@@ -423,13 +429,18 @@ export default {
     }
 }
 
-.friend-loading {
+.friend-arrow {
     display: inline-block;
     width: 24px;
     font-size: 24px;
     margin-right: 5px;
+    transition: transform .3s ease;
     &.active {
-        animation: rorate 2s ease infinite;
+        transform: rotate(180deg);
     }
+}
+
+.friend-loading {
+    animation: rorate 2s ease infinite;
 }
 </style>

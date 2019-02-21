@@ -3,7 +3,7 @@
         <i :class="[{focus: isOpen}, 'wif', 'icon-voice', 'i-voice']" ></i>
         <div :class="[{focus: isOpen}, 'search-box']">
           <input ref="input" type="text" v-model="keyword" placeholder="输入关键字搜索单曲">
-          <i :class="[{focus: isOpen}, 'clear-btn']" @click="clear">✘</i>
+          <i :class="[{focus: isOpen}, 'clear-btn wif icon-error']" @click="clear"></i>
         </div>
         <div :class="[{active: isPlay}, {focus: isOpen}, 'voice-box']"
         @click="goPlay(0)" ref="voice_box">
@@ -96,10 +96,12 @@ export default {
   },
   mounted() {
     const vm = this;
-    this.$refs.input.addEventListener('focus', () => {
-      vm.isFocus = true;
-      vm.isOpen = true; // 开启搜索框
-    }, false);
+    if (this.$refs.input && this.$refs.input.addEventListener) {
+      this.$refs.input.addEventListener('focus', () => {
+        vm.isFocus = true;
+        vm.isOpen = true; // 开启搜索框
+      }, false);
+    }
   },
 };
 </script>
