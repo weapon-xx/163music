@@ -1,13 +1,13 @@
 /* eslint-disable */
 
-import createApp from '../../../src/main';
-const { app, router } = createApp();
+import createApp from '@/main';
+const { app } = createApp();
 
 
 describe('Plugin', () => {
     const vm = app.$mount();
 
-    it('pop plugin is load correctly', () => {
+    it('pop plugin can be load', () => {
         expect(typeof vm.$pop !== undefined).to.be.equal(true);
     }) 
 

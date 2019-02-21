@@ -13,5 +13,4 @@ describe('App', () => {
     it('app has 3 childnodes', () => {
       expect(vm.$el.childNodes.length).to.be.equal(3);
     });
-
 });

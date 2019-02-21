@@ -1,6 +1,6 @@
 /* eslint-disable */
 
-import createApp from '../../../src/main';
+import createApp from '@/main';
 const { app, router } = createApp();
 
 describe('Router', () => {
@@ -15,5 +15,4 @@ describe('Router', () => {
             expect(typeof route.component === 'function').to.be.equal(true);            
         })
     });
-
 });
