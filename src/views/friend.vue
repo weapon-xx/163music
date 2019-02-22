@@ -256,6 +256,13 @@ export default {
     display: flex;
     flex: 1;
     flex-direction: column;
+    .friend-event-header {
+        height: 40px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin-bottom: 20px;
+    }
 }
 
 .friend-event-header {

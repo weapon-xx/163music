@@ -33,12 +33,10 @@ export default {
     },
     data() {
         return {
-            route: undefined,
+            route: this.$route.name,
         };
     },
-    mounted() {
-        this.route = this.$route.name;
-    },
+    mounted() {},
 };
 </script>
 
@@ -51,7 +49,7 @@ export default {
     width: 90%;
     position: fixed;
     left: 0;
-    bottom: 0;
+    bottom: -1px;
     padding: 5px 5% 3px;
     background-color: #fff;
     border-top: 1px solid #f6f6f6;

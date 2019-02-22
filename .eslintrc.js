@@ -1,6 +1,5 @@
 /**
- * eslint config
- *
+ * eslint config file
  */
 
 module.exports = {
@@ -18,7 +17,7 @@ module.exports = {
   ],
   rules: {
     // 4 space indent
-    // 'indent': ['error', 4],
+    'indent': ['error', 4],
 
     // max character in single line
     'max-len': [1, 150, 4],

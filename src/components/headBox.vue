@@ -1,5 +1,5 @@
 <template>
-    <div class="head" :class="[{focus: isOpen}]">
+    <div class="head">
         <i class="wif icon-voice i-voice" :class="[{focus: isOpen}]" ></i>
         <div class="search-box" :class="[{focus: isOpen}]">
           <input ref="input" type="text" v-model="keyword" placeholder="输入关键字搜索单曲">
@@ -112,16 +112,12 @@ export default {
   position: fixed;
   top: 0;
   left: 0;
-  background-color: $main_color;
-  border-bottom: 1px solid #a40011;
   display: flex;
   justify-content: space-between;
   align-items: center;
   z-index: 100;
   transition: all .3s ease;
-  &.focus {
-    background-color: #fff;
-  }
+  background: #fff;
 }
 
 .search-box {
@@ -129,12 +125,11 @@ export default {
     box-sizing: border-box;
     width: 70%;
     height: 28px;
-    background-color: #fff;
+    background-color: #f2f2f2;
     border-radius: 30px;
     transition: all .5s ease;
     &.focus {
       width: 100%;
-      border: 1px solid #8b8b8b;
       input {
         text-align: left;
       }
@@ -147,6 +142,7 @@ export default {
       line-height: 24px;
       text-align: center;
       color: $font_color;
+      background-color: #f2f2f2;
       font-size: 14px;
       outline: none;
       border: none;
@@ -168,7 +164,7 @@ export default {
 
 .wif.i-voice {
   font-size: 26px;
-  color: #fff;
+  color: $font_color;
   &.focus {
     display: none;
   }
@@ -187,7 +183,7 @@ export default {
   i {
     height: 24px;
     width: 1px;
-    background-color: #fff;
+    background-color: $font_color;
     transition: all .5s ease;
   }
   i:nth-of-type(1) {
@@ -249,7 +245,7 @@ export default {
   left: 0;
   bottom: 0;
   width: 100%;
-  background-color: #fff;
+  background-color: #f2f2f2;
   display: none;
   &.focus {
     display: block;

@@ -61,7 +61,7 @@ export default {
         display: flex;
         align-items: center;
         padding-left: 10px;
-        height: 80px;
+        height: 66px;
         .user-list-item-cover {
             display: block;
             width: 60px;

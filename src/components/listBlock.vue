@@ -24,8 +24,8 @@ export default {
     },
     computed: {
         handleList() {
-            if (this.list.length > 6) {
-                return this.list.slice(0, 6);
+            if (this.list.length > this.showCount) {
+                return this.list.slice(0, this.showCount);
             }
             return this.list;
         },
@@ -66,9 +66,9 @@ export default {
     flex-wrap: wrap;
     flex-direction: row;
     justify-content: space-between;
+    width: 98%;
     list-style: none;
-    padding: 0 5px;
-    margin: 0;
+    margin: 0 auto;
     overflow: hidden;
     li {
         position: relative;

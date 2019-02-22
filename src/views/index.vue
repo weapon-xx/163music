@@ -2,7 +2,7 @@
   <div class="index-container">
       <headBox></headBox>
       <banner :banners='banners'></banner>
-      <listBlock ref="recommend" :title="recommendTitle" :list="recommend" :showCount="recommendShowCount"></listBlock>
+      <listBlock ref="recommend" :title="'推荐歌单'" :list="recommend" :showCount="9"></listBlock>
   </div>
 </template>
 
@@ -10,7 +10,7 @@
 import headBox from '../components/headBox.vue';
 import banner from '../components/banner.vue';
 import listBlock from '../components/listBlock.vue';
-import { requestLoginStatus } from '@/api/index';
+import { requestLoginStatus } from '../api/index';
 
 export default {
     components: { headBox, banner, listBlock },
@@ -26,10 +26,7 @@ export default {
         },
     },
     data() {
-        return {
-            recommendTitle: '推荐标题',
-            recommendShowCount: true,
-        };
+        return {};
     },
     methods: {},
     mounted() {
@@ -54,5 +51,6 @@ export default {
 <style lang="scss" scoped>
 .index-container {
   padding-top: 50px;
+  padding-bottom: 66px;
 }
 </style>

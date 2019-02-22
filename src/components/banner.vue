@@ -2,7 +2,7 @@
   <div class="swiper-container" ref="swiper" v-swiper:mySwiper="swiperOption" >
     <div :class="['swiper-wrapper banner-wrapper', {'transparent': !isInit}]">
       <div class="swiper-slide" v-for="(slide, index) in banners" :key="index">
-        <img :src="slide.imageUrl" alt="" style="width: 100%;">
+        <img class="banner-cover" :src="slide.imageUrl" alt="" style="width: 100%;">
       </div>
     </div>
     <div class="swiper-pagination swiper-pagination-bullets" slot="pagination"></div>
@@ -36,6 +36,7 @@ export default {
 @import "../style/common.scss";
 
 .swiper-container {
+  width: 98%;
   .bullet-active {
     background-color: $main_color;
     opacity: 1;
@@ -45,6 +46,10 @@ export default {
 .banner-wrapper {
   opacity: 1;
   transition: opacity .3 ease;
+}
+
+.banner-cover {
+  border-radius: 5px;
 }
 
 .transparent {
