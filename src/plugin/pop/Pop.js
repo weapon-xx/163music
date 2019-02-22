@@ -6,21 +6,21 @@ import PopTemplate from './Pop.vue';
 const PopConstructor = Vue.extend(PopTemplate);
 
 function Pop(options) {
-  const pop = new PopConstructor({
-    el: document.createElement('div'),
-    data: options,
-  });
+    const pop = new PopConstructor({
+        el: document.createElement('div'),
+        data: options,
+    });
 
-  if (pop.$el) {
-    document.querySelector('body').appendChild(pop.$el);
-  }
+    if (pop.$el) {
+        document.querySelector('body').appendChild(pop.$el);
+    }
 
-  if (options && options.name) {
-    Vue.prototype[`$${options.name}`] = pop;
-  } else {
-    Vue.prototype.$pop = pop;
-  }
-  return pop;
+    if (options && options.name) {
+        Vue.prototype[`$${options.name}`] = pop;
+    } else {
+        Vue.prototype.$pop = pop;
+    }
+    return pop;
 }
 
 Pop.install = function install() {};

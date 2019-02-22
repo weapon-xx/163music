@@ -21,24 +21,24 @@
 
 <script>
 export default {
-  computed: {
-    isHide() {
-      return !['index', 'myMusic', 'friend', 'userDetail'].includes(this.route);
+    computed: {
+        isHide() {
+            return !['index', 'myMusic', 'friend', 'userDetail'].includes(this.route);
+        },
     },
-  },
-  watch: {
-    $route(to) {
-      this.route = to.name;
+    watch: {
+        $route(to) {
+            this.route = to.name;
+        },
     },
-  },
-  data() {
-    return {
-      route: undefined,
-    };
-  },
-  mounted() {
-    this.route = this.$route.name;
-  },
+    data() {
+        return {
+            route: undefined,
+        };
+    },
+    mounted() {
+        this.route = this.$route.name;
+    },
 };
 </script>
 

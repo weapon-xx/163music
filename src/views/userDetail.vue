@@ -31,35 +31,35 @@ import { mapGetters } from 'vuex';
 import { requestUserDetail } from '../api';
 
 export default {
-  computed: {
-    ...mapGetters(['userId']),
-  },
-  watch: {
-    userId(nval) {
-      if (nval) {
-        this.requestUserDetail(nval);
-      }
+    computed: {
+        ...mapGetters(['userId']),
     },
-  },
-  data() {
-    return {
-      profile: {},
-    };
-  },
-  methods: {
-    requestUserDetail(userId) {
-      requestUserDetail(userId).then((data) => {
-        if (+data.code === 200) {
-          this.profile = data.profile;
+    watch: {
+        userId(nval) {
+            if (nval) {
+                this.requestUserDetail(nval);
+            }
+        },
+    },
+    data() {
+        return {
+            profile: {},
+        };
+    },
+    methods: {
+        requestUserDetail(userId) {
+            requestUserDetail(userId).then((data) => {
+                if (+data.code === 200) {
+                    this.profile = data.profile;
+                }
+            });
+        },
+    },
+    mounted() {
+        if (this.userId) {
+            this.requestUserDetail(this.userId);
         }
-      });
     },
-  },
-  mounted() {
-    if (this.userId) {
-      this.requestUserDetail(this.userId);
-    }
-  },
 };
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->

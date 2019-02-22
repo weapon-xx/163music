@@ -10,26 +10,26 @@ const VueAwesomeSwiper = isBrowser ? require('vue-awesome-swiper/dist/ssr') : un
 const pop = isBrowser ? require('./plugin/pop') : undefined;
 
 if (isBrowser) {
-  // load vue-awesome-swiper
-  Vue.use(VueAwesomeSwiper);
-  // load pop plugin
-  Vue.use(pop);
+    // load vue-awesome-swiper
+    Vue.use(VueAwesomeSwiper);
+    // load pop plugin
+    Vue.use(pop);
 }
 
 Vue.config.productionTip = false;
 
 export default function createApp() {
-  const router = createRouter();
-  const store = createStore();
+    const router = createRouter();
+    const store = createStore();
 
-  // sync router & state
-  sync(store, router);
+    // sync router & state
+    sync(store, router);
 
-  const app = new Vue({
-    router,
-    store,
-    render: h => h(App),
-  });
+    const app = new Vue({
+        router,
+        store,
+        render: h => h(App),
+    });
 
-  return { app, router, store };
+    return { app, router, store };
 }

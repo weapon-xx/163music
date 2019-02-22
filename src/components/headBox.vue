@@ -1,32 +1,29 @@
 <template>
-    <div :class="[{focus: isOpen}, 'head']">
-        <i :class="[{focus: isOpen}, 'wif', 'icon-voice', 'i-voice']" ></i>
-        <div :class="[{focus: isOpen}, 'search-box']">
+    <div class="head" :class="[{focus: isOpen}]">
+        <i class="wif icon-voice i-voice" :class="[{focus: isOpen}]" ></i>
+        <div class="search-box" :class="[{focus: isOpen}]">
           <input ref="input" type="text" v-model="keyword" placeholder="输入关键字搜索单曲">
-          <i :class="[{focus: isOpen}, 'clear-btn wif icon-error']" @click="clear"></i>
+          <i class="clear-btn wif icon-error" :class="[{focus: isOpen}]" @click="clear"></i>
         </div>
-        <div :class="[{active: isPlay}, {focus: isOpen}, 'voice-box']"
-        @click="goPlay(0)" ref="voice_box">
+        <div class="voice-box" :class="[{active: isPlay}, {focus: isOpen}]" @click="goPlay(0)" ref="voice_box">
           <i></i>
           <i></i>
           <i></i>
           <i></i>
         </div>
-        <p :class="[{focus: isOpen}, 'cancel-btn']" @click="cancel">取消</p>
-        <div :class="[{focus: isOpen}, 'serch-box']">
-          <ul :class="[{active: isFocus}, 'search-word-box']">
-            <li class="search-word first single-line-overflow"
-            v-show="keyword" @click="search(keyword)">
+        <p class="cancel-btn" :class="[{focus: isOpen}]" @click="cancel">取消</p>
+        <div class="serch-box" :class="[{focus: isOpen}]">
+          <ul class="search-word-box" :class="[{active: isFocus}]">
+            <li class="search-word first single-line-overflow" v-show="keyword" @click="search(keyword)">
               <i class="wif icon-search"></i>搜索 “{{keyword}}”
             </li>
-            <li class="search-word single-line-overflow"
-            :key="index" v-for="(item, index) in suggestList" @click="search(item.name)">
+            <li class="search-word single-line-overflow" :key="index" v-for="(item, index) in suggestList" @click="search(item.name)">
               <i class="wif icon-search"></i>
               {{item.name}} - {{item.artist.name}}
             </li>
           </ul>
-          <ul ref="searchList" :class="[{active: !isFocus}, 'serch-list-box']">
-            <li :class="[isFocus ? 'focus' : 'blur', 'serch-list-item']"
+          <ul ref="searchList" class="serch-list-box" :class="[{active: !isFocus}]">
+            <li class="serch-list-item" :class="[isFocus ? 'focus' : 'blur']"
             :key="index" v-for="(item, index) in songs" @click="goPlay(item.id)">
               <p class="serch-list-item-songname single-line-overflow">{{item.name}}</p>
               <p class="serch-list-item-songinfo single-line-overflow">
@@ -41,68 +38,68 @@
 import { requestSuggestKeyword, requestSearchByKeyword } from '../api';
 
 export default {
-  name: 'headBox',
-  computed: {
-    isPlay() {
-      return this.$store.getters.isPlay;
+    name: 'headBox',
+    computed: {
+        isPlay() {
+            return this.$store.getters.isPlay;
+        },
     },
-  },
-  data() {
-    return {
-      custom: '',
-      keyword: undefined,
-      suggestList: [],
-      songs: [],
-      isFocus: false, // 输入框是否聚焦
-      isOpen: false, // 是否进入搜索
-    };
-  },
-  watch: {
-    keyword(nval) {
-      if (nval) {
-        this.requestSuggestKeyword(nval);
-      } else {
-        this.suggestList = [];
-      }
+    data() {
+        return {
+            custom: '',
+            keyword: undefined,
+            suggestList: [],
+            songs: [],
+            isFocus: false, // 输入框是否聚焦
+            isOpen: false, // 是否进入搜索
+        };
     },
-  },
-  methods: {
-    goPlay(id) {
-      this.$router.push(`/play/${id}`);
+    watch: {
+        keyword(nval) {
+            if (nval) {
+                this.requestSuggestKeyword(nval);
+            } else {
+                this.suggestList = [];
+            }
+        },
     },
-    clear() {
-      this.keyword = '';
-      this.$refs.input.focus();
+    methods: {
+        goPlay(id) {
+            this.$router.push(`/play/${id}`);
+        },
+        clear() {
+            this.keyword = '';
+            this.$refs.input.focus();
+        },
+        cancel() {
+            this.isFocus = false;
+            this.isOpen = false;
+        },
+        requestSuggestKeyword(keyword) {
+            requestSuggestKeyword(keyword).then((data) => {
+                if (+data.code === 200) {
+                    this.suggestList = data.result.albums;
+                }
+            });
+        },
+        search(keyword) {
+            this.isFocus = false;
+            requestSearchByKeyword(keyword).then((data) => {
+                if (+data.code === 200) {
+                    this.songs = data.result.songs;
+                }
+            });
+        },
     },
-    cancel() {
-      this.isFocus = false;
-      this.isOpen = false;
-    },
-    requestSuggestKeyword(keyword) {
-      requestSuggestKeyword(keyword).then((data) => {
-        if (+data.code === 200) {
-          this.suggestList = data.result.albums;
+    mounted() {
+        const vm = this;
+        if (this.$refs.input && this.$refs.input.addEventListener) {
+            this.$refs.input.addEventListener('focus', () => {
+                vm.isFocus = true;
+                vm.isOpen = true; // 开启搜索框
+            }, false);
         }
-      });
     },
-    search(keyword) {
-      this.isFocus = false;
-      requestSearchByKeyword(keyword).then((data) => {
-        if (+data.code === 200) {
-          this.songs = data.result.songs;
-        }
-      });
-    },
-  },
-  mounted() {
-    const vm = this;
-    if (this.$refs.input && this.$refs.input.addEventListener) {
-      this.$refs.input.addEventListener('focus', () => {
-        vm.isFocus = true;
-        vm.isOpen = true; // 开启搜索框
-      }, false);
-    }
-  },
 };
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->

@@ -5,17 +5,17 @@ const { app, router, store } = createApp();
 
 const islogin = isLogin();
 if (router.currentRoute.path === '/login') {
-  if (islogin) {
-    router.push('/');
-  }
+    if (islogin) {
+        router.push('/');
+    }
 } else if (!islogin) {
-  router.push('/login');
+    router.push('/login');
 }
 
 router.onReady(() => {
-  app.$mount('#app');
+    app.$mount('#app');
 });
 
 if (window.__INITIAL_STATE__) {
-  store.replaceState(window.__INITIAL_STATE__);
+    store.replaceState(window.__INITIAL_STATE__);
 }

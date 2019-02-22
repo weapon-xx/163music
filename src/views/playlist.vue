@@ -3,7 +3,7 @@
         <div class="list-topbar">
             <i class="wif icon-left list-topbar-icon" @click="goBack"></i>
             <h4 class="list-topbar-title">歌单</h4>
-            <div :class="[{active: isPlay}, 'voice-box']" @click="goPlay(0)" ref="voice_box">
+            <div class="'voice-box'" :class="[{active: isPlay}]" @click="goPlay(0)" ref="voice_box">
                 <i></i>
                 <i></i>
                 <i></i>
@@ -45,42 +45,42 @@ import { requestPlaylistDetail } from '../api';
 import * as util from '../javascript/util';
 
 export default {
-  computed: {
-    isPlay() {
-      return this.$store.getters.isPlay;
+    computed: {
+        isPlay() {
+            return this.$store.getters.isPlay;
+        },
     },
-  },
-  data() {
-    return {
-      playlist: {
-        tracks: [],
-        creator: {},
-      },
-    };
-  },
-  methods: {
-    goBack() {
-      this.$router.back();
+    data() {
+        return {
+            playlist: {
+                tracks: [],
+                creator: {},
+            },
+        };
     },
-    goPlay(id) {
-      this.$router.push(`/play/${id}`);
-      if (this.$store.state.playlist.id !== this.playlist.id) {
-        this.$store.commit('updatePlaylist', this.playlist);
-      }
+    methods: {
+        goBack() {
+            this.$router.back();
+        },
+        goPlay(id) {
+            this.$router.push(`/play/${id}`);
+            if (this.$store.state.playlist.id !== this.playlist.id) {
+                this.$store.commit('updatePlaylist', this.playlist);
+            }
+        },
+        handleCount(num) {
+            return util.handleCount(num);
+        },
     },
-    handleCount(num) {
-      return util.handleCount(num);
+    mounted() {
+        this.$pop.loadingShow();
+        requestPlaylistDetail(this.$route.params.id).then((data) => {
+            this.$pop.loadingHide();
+            if (data && +data.code === 200) {
+                this.playlist = data.playlist;
+            }
+        });
     },
-  },
-  mounted() {
-    this.$pop.loadingShow();
-    requestPlaylistDetail(this.$route.params.id).then((data) => {
-      this.$pop.loadingHide();
-      if (data && +data.code === 200) {
-        this.playlist = data.playlist;
-      }
-    });
-  },
 };
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->

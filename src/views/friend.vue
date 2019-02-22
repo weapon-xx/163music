@@ -1,9 +1,10 @@
 <template>
     <div class="friend-container">
         <ul class="friend-event-list">
-            <div :class="[{loading: requesting}, 'pulldown-wrapper']">
+            <div class="pulldown-wrapper" :class="[{loading: requesting}]">
                 <div class="pulldown-wrapper-box">
-                    <i :class="[{active: pulldown.status === 1}, 'wif', 'friend-arrow', pulldown.status === 2 ? 'icon-loading friend-loading' : 'icon-arrow']"></i>
+                    <i class="wif pulldown-icon"
+                    :class="[{active: pulldown.status === 1}, pulldown.status === 2 ? 'icon-loading pulldown-loading' : 'icon-arrow']"></i>
                     <span v-show="pulldown.status === 0">{{pulldown.text.default}}</span>
                     <span v-show="pulldown.status === 1">{{pulldown.text.ready}}</span>
                     <span v-show="pulldown.status === 2">{{pulldown.text.loading}}</span>
@@ -103,128 +104,128 @@ const SHOW_IMG = 1;
 const SHOW_VIDEO = 2;
 
 export default {
-  asyncData({ store, cookie }) {
-    return store.dispatch('requestFriend', cookie);
-  },
-  computed: {
-    events() {
-      return this.$store.state.events;
+    asyncData({ store, cookie }) {
+        return store.dispatch('requestFriend', cookie);
     },
-  },
-  data() {
-    return {
-      requesting: false,
-      pulldown: {
-        text: {
-          default: '下拉刷新',
-          ready: '松开更新',
-          succuess: '刷新成功',
-          error: '刷新失败(>_<)',
-          loading: '更新中...',
+    computed: {
+        events() {
+            return this.$store.state.events;
         },
-        status: DEFAULT_STATUS,
-      },
-      showFloating: false,
-      floating: {
-        isShow: false,
-        src: undefined,
-        type: SHOW_IMG,
-      },
-    };
-  },
-  methods: {
-    initScroll() {
-      const vm = this;
-      const scroll = new BScroll('.friend-container', {
-        scrollbar: true, // 滚动条
-        pullDownRefresh: { // 开启下拉刷新
-          threshold: 80, // 下拉距离
-          stop: 60, // 回弹距离
+    },
+    data() {
+        return {
+            requesting: false,
+            pulldown: {
+                text: {
+                    default: '下拉刷新',
+                    ready: '松开更新',
+                    succuess: '刷新成功',
+                    error: '刷新失败(>_<)',
+                    loading: '更新中...',
+                },
+                status: DEFAULT_STATUS,
+            },
+            showFloating: false,
+            floating: {
+                isShow: false,
+                src: undefined,
+                type: SHOW_IMG,
+            },
+        };
+    },
+    methods: {
+        initScroll() {
+            const vm = this;
+            const scroll = new BScroll('.friend-container', {
+                scrollbar: true, // 滚动条
+                pullDownRefresh: { // 开启下拉刷新
+                    threshold: 80, // 下拉距离
+                    stop: 60, // 回弹距离
+                },
+                click: true, // 开启点击事件
+            });
+            scroll.on('scroll', (pos) => {
+                if (!vm.requesting) {
+                    if (pos.y > 0) {
+                        if (pos.y > 80) {
+                            vm.pulldown.status = READY_STATUS;
+                        } else {
+                            vm.pulldown.status = DEFAULT_STATUS;
+                        }
+                    }
+                }
+            });
+            scroll.on('pullingDown', () => {
+                // 刷新请求
+                if (vm.requesting) return;
+                vm.pulldown.status = LOADING_STATUS;
+                vm.requesting = true;
+                requestEvent().then((data) => {
+                    if (+data.code === 200) {
+                        this.$store.commit('updateEvents', data.event.map((item) => {
+                            item.data = JSON.parse(item.json);
+                            return item;
+                        }));
+                        vm.pulldown.status = SUCCESS_STATUS;
+                    } else {
+                        vm.pulldown.status = ERROR_STATUS;
+                    }
+                    setTimeout(() => {
+                        vm.requesting = false; // 重置更新开关
+                        vm.pulldown.status = DEFAULT_STATUS; // 重置更新状态
+                        scroll.finishPullDown();
+                    }, 1e3);
+                });
+            });
         },
-        click: true, // 开启点击事件
-      });
-      scroll.on('scroll', (pos) => {
-        if (!vm.requesting) {
-          if (pos.y > 0) {
-            if (pos.y > 80) {
-              vm.pulldown.status = READY_STATUS;
-            } else {
-              vm.pulldown.status = DEFAULT_STATUS;
+        closeFloating() {
+            if (this.floating.isShow) {
+                this.floating.isShow = false;
             }
-          }
-        }
-      });
-      scroll.on('pullingDown', () => {
-        // 刷新请求
-        if (vm.requesting) return;
-        vm.pulldown.status = LOADING_STATUS;
-        vm.requesting = true;
-        requestEvent().then((data) => {
-          if (+data.code === 200) {
-            this.$store.commit('updateEvents', data.event.map((item) => {
-              item.data = JSON.parse(item.json);
-              return item;
-            }));
-            vm.pulldown.status = SUCCESS_STATUS;
-          } else {
-            vm.pulldown.status = ERROR_STATUS;
-          }
-          setTimeout(() => {
-            vm.requesting = false; // 重置更新开关
-            vm.pulldown.status = DEFAULT_STATUS; // 重置更新状态
-            scroll.finishPullDown();
-          }, 1e3);
-        });
-      });
+            if (this.floating.type === SHOW_VIDEO) {
+                this.$refs.floatingVideo.pause();
+            }
+        },
+        viewBigPic(src) {
+            this.floating.isShow = true;
+            this.floating.src = src;
+            this.floating.type = SHOW_IMG;
+        },
+        viewVideo(id) {
+            getVideoUrl(id).then((data) => {
+                if (data.data && +data.data.code === 200) {
+                    this.floating.type = SHOW_VIDEO;
+                    this.floating.isShow = true;
+                    this.floating.src = data.data.urls[0].url;
+                }
+            });
+        },
+        goPlay(id) {
+            if (id) {
+                this.$router.push(`/play/${id}`);
+            }
+        },
     },
-    closeFloating() {
-      if (this.floating.isShow) {
-        this.floating.isShow = false;
-      }
-      if (this.floating.type === SHOW_VIDEO) {
-        this.$refs.floatingVideo.pause();
-      }
-    },
-    viewBigPic(src) {
-      this.floating.isShow = true;
-      this.floating.src = src;
-      this.floating.type = SHOW_IMG;
-    },
-    viewVideo(id) {
-      getVideoUrl(id).then((data) => {
-        if (data.data && +data.data.code === 200) {
-          this.floating.type = SHOW_VIDEO;
-          this.floating.isShow = true;
-          this.floating.src = data.data.urls[0].url;
-        }
-      });
-    },
-    goPlay(id) {
-      if (id) {
-        this.$router.push(`/play/${id}`);
-      }
-    },
-  },
-  mounted() {
-    this.$pop.loadingShow();
-    if (this.events.length === 0) {
-      requestEvent().then((data) => {
-        this.$pop.loadingHide();
-        if (+data.code === 200) {
-          this.$store.commit('updateEvents', data.event.map((item) => {
-            item.data = JSON.parse(item.json);
-            return item;
-          }));
-          this.$nextTick(() => {
+    mounted() {
+        this.$pop.loadingShow();
+        if (this.events.length === 0) {
+            requestEvent().then((data) => {
+                this.$pop.loadingHide();
+                if (+data.code === 200) {
+                    this.$store.commit('updateEvents', data.event.map((item) => {
+                        item.data = JSON.parse(item.json);
+                        return item;
+                    }));
+                    this.$nextTick(() => {
+                        this.initScroll();
+                    });
+                }
+            });
+        } else {
+            this.$pop.loadingHide();
             this.initScroll();
-          });
         }
-      });
-    } else {
-      this.$pop.loadingHide();
-      this.initScroll();
-    }
-  },
+    },
 };
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -429,7 +430,7 @@ export default {
     }
 }
 
-.friend-arrow {
+.pulldown-icon {
     display: inline-block;
     width: 24px;
     font-size: 24px;
@@ -440,7 +441,7 @@ export default {
     }
 }
 
-.friend-loading {
+.pulldown-loading {
     animation: rorate 2s ease infinite;
 }
 </style>

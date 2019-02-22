@@ -10,43 +10,31 @@
 <script>
 import player from './components/player.vue';
 import footBox from './components/footBox.vue';
-import { requestLoginStatus } from './api/index';
 
 export default {
-  name: 'app',
-  components: { player, footBox },
-  data() {
-    return {
-      transitionName: '',
-    };
-  },
-  watch: {
-    $route(to, from) {
-      const firstScreenArr = ['index', 'myMusic', 'friend', 'userDetail'];
-      if (!firstScreenArr.includes(from.name) || !firstScreenArr.includes(to.name)) {
-        if (this.$router.isBack) {
-          this.transitionName = 'slide-right';
-        } else {
-          this.transitionName = 'slide-left';
-        }
-      } else {
-        this.transitionName = 'custom';
-      }
-      this.$router.isBack = false;// 重置
+    name: 'app',
+    components: { player, footBox },
+    data() {
+        return {
+            transitionName: '',
+        };
     },
-  },
-  mounted() {
-    this.$pop.loadingShow();
-    requestLoginStatus().then((data) => {
-      this.$pop.loadingHide();
-      if (+data.code === 200) {
-        this.$store.commit('updateUserId', data.bindings[1].userId);
-      }
-    }).catch((e) => {
-      this.$pop.loadingHide();
-      throw e;
-    });
-  },
+    watch: {
+        $route(to, from) {
+            const firstScreenArr = ['index', 'myMusic', 'friend', 'userDetail'];
+            if (!firstScreenArr.includes(from.name) || !firstScreenArr.includes(to.name)) {
+                if (this.$router.isBack) {
+                    this.transitionName = 'slide-right';
+                } else {
+                    this.transitionName = 'slide-left';
+                }
+            } else {
+                this.transitionName = 'custom';
+            }
+            this.$router.isBack = false;// 重置
+        },
+    },
+    mounted() {},
 };
 </script>
 <style lang="scss">

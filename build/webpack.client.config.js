@@ -5,22 +5,22 @@ const path = require('path');
 const base = require('./webpack.base.config');
 
 const clientConfig = merge(base, {
-  target: 'web',
-  entry: {
-    app: './src/entry-client.js',
-  },
-  output: {
-    path: path.resolve('dist'),
-    filename: 'js/[name].[hash:8].bundle.js',
-  },
-  plugins: [
+    target: 'web',
+    entry: {
+        app: './src/entry-client.js',
+    },
+    output: {
+        path: path.resolve('dist'),
+        filename: 'js/[name].[hash:8].bundle.js',
+    },
+    plugins: [
     // strip dev-only code in Vue source
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
-      'process.env.VUE_ENV': '"client"',
-    }),
-    new VueSSRClientPlugin(),
-  ],
+        new webpack.DefinePlugin({
+            'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
+            'process.env.VUE_ENV': '"client"',
+        }),
+        new VueSSRClientPlugin(),
+    ],
 });
 
 module.exports = clientConfig;

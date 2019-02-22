@@ -14,7 +14,7 @@
           <img class="player-cover-rod" :class="[isPlay ? 'active' : '']" src="../img/rod.png" alt="">
           <div class="player-cover-wrap" :class="[isPlay ? 'active' : '']">
               <img class="player-cover-cd" src="../img/cd.png" alt="" @click="switchLyric">
-              <img class="player-cover" :src="song && song.al.picUrl" alt="">
+              <img class="player-cover" :src="(song && song.al.picUrl)" alt="">
           </div>
         </div>
         <div v-show="isShowLyric" class="player-lyric-wrap" @click="switchLyric">
@@ -44,174 +44,174 @@ import { requestSongDetail, requestSongUrl, requestLyric } from '../api';
 import eventbus from '../javascript/eventbus';
 
 export default {
-  data() {
-    return {
-      song: undefined,
-      showDragTime: undefined,
-      lyric: undefined,
-      isShowLyric: false,
-    };
-  },
-  computed: {
-    ...mapGetters(['isPlay', 'songId', 'duration', 'currentTime', 'tracks']),
-    songDuration() {
-      const duration = this.duration !== undefined ? parseInt(this.duration, 10) : undefined;
-      return handleTime(duration);
+    data() {
+        return {
+            song: undefined,
+            showDragTime: undefined,
+            lyric: undefined,
+            isShowLyric: false,
+        };
     },
-    songCurrTime() {
-      const currentTime = this.currentTime !== undefined ? parseInt(this.currentTime, 10) : undefined;
-      return handleTime(currentTime);
+    computed: {
+        ...mapGetters(['isPlay', 'songId', 'duration', 'currentTime', 'tracks']),
+        songDuration() {
+            const duration = this.duration !== undefined ? parseInt(this.duration, 10) : undefined;
+            return handleTime(duration);
+        },
+        songCurrTime() {
+            const currentTime = this.currentTime !== undefined ? parseInt(this.currentTime, 10) : undefined;
+            return handleTime(currentTime);
+        },
+        playScale() {
+            if (this.duration !== undefined && this.currentTime !== undefined) {
+                return `${parseInt(this.currentTime / this.duration * 100, 10)}%`;
+            }
+            return '0%';
+        },
     },
-    playScale() {
-      if (this.duration !== undefined && this.currentTime !== undefined) {
-        return `${parseInt(this.currentTime / this.duration * 100, 10)}%`;
-      }
-      return '0%';
-    },
-  },
-  methods: {
-    back() {
-      this.$router.back();
-    },
-    nextSong() {
-      if (this.tracks.length === 0) {
-        this.$pop.prompt('抱歉，当前未选中任何歌单');
-        return;
-      }
-      let index = this.tracks.findIndex(song => +song.id === +this.songId);
-      if (index === this.tracks.length - 1) {
-        index = 1;
-      }
-      const nextSong = this.tracks.slice(index + 1, index + 2)[0];
-      this.updateSongInfo(nextSong.id);
-    },
-    preSong() {
-      if (this.tracks.length === 0) {
-        this.$pop.prompt('抱歉，当前未选中任何歌单');
-        return;
-      }
-      let index = this.tracks.filter(song => +song.id === +this.songId);
-      if (index === 0) {
-        index = this.tracks.length - 1;
-      }
-      const preSong = this.tracks.slice(index - 1, index)[0];
-      this.updateSongInfo(preSong.id);
-    },
-    operate() {
-      if (this.isPlay) {
-        this.$store.commit('operate', false);
-      } else {
-        this.$store.commit('operate', true);
-      }
-    },
-    switchLyric() {
-      this.isShowLyric = !this.isShowLyric;
-    },
-    updateSongInfo(songId) {
-      this.$store.commit('updateSongId', songId);
-      // 获取歌曲链接
-      this.requestSongUrl(songId).then((data) => {
-        if (data && +data.code === 200) {
-          this.$store.commit('updateSongUrl', data.data[0].url);
-        }
-      });
-      // 获取歌曲详情
-      this.requestSongDetail(songId).then((data) => {
-        if (data && +data.code === 200) {
-          [this.song] = data.songs;
-        }
-      });
-      // 获取歌词
-      this.requestLyric(songId).then((data) => {
-        if (data && +data.code === 200) {
-          if (data.nolyric) {
-            this.lyric = false;
-          } else {
-            const lyricArr = [];
-            data.lrc.lyric.split('\n').forEach((item) => {
-              const arr = item.match(/(\[.*\])(.*)/);
-              const obj = {};
-              if (!arr) { return; }
-              obj.time = arr[2] ? arr[1] : 0;
-              obj.lyric = arr[2] ? arr[2] : arr[1];
-              lyricArr.push(obj);
+    methods: {
+        back() {
+            this.$router.back();
+        },
+        nextSong() {
+            if (this.tracks.length === 0) {
+                this.$pop.prompt('抱歉，当前未选中任何歌单');
+                return;
+            }
+            let index = this.tracks.findIndex(song => +song.id === +this.songId);
+            if (index === this.tracks.length - 1) {
+                index = 1;
+            }
+            const nextSong = this.tracks.slice(index + 1, index + 2)[0];
+            this.updateSongInfo(nextSong.id);
+        },
+        preSong() {
+            if (this.tracks.length === 0) {
+                this.$pop.prompt('抱歉，当前未选中任何歌单');
+                return;
+            }
+            let index = this.tracks.filter(song => +song.id === +this.songId);
+            if (index === 0) {
+                index = this.tracks.length - 1;
+            }
+            const preSong = this.tracks.slice(index - 1, index)[0];
+            this.updateSongInfo(preSong.id);
+        },
+        operate() {
+            if (this.isPlay) {
+                this.$store.commit('operate', false);
+            } else {
+                this.$store.commit('operate', true);
+            }
+        },
+        switchLyric() {
+            this.isShowLyric = !this.isShowLyric;
+        },
+        updateSongInfo(songId) {
+            this.$store.commit('updateSongId', songId);
+            // 获取歌曲链接
+            this.requestSongUrl(songId).then((data) => {
+                if (data && +data.code === 200) {
+                    this.$store.commit('updateSongUrl', data.data[0].url);
+                }
             });
-            this.lyric = lyricArr;
-          }
+            // 获取歌曲详情
+            this.requestSongDetail(songId).then((data) => {
+                if (data && +data.code === 200) {
+                    [this.song] = data.songs;
+                }
+            });
+            // 获取歌词
+            this.requestLyric(songId).then((data) => {
+                if (data && +data.code === 200) {
+                    if (data.nolyric) {
+                        this.lyric = false;
+                    } else {
+                        const lyricArr = [];
+                        data.lrc.lyric.split('\n').forEach((item) => {
+                            const arr = item.match(/(\[.*\])(.*)/);
+                            const obj = {};
+                            if (!arr) { return; }
+                            obj.time = arr[2] ? arr[1] : 0;
+                            obj.lyric = arr[2] ? arr[2] : arr[1];
+                            lyricArr.push(obj);
+                        });
+                        this.lyric = lyricArr;
+                    }
+                }
+            });
+        },
+        requestSongDetail(songId) {
+            return requestSongDetail(songId).then(data => data);
+        },
+        requestSongUrl(songId) {
+            return requestSongUrl(songId).then(data => data);
+        },
+        requestLyric(songId) {
+            return requestLyric(songId).then(data => data);
+        },
+        initDrag() {
+            const vm = this;
+            const wrapWidth = 240;
+            const point = document.querySelector('.player-progress-point');
+            const playedProgress = document.querySelector('.player-progress-played');
+            const { offsetLeft } = document.querySelector('.player-progress-wrap');
+
+            point.addEventListener('touchstart', () => {
+                let dragTime;
+                document.addEventListener('touchmove', (event) => {
+                    let currentX = parseInt(event.touches[0].clientX, 10);
+                    if (currentX < offsetLeft) {
+                        currentX = offsetLeft;
+                    }
+                    if (currentX > offsetLeft + wrapWidth) {
+                        currentX = offsetLeft + wrapWidth;
+                    }
+                    const progressPos = (currentX - offsetLeft) / 240;
+                    dragTime = parseInt(vm.duration * progressPos, 10);
+                    vm.showDragTime = handleTime(dragTime);
+                    point.style.left = `${parseInt(progressPos * 100, 10)}%`;
+                    playedProgress.style.width = `${parseInt(progressPos * 100, 10)}%`;
+                }, false);
+
+                document.addEventListener('touchend', () => {
+                    vm.$store.commit('updateCurrentTime', dragTime);
+                    vm.showDragTime = undefined; // 重置拖拽时进度条时间
+                }, false);
+            }, false);
+        },
+    },
+    mounted() {
+        const LCKEY = 'music163';
+        let songId;
+        const urlId = +this.$route.params.id;
+        if (urlId) {
+            // url
+            if (urlId !== this.songId) {
+                songId = urlId;
+                this.$store.commit('updateCurrentTime', 0);
+                localStorage.setItem(LCKEY, JSON.stringify({ songId })); // 设置缓存
+            } else {
+                ({ songId } = this);
+            }
+        } else if (this.songId) {
+            // vuex
+            ({ songId } = this);
+        } else {
+            // localStorage
+            ({ songId } = (JSON.parse(localStorage.getItem(LCKEY)) || {}));
         }
-      });
+        if (!songId) {
+            this.$pop.prompt('当前没有选中任何歌曲哦');
+            return;
+        }
+        this.updateSongInfo(songId);
+        this.initDrag();
+        // 监听结束事件
+        eventbus.$on('songEnd', () => {
+            this.nextSong();
+        });
     },
-    requestSongDetail(songId) {
-      return requestSongDetail(songId).then(data => data);
-    },
-    requestSongUrl(songId) {
-      return requestSongUrl(songId).then(data => data);
-    },
-    requestLyric(songId) {
-      return requestLyric(songId).then(data => data);
-    },
-    initDrag() {
-      const vm = this;
-      const wrapWidth = 240;
-      const point = document.querySelector('.player-progress-point');
-      const playedProgress = document.querySelector('.player-progress-played');
-      const { offsetLeft } = document.querySelector('.player-progress-wrap');
-
-      point.addEventListener('touchstart', () => {
-        let dragTime;
-        document.addEventListener('touchmove', (event) => {
-          let currentX = parseInt(event.touches[0].clientX, 10);
-          if (currentX < offsetLeft) {
-            currentX = offsetLeft;
-          }
-          if (currentX > offsetLeft + wrapWidth) {
-            currentX = offsetLeft + wrapWidth;
-          }
-          const progressPos = (currentX - offsetLeft) / 240;
-          dragTime = parseInt(vm.duration * progressPos, 10);
-          vm.showDragTime = handleTime(dragTime);
-          point.style.left = `${parseInt(progressPos * 100, 10)}%`;
-          playedProgress.style.width = `${parseInt(progressPos * 100, 10)}%`;
-        }, false);
-
-        document.addEventListener('touchend', () => {
-          vm.$store.commit('updateCurrentTime', dragTime);
-          vm.showDragTime = undefined; // 重置拖拽时进度条时间
-        }, false);
-      }, false);
-    },
-  },
-  mounted() {
-    const LCKEY = 'music163';
-    let songId;
-    const urlId = +this.$route.params.id;
-    if (urlId) {
-      // url
-      if (urlId !== this.songId) {
-        songId = urlId;
-        this.$store.commit('updateCurrentTime', 0);
-        localStorage.setItem(LCKEY, JSON.stringify({ songId })); // 设置缓存
-      } else {
-        ({ songId } = this);
-      }
-    } else if (this.songId) {
-      // vuex
-      ({ songId } = this);
-    } else {
-      // localStorage
-      ({ songId } = (JSON.parse(localStorage.getItem(LCKEY)) || {}));
-    }
-    if (!songId) {
-      this.$pop.prompt('当前没有选中任何歌曲哦');
-      return;
-    }
-    this.updateSongInfo(songId);
-    this.initDrag();
-    // 监听结束事件
-    eventbus.$on('songEnd', () => {
-      this.nextSong();
-    });
-  },
 };
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -274,13 +274,13 @@ export default {
 .player-cover-box {
     position: relative;
     overflow: hidden;
-    padding: 70px 0;
+    padding: 84px 0;
     .player-cover-rod {
         position: absolute;
         top: -15px;
         left: 50%;
         display: block;
-        width: 100px;
+        width: 120px;
         margin-left: -20px;
         transform-origin: 15px 15px;
         transform: rotate(-30deg);
@@ -288,7 +288,7 @@ export default {
         z-index: 2;
     }
     .active {
-        transform: rotate(-6deg);
+        transform: rotate(0deg);
     }
 }
 
@@ -297,7 +297,7 @@ export default {
     width: 90%;
     margin: 0 auto;
     border-radius: 50%;
-    border: 1px solid #ccc;
+    border: 1px solid #eaeaea85;
     animation: coverRotate 10s linear infinite running;
     animation-play-state: paused;
     .player-cover-cd {

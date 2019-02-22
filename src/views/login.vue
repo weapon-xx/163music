@@ -20,38 +20,38 @@ import { login, cleanPromiseCache } from '../api/index';
 import { isLogin } from '../javascript/util';
 
 export default {
-  data() {
-    return {
-      phone: '',
-      password: '',
-    };
-  },
-  methods: {
-    login() {
-      if (!!this.phone && !!this.password) {
-        login({
-          phone: this.phone,
-          password: this.password,
-        }).then((data) => {
-          if (data && +data.code === 200) {
-            this.$router.push('/');
-            cleanPromiseCache();
-          } else {
-            this.$pop.prompt((data && data.data && data.data.msg) || '登录失败');
-          }
-        }).catch(() => {});
-      } else {
-        this.$pop.prompt('手机号码或者密码不能为空');
-      }
+    data() {
+        return {
+            phone: '',
+            password: '',
+        };
     },
-  },
-  mounted() {
-    if (isLogin()) {
-      setTimeout(() => {
-        window.location.href = '/';
-      }, 1e3);
-    }
-  },
+    methods: {
+        login() {
+            if (!!this.phone && !!this.password) {
+                login({
+                    phone: this.phone,
+                    password: this.password,
+                }).then((data) => {
+                    if (data && +data.code === 200) {
+                        this.$router.push('/');
+                        cleanPromiseCache();
+                    } else {
+                        this.$pop.prompt((data && data.data && data.data.msg) || '登录失败');
+                    }
+                }).catch(() => {});
+            } else {
+                this.$pop.prompt('手机号码或者密码不能为空');
+            }
+        },
+    },
+    mounted() {
+        if (isLogin()) {
+            setTimeout(() => {
+                window.location.href = '/';
+            }, 1e3);
+        }
+    },
 };
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->

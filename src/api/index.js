@@ -13,28 +13,28 @@ const domain = 'http://163api.jacksonx.cn';
  * @return {Function}
  */
 function promiseCache(fn, convertParam, ctx) {
-  if (typeof fn !== 'function') {
-    return new TypeError('first argument is not a function', 10);
-  }
-  if (!promiseCache.cache) {
-    promiseCache.cache = Object.create(null);
-  }
-  return function handle(...args) {
-    const cachKey = convertParam.apply(ctx, args);
-    if (!promiseCache.cache[cachKey]) {
-      promiseCache.cache[cachKey] = fn.apply(ctx, args);
+    if (typeof fn !== 'function') {
+        return new TypeError('first argument is not a function', 10);
     }
-    return promiseCache.cache[cachKey];
-  };
+    if (!promiseCache.cache) {
+        promiseCache.cache = Object.create(null);
+    }
+    return function handle(...args) {
+        const cachKey = convertParam.apply(ctx, args);
+        if (!promiseCache.cache[cachKey]) {
+            promiseCache.cache[cachKey] = fn.apply(ctx, args);
+        }
+        return promiseCache.cache[cachKey];
+    };
 }
 
 /**
  * 清空 promise 缓存函数
  */
 export function cleanPromiseCache() {
-  if (promiseCache.cache) {
-    promiseCache.cache = Object.create(null);
-  }
+    if (promiseCache.cache) {
+        promiseCache.cache = Object.create(null);
+    }
 }
 
 /**
@@ -49,15 +49,15 @@ export const requestBanner = promiseCache(() => axios.get(`${domain}/banner`).th
  * @return {Promise}
  */
 export const login = (params) => {
-  const { phone, password } = params;
-  if (!phone || !password) {
-    return Promise.reject(new Error('手机号或者密码不能为空'));
-  }
-  const param = {
-    method: 'get',
-    url: `${domain}/login/cellphone?phone=${phone}&password=${password}`,
-  };
-  return axios.request(param).then(data => data.data).catch(err => err.response);
+    const { phone, password } = params;
+    if (!phone || !password) {
+        return Promise.reject(new Error('手机号或者密码不能为空'));
+    }
+    const param = {
+        method: 'get',
+        url: `${domain}/login/cellphone?phone=${phone}&password=${password}`,
+    };
+    return axios.request(param).then(data => data.data).catch(err => err.response);
 };
 
 /**
@@ -65,16 +65,16 @@ export const login = (params) => {
  * @return {Promise}
  */
 export const requestResource = promiseCache((cookie) => {
-  const params = {
-    method: 'get',
-    url: `${domain}/recommend/resource`,
-  };
-  if (cookie) {
-    params.headers = {
-      cookie,
+    const params = {
+        method: 'get',
+        url: `${domain}/recommend/resource`,
     };
-  }
-  return axios.request(params).then(data => data.data);
+    if (cookie) {
+        params.headers = {
+            cookie,
+        };
+    }
+    return axios.request(params).then(data => data.data);
 }, () => 'resource');
 
 /**
@@ -83,8 +83,8 @@ export const requestResource = promiseCache((cookie) => {
  * @return {Promise}
  */
 export const requestPlaylistDetail = promiseCache(id => axios.request({
-  method: 'get',
-  url: `${domain}/playlist/detail?id=${id}`,
+    method: 'get',
+    url: `${domain}/playlist/detail?id=${id}`,
 }).then(data => data.data), id => `PlaylistDetail-${id}`);
 
 /**
@@ -106,16 +106,16 @@ export const requestSongUrl = promiseCache(id => axios.get(`${domain}/song/url?i
  * @return {Promise}
  */
 export const requestLoginStatus = (cookie) => {
-  const param = {
-    method: 'get',
-    url: `${domain}/login/status`,
-  };
-  if (cookie) {
-    param.headers = {
-      cookie,
+    const param = {
+        method: 'get',
+        url: `${domain}/login/status`,
     };
-  }
-  return axios.request(param).then(data => data.data);
+    if (cookie) {
+        param.headers = {
+            cookie,
+        };
+    }
+    return axios.request(param).then(data => data.data);
 };
 
 /**
@@ -124,16 +124,16 @@ export const requestLoginStatus = (cookie) => {
  * @return {Promise}
  */
 export const requestUserPlaylist = promiseCache((uid, cookie) => {
-  const param = {
-    method: 'get',
-    url: `${domain}/user/playlist?uid=${uid}`,
-  };
-  if (cookie) {
-    param.headers = {
-      cookie,
+    const param = {
+        method: 'get',
+        url: `${domain}/user/playlist?uid=${uid}`,
     };
-  }
-  return axios.request(param).then(data => data.data);
+    if (cookie) {
+        param.headers = {
+            cookie,
+        };
+    }
+    return axios.request(param).then(data => data.data);
 }, uid => `userPlaylist-${uid}`);
 
 /**
@@ -142,16 +142,16 @@ export const requestUserPlaylist = promiseCache((uid, cookie) => {
  * @return {Promise}
  */
 export const requestUserDetail = promiseCache((uid, cookie) => {
-  const param = {
-    method: 'get',
-    url: `${domain}/user/detail?uid=${uid}`,
-  };
-  if (cookie) {
-    param.headers = {
-      cookie,
+    const param = {
+        method: 'get',
+        url: `${domain}/user/detail?uid=${uid}`,
     };
-  }
-  return axios.request(param).then(data => data.data);
+    if (cookie) {
+        param.headers = {
+            cookie,
+        };
+    }
+    return axios.request(param).then(data => data.data);
 }, uid => `userDetail-${uid}`);
 
 /**
@@ -159,16 +159,16 @@ export const requestUserDetail = promiseCache((uid, cookie) => {
  * @return {Promise}
  */
 export const requestEvent = (cookie) => {
-  const param = {
-    method: 'get',
-    url: `${domain}/event`,
-  };
-  if (cookie) {
-    param.headers = {
-      cookie,
+    const param = {
+        method: 'get',
+        url: `${domain}/event`,
     };
-  }
-  return axios.request(param).then(data => data.data);
+    if (cookie) {
+        param.headers = {
+            cookie,
+        };
+    }
+    return axios.request(param).then(data => data.data);
 };
 
 /**
@@ -184,8 +184,8 @@ export const requestLyric = promiseCache(id => axios.get(`${domain}/lyric?id=${i
  * @return {Promise}
  */
 export const requestSuggestKeyword = promiseCache(
-  keywords => axios.get(`${domain}/search/suggest?keywords=${keywords}`).then(data => data.data),
-  keywords => `Suggest-${keywords}`,
+    keywords => axios.get(`${domain}/search/suggest?keywords=${keywords}`).then(data => data.data),
+    keywords => `Suggest-${keywords}`,
 );
 
 /**
@@ -194,8 +194,8 @@ export const requestSuggestKeyword = promiseCache(
  * @return {Promise}
  */
 export const requestSearchByKeyword = promiseCache(
-  keywords => axios.get(`${domain}/search?keywords= ${keywords}`).then(data => data.data),
-  keywords => `Search-${keywords}`,
+    keywords => axios.get(`${domain}/search?keywords= ${keywords}`).then(data => data.data),
+    keywords => `Search-${keywords}`,
 );
 
 /**

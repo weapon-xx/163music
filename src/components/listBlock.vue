@@ -18,29 +18,29 @@
 import * as util from '../javascript/util';
 
 export default {
-  props: ['title', 'list', 'showCount'],
-  data() {
-    return {};
-  },
-  computed: {
-    handleList() {
-      if (this.list.length > 6) {
-        return this.list.slice(0, 6);
-      }
-      return this.list;
+    props: ['title', 'list', 'showCount'],
+    data() {
+        return {};
     },
-  },
-  methods: {
-    goPlaylist(id) {
-      if (id) {
-        this.$router.push(`/playlist/${id}`);
-      }
+    computed: {
+        handleList() {
+            if (this.list.length > 6) {
+                return this.list.slice(0, 6);
+            }
+            return this.list;
+        },
     },
-    handleCount(num) {
-      return util.handleCount(num);
+    methods: {
+        goPlaylist(id) {
+            if (id) {
+                this.$router.push(`/playlist/${id}`);
+            }
+        },
+        handleCount(num) {
+            return util.handleCount(num);
+        },
     },
-  },
-  mounted() {},
+    mounted() {},
 };
 </script>
 <style lang="scss" scoped>

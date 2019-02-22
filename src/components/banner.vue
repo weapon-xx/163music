@@ -1,6 +1,6 @@
 <template>
   <div class="swiper-container" ref="swiper" v-swiper:mySwiper="swiperOption" >
-    <div :class="['swiper-wrapper', 'banner-wrapper', {'transparent': !isInit}]">
+    <div :class="['swiper-wrapper banner-wrapper', {'transparent': !isInit}]">
       <div class="swiper-slide" v-for="(slide, index) in banners" :key="index">
         <img :src="slide.imageUrl" alt="" style="width: 100%;">
       </div>
@@ -12,24 +12,24 @@
 import 'swiper/dist/css/swiper.css';
 
 export default {
-  props: ['banners'],
-  data() {
-    return {
-      swiperOption: {
-        pagination: {
-          el: '.swiper-pagination',
-          bulletActiveClass: 'bullet-active',
-          clickable: true,
-          // dynamicBullets: true
-        },
-      },
-      isInit: false,
-    };
-  },
-  methods: {},
-  mounted() {
-    this.isInit = true;
-  },
+    props: ['banners'],
+    data() {
+        return {
+            swiperOption: {
+                pagination: {
+                    el: '.swiper-pagination',
+                    bulletActiveClass: 'bullet-active',
+                    clickable: true,
+                    // dynamicBullets: true
+                },
+            },
+            isInit: false,
+        };
+    },
+    methods: {},
+    mounted() {
+        this.isInit = true;
+    },
 };
 </script>
 <style lang="scss">

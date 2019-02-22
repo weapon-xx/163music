@@ -6,15 +6,15 @@
  * @return {String} cookie值
  */
 export const getCookie = (key) => {
-  const reg = new RegExp(`(^|; )${key}=([^;]*)(;|$)`);
-  if (process.env.VUE_ENV === 'client') {
-    const arr = document.cookie.match(reg);
-    if (arr) {
-      return decodeURIComponent(arr[2]);
+    const reg = new RegExp(`(^|; )${key}=([^;]*)(;|$)`);
+    if (process.env.VUE_ENV === 'client') {
+        const arr = document.cookie.match(reg);
+        if (arr) {
+            return decodeURIComponent(arr[2]);
+        }
+        return '';
     }
     return '';
-  }
-  return '';
 };
 
 /**
@@ -23,10 +23,10 @@ export const getCookie = (key) => {
  * @return {Boolean} 是否登录
  */
 export const isLogin = () => {
-  if (getCookie('__csrf')) {
-    return true;
-  }
-  return false;
+    if (getCookie('__csrf')) {
+        return true;
+    }
+    return false;
 };
 
 /**
@@ -35,14 +35,14 @@ export const isLogin = () => {
  * @return {String}
  */
 export const handleCount = (num) => {
-  if (num) {
-    const str = String(num);
-    if (str.length > 5) {
-      return str.replace(/\d{4}$/, '万');
+    if (num) {
+        const str = String(num);
+        if (str.length > 5) {
+            return str.replace(/\d{4}$/, '万');
+        }
+        return str;
     }
-    return str;
-  }
-  return '';
+    return '';
 };
 
 /**
@@ -51,14 +51,14 @@ export const handleCount = (num) => {
  * @return {String}
  */
 export const handleTime = (time) => {
-  if (time) {
-    let minutes = `${parseInt(time / 60, 10)}`;
-    minutes = minutes.length > 1 ? minutes : `0${minutes}`;
-    let seconds = `${time % 60}`;
-    seconds = seconds.length > 1 ? seconds : `0${seconds}`;
-    return `${minutes}:${seconds}`;
-  }
-  return '00:00';
+    if (time) {
+        let minutes = `${parseInt(time / 60, 10)}`;
+        minutes = minutes.length > 1 ? minutes : `0${minutes}`;
+        let seconds = `${time % 60}`;
+        seconds = seconds.length > 1 ? seconds : `0${seconds}`;
+        return `${minutes}:${seconds}`;
+    }
+    return '00:00';
 };
 
 /**
@@ -67,8 +67,8 @@ export const handleTime = (time) => {
  * @return {String}
  */
 export const convertDateToTime = function convertDateToTime(date) {
-  if (date.constructor !== Date) { return ''; }
-  return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}-${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
+    if (date.constructor !== Date) { return ''; }
+    return `${date.getFullYear()}/${date.getMonth() + 1}/${date.getDate()}-${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`;
 };
 
 /**
@@ -79,15 +79,15 @@ export const convertDateToTime = function convertDateToTime(date) {
  * @return {Function}
  */
 export const debounce = (fn, delay) => {
-  let timer = null;
-  return function callback() {
-    if (timer) {
-      clearTimeout(timer);
-      timer = null;
-    }
-    timer = setTimeout(function handler(...args) {
-      fn.apply(this, args);
-      timer = null;
-    }, delay);
-  };
+    let timer = null;
+    return function callback() {
+        if (timer) {
+            clearTimeout(timer);
+            timer = null;
+        }
+        timer = setTimeout(function handler(...args) {
+            fn.apply(this, args);
+            timer = null;
+        }, delay);
+    };
 };

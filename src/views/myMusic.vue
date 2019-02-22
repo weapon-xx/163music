@@ -16,34 +16,34 @@
 import { mapGetters } from 'vuex';
 
 export default {
-  asyncData({ store, cookie }) {
-    return store.dispatch('requestMyMusic', cookie);
-  },
-  computed: {
-    ...mapGetters(['userId', 'userPlayList']),
-  },
-  watch: {},
-  data() {
-    return {};
-  },
-  methods: {
-    goPlaylist(id) {
-      if (id) {
-        this.$router.push(`/playlist/${id}`);
-      }
+    asyncData({ store, cookie }) {
+        return store.dispatch('requestMyMusic', cookie);
     },
-  },
-  mounted() {
+    computed: {
+        ...mapGetters(['userId', 'userPlayList']),
+    },
+    watch: {},
+    data() {
+        return {};
+    },
+    methods: {
+        goPlaylist(id) {
+            if (id) {
+                this.$router.push(`/playlist/${id}`);
+            }
+        },
+    },
+    mounted() {
     // if ssr fetch didn't work, fetch data again in mounted hook.
-    this.$pop.loadingShow();
-    if (this.userId && this.userPlayList.length === 0) {
-      this.$store.dispatch('requestMyMusic').then(() => {
-        this.$pop.loadingHide();
-      });
-    } else {
-      this.$pop.loadingHide();
-    }
-  },
+        this.$pop.loadingShow();
+        if (this.userId && this.userPlayList.length === 0) {
+            this.$store.dispatch('requestMyMusic').then(() => {
+                this.$pop.loadingHide();
+            });
+        } else {
+            this.$pop.loadingHide();
+        }
+    },
 };
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->

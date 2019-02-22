@@ -20,70 +20,70 @@ const LOADING = 1;
 const MSG = 2;
 
 export default {
-  data() {
-    return {
-      showType: MSG,
-      loading: false,
-      isShow: false,
-      text: '悬浮弹框文案',
-      btns: {
-        left: {
-          text: '',
-          handle: undefined,
+    data() {
+        return {
+            showType: MSG,
+            loading: false,
+            isShow: false,
+            text: '悬浮弹框文案',
+            btns: {
+                left: {
+                    text: '',
+                    handle: undefined,
+                },
+                right: {
+                    text: '',
+                    handle: undefined,
+                },
+            },
+        };
+    },
+    methods: {
+        clickLeft() {
+            if (typeof this.btns.left.handle === 'function') {
+                this.btns.left.handle.apply(this, this);
+            } else {
+                this.close();
+            }
         },
-        right: {
-          text: '',
-          handle: undefined,
+        clickRight() {
+            if (typeof this.btns.right.handle === 'function') {
+                this.btns.right.handle.apply(this, this);
+            } else {
+                this.close();
+            }
         },
-      },
-    };
-  },
-  methods: {
-    clickLeft() {
-      if (typeof this.btns.left.handle === 'function') {
-        this.btns.left.handle.apply(this, this);
-      } else {
-        this.close();
-      }
-    },
-    clickRight() {
-      if (typeof this.btns.right.handle === 'function') {
-        this.btns.right.handle.apply(this, this);
-      } else {
-        this.close();
-      }
-    },
-    show() {
-      this.isShow = true;
-    },
-    close() {
-      this.isShow = false;
-    },
-    prompt(text) {
-      this.showType = MSG;
-      this.text = text;
-      this.btns = {
-        left: {
-          text: '确定',
+        show() {
+            this.isShow = true;
         },
-      };
-      this.show();
+        close() {
+            this.isShow = false;
+        },
+        prompt(text) {
+            this.showType = MSG;
+            this.text = text;
+            this.btns = {
+                left: {
+                    text: '确定',
+                },
+            };
+            this.show();
+        },
+        confirm({ text, btns }) {
+            this.showType = MSG;
+            this.text = text;
+            this.btns = btns || undefined;
+            this.show();
+        },
+        loadingShow() {
+            this.showType = LOADING;
+            this.show();
+        },
+        loadingHide() {
+            this.showType = LOADING;
+            this.close();
+        },
     },
-    confirm({ text, btns }) {
-      this.showType = MSG;
-      this.text = text;
-      this.btns = btns || undefined;
-      this.show();
-    },
-    loadingShow() {
-      this.showType = LOADING;
-      this.show();
-    },
-    loadingHide() {
-      this.showType = LOADING;
-      this.close();
-    },
-  },
-  mounted() {},
+    mounted() {},
 };
 </script>
