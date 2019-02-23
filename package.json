@@ -1,7 +1,7 @@
 {
   "name": "163music",
   "version": "1.0.0",
-  "private": null,
+  "private": false,
   "author": "jacksonx <88180569@qq.com> (jacksonx.cn)",
   "scripts": {
     "dev": "cross-env NODE_ENV=development node server",
@@ -76,6 +76,9 @@
     "mocha": "^5.2.0",
     "node-sass": "^4.11.0",
     "phantomjs-prebuilt": "^2.1.16",
+    "postcss-loader": "^3.0.0",
+    "postcss-pixel-to-viewport": "^1.0.2",
+    "postcss-px-to-viewport": "^1.1.0",
     "sass-loader": "^7.1.0",
     "sinon": "^7.2.3",
     "sinon-chai": "^3.3.0",
@@ -83,11 +86,6 @@
     "url-loader": "^1.1.2",
     "vue-style-loader": "^4.1.2",
     "vue-template-compiler": "^2.6.6"
-  },
-  "postcss": {
-    "plugins": {
-      "autoprefixer": {}
-    }
   },
   "browserslist": [
     "> 1%",

@@ -2,7 +2,7 @@
   <div class="index-container">
       <headBox></headBox>
       <banner :banners='banners'></banner>
-      <listBlock ref="recommend" :title="'推荐歌单'" :list="recommend" :showCount="9"></listBlock>
+      <listBlock ref="recommend" :title="'推荐歌单'" :list="recommend" :showCount="9"  v-on:jump="goPlaylist"></listBlock>
   </div>
 </template>
 
@@ -28,7 +28,11 @@ export default {
     data() {
         return {};
     },
-    methods: {},
+    methods: {
+        goPlaylist(item) {
+            this.$router.push(`/playlist/${item.id}`);
+        },
+    },
     mounted() {
         this.$pop.loadingShow();
         // if ssr fetch didn't work, fetch data again in mounted hook.

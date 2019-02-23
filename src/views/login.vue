@@ -71,7 +71,6 @@ $bg_color: #e6e6e6;
 
 .logo {
     display: block;
-    // width: 90px;
     margin: 0 auto 20px;
     width: 160px;
     height: 69px;

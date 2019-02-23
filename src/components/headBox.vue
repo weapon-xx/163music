@@ -178,7 +178,6 @@ export default {
   height: 18px;
   &.focus {
     display: none;
-    // visibility: hidden;
   }
   i {
     height: 24px;

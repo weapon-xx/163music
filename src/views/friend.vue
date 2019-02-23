@@ -361,7 +361,6 @@ export default {
 .friend-event-img-wrap {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
     margin-bottom: 5px;
     img {
         display: block;

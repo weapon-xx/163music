@@ -6,7 +6,7 @@
         </h4>
         <ul class="list-block-wrap">
             <li class="list-block-item" :key="index"
-                v-for="(item, index) in handleList" @click="goPlaylist(item.id)">
+                v-for="(item, index) in handleList" @click="jump(item)">
                 <i class="wif icon-headset count-icon">{{handleCount(item.playcount)}}</i>
                 <img class="list-item-cover" :src="item.picUrl" alt="">
                 <p class="list-item-title">{{item.name}}</p>
@@ -31,10 +31,8 @@ export default {
         },
     },
     methods: {
-        goPlaylist(id) {
-            if (id) {
-                this.$router.push(`/playlist/${id}`);
-            }
+        jump(item) {
+            this.$emit('jump', item);
         },
         handleCount(num) {
             return util.handleCount(num);
@@ -100,15 +98,6 @@ export default {
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
-            // &:after {
-            //     content: "...";
-            //     font-weight: bold;
-            //     position: absolute;
-            //     bottom: 0;
-            //     right: 0;
-            //     padding: 0 10px 1px 0px;
-            //     background: #fff;
-            // }
         }
     }
 }
