@@ -14,7 +14,8 @@
           <img class="player-cover-rod" :class="[isPlay ? 'active' : '']" src="../img/rod.png" alt="">
           <div class="player-cover-wrap" :class="[isPlay ? 'active' : '']">
               <img class="player-cover-cd" src="../img/cd.png" alt="" @click="switchLyric">
-              <img class="player-cover" :src="(song && song.al.picUrl)" alt="">
+              <img class="player-cover" v-show="song" :src="(song && song.al.picUrl)">
+              <img class="player-cover" v-show="!song" src="../img/default-cover.jpg" alt="">
           </div>
         </div>
         <div v-show="isShowLyric" class="player-lyric-wrap" @click="switchLyric">
@@ -73,12 +74,15 @@ export default {
         back() {
             this.$router.back();
         },
-        nextSong() {
+        findSongIndex() {
             if (this.tracks.length === 0) {
                 this.$pop.prompt('抱歉，当前未选中任何歌单');
                 return;
             }
-            let index = this.tracks.findIndex(song => +song.id === +this.songId);
+            return this.tracks.findIndex(song => +song.id === +this.songId);
+        },
+        nextSong() {
+            let index = this.findSongIndex();
             if (index === this.tracks.length - 1) {
                 index = 1;
             }
@@ -86,11 +90,7 @@ export default {
             this.updateSongInfo(nextSong.id);
         },
         preSong() {
-            if (this.tracks.length === 0) {
-                this.$pop.prompt('抱歉，当前未选中任何歌单');
-                return;
-            }
-            let index = this.tracks.filter(song => +song.id === +this.songId);
+            let index = this.findSongIndex();
             if (index === 0) {
                 index = this.tracks.length - 1;
             }
@@ -98,6 +98,10 @@ export default {
             this.updateSongInfo(preSong.id);
         },
         operate() {
+            if(this.songId === 0) {
+                this.$pop.prompt('抱歉，当前未选中任何歌曲');
+                return;
+            }
             if (this.isPlay) {
                 this.$store.commit('operate', false);
             } else {
@@ -167,7 +171,7 @@ export default {
                     if (currentX > offsetLeft + wrapWidth) {
                         currentX = offsetLeft + wrapWidth;
                     }
-                    const progressPos = (currentX - offsetLeft) / 240;
+                    const progressPos = (currentX - offsetLeft) / wrapWidth;
                     dragTime = parseInt(vm.duration * progressPos, 10);
                     vm.showDragTime = handleTime(dragTime);
                     point.style.left = `${parseInt(progressPos * 100, 10)}%`;
@@ -202,7 +206,6 @@ export default {
             ({ songId } = (JSON.parse(localStorage.getItem(LCKEY)) || {}));
         }
         if (!songId) {
-            this.$pop.prompt('当前没有选中任何歌曲哦');
             return;
         }
         this.updateSongInfo(songId);
@@ -361,7 +364,7 @@ export default {
     }
     .player-progress-wrap {
         position: relative;
-        width: 240px;
+        width: 230px;
         height: 2px;
         border-radius: 20px;
         background-color: #f6f6f6;

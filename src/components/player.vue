@@ -22,15 +22,15 @@ export default {
             // url updated
             if (nval) {
                 /**
-         * @see https://developers.google.com/web/updates/2017/09/autoplay-policy-changes#webaudio
-         */
-                this.play().then(() => {
-                    if (!this.isPlay) {
-                        this.$store.commit('', true);
-                    }
-                }).catch((e) => {
-                    console.error(e.message);
-                });
+                 * @see https://developers.google.com/web/updates/2017/09/autoplay-policy-changes#webaudio
+                 */
+                // this.play().then(() => {
+                //     if (!this.isPlay) {
+                //         this.$store.commit('operate', true);
+                //     }
+                // }).catch((e) => {
+                //     console.error(e.message);
+                // });
             }
         },
         isPlay(nval) {

@@ -19,7 +19,7 @@
             </li>
             <li class="search-word single-line-overflow" :key="index" v-for="(item, index) in suggestList" @click="search(item.name)">
               <i class="wif icon-search"></i>
-              {{item.name}} - {{item.artist.name}}
+              {{item.name}}
             </li>
           </ul>
           <ul ref="searchList" class="serch-list-box" :class="[{active: !isFocus}]">
@@ -28,6 +28,9 @@
               <p class="serch-list-item-songname single-line-overflow">{{item.name}}</p>
               <p class="serch-list-item-songinfo single-line-overflow">
                 {{item.artists && item.artists[0].name}} - {{item.album && item.album.name}}
+              </p>
+              <p class="serch-list-item-songinfo single-line-overflow" v-for="(alia, index) in item.alias" :key="index">
+                {{alia}}
               </p>
             </li>
           </ul>
@@ -78,7 +81,7 @@ export default {
         requestSuggestKeyword(keyword) {
             requestSuggestKeyword(keyword).then((data) => {
                 if (+data.code === 200) {
-                    this.suggestList = data.result.albums;
+                    this.suggestList = data.result.songs;
                 }
             });
         },
@@ -298,7 +301,7 @@ export default {
     padding: 5px 0;
     .serch-list-item-songinfo {
       font-size: 12px;
-      line-height: 12px;
+      line-height: 16px;
     }
     .serch-list-item-songname {
       line-height: 24px;
