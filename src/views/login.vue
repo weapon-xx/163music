@@ -81,7 +81,7 @@ $bg_color: #e6e6e6;
 .login-form-box {
     display: flex;
     flex-direction: column;
-    width: 70%;
+    width: 300px;
     margin: 0 auto 10px;
 }
 
@@ -92,10 +92,12 @@ $bg_color: #e6e6e6;
     label {
         height: 34px;
         line-height: 34px;
+        text-align: right;
+        width: 50px;
     }
     input {
         display: block;
-        width: 80%;
+        width: 240px;
         height: 30px;
         line-height: 30px;
         border: 1px solid #ccc;
