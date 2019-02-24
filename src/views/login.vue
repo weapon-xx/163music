@@ -4,7 +4,7 @@
         <div class="logo"></div>
         <div class="login-form-box">
             <div class="login-form-line">
-                <label for="">账号</label>
+                <label for="">手机号</label>
                 <input type="text" v-model="phone">
             </div>
             <div class="login-form-line">
