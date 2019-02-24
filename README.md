@@ -5,11 +5,12 @@
 - 用户登录、日推歌单、查看创建歌单、查看动态、音乐播放、单曲搜索等；
 - webpack 构建和完善开发、部署流程；
 - 单元测试、风格测试；
-接下来会陆续添加一些新功能和对代码进行持续优化。
+
+接下来还会陆续添加一些新功能和对代码进行持续优化。
 
 如果您发现有什么问题或者更好的想法，欢迎提交 issue 和 pr，
 
-如果觉得项目有参考或者学习的价值，可以点击一下 star，非常感谢~
+如果觉得项目有参考或者学习的价值，可以点击一下 star ⭐️，非常感谢~
 
 ## 技术栈
 - *vue*：vue 2.6, vue-router, vuex, vue-server-renderer
@@ -29,13 +30,13 @@ npm install
 
 ### 开发环境运行
 ```
-配置静态 host: 163music.jacksonx.cn -> 127.0.0.1
+配置静态 host: dev.jacksonx.cn -> 127.0.0.1
 ```
 ```
 npm run dev
 ```
 ```
-浏览器访问 163music.jacksonx.cn:8080
+浏览器访问 dev.jacksonx.cn:8080
 ```
 
 ### 生产环境构建
@@ -60,8 +61,14 @@ npm run test
 npm run lint
 ```
 
-## 截图
+## 项目截图
+[在线体验](163music.jacksonx.cn) *(请使用 chrome 移动端调试体验)*
 
+![](https://github.com/weapon-xx/163music/blob/master/screenshot/v1.gif)
+
+![](https://github.com/weapon-xx/163music/blob/master/screenshot/search.gif)
+
+![](https://github.com/weapon-xx/163music/blob/master/screenshot/friend.gif)
 
 ## 相关资料
 [NeteaseCloudMusicApi](https://github.com/Binaryify/NeteaseCloudMusicApi)
