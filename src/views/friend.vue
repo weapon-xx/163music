@@ -395,7 +395,7 @@ export default {
     .friend-floating-close {
       position: absolute;
       top: 5px;
-      left: 5px;
+      right: 5px;
       color: #fff;
       font-size: 30px;
     }

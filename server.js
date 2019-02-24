@@ -125,5 +125,5 @@ app.get('*', isProd ? render : async (req, res) => {
 
 const port = process.env.PORT || 8080;
 app.listen(port, () => {
-    console.log(`server started at localhost:${port}`);
+    console.log(`server started at 127.0.0.1:${port}`);
 });

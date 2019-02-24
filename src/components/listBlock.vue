@@ -63,15 +63,20 @@ export default {
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
-    justify-content: space-between;
     width: 98%;
     list-style: none;
     margin: 0 auto;
     overflow: hidden;
-    li {
+    .list-block-item {
         position: relative;
         width: 32vw;
         margin-bottom: 10px;
+        &:nth-of-type(3n + 1) {
+            margin-right: 1vw;
+        }
+        &:nth-of-type(3n + 2) {
+            margin-right: 1vw;
+        }
         .count-icon {
             position: absolute;
             right: 3px;
