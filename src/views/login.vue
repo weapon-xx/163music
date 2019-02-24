@@ -90,8 +90,8 @@ $bg_color: #e6e6e6;
     justify-content: space-between;
     margin-bottom: 10px;
     label {
-        height: 30px;
-        line-height: 30px;
+        height: 34px;
+        line-height: 34px;
     }
     input {
         display: block;
