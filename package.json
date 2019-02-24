@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "cross-env NODE_ENV=development node server",
     "start": "cross-env NODE_ENV=production pm2 start server.js",
-    "build": "rimraf dist && cross-env NODE_ENV=production node build/build-production",
+    "build": "npx rimraf dist && cross-env NODE_ENV=production node build/build-production",
     "lint": "eslint --fix --ext .js,.vue .",
     "test": "karma start test/unit/karma.conf.js --single-run",
     "test:watch": "karma start test/unit/karma.conf.js",

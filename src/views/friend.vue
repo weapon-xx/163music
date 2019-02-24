@@ -398,6 +398,7 @@ export default {
       right: 5px;
       color: #fff;
       font-size: 30px;
+      z-index: 11;
     }
 }
 
