@@ -75,30 +75,34 @@ export default {
             this.$router.back();
         },
         findSongIndex() {
-            if (this.tracks.length === 0) {
-                this.$pop.prompt('抱歉，当前未选中任何歌单');
-                return;
-            }
             return this.tracks.findIndex(song => +song.id === +this.songId);
         },
         nextSong() {
-            let index = this.findSongIndex();
-            if (index === this.tracks.length - 1) {
-                index = 1;
+            if (this.tracks.length === 0) {
+                this.$pop.prompt('抱歉，当前未选中任何歌单');
+            } else {
+                let index = this.findSongIndex();
+                if (index === this.tracks.length - 1) {
+                    index = 1;
+                }
+                const nextSong = this.tracks.slice(index + 1, index + 2)[0];
+                this.updateSongInfo(nextSong.id);
             }
-            const nextSong = this.tracks.slice(index + 1, index + 2)[0];
-            this.updateSongInfo(nextSong.id);
         },
         preSong() {
-            let index = this.findSongIndex();
-            if (index === 0) {
-                index = this.tracks.length - 1;
+            if (this.tracks.length === 0) {
+                this.$pop.prompt('抱歉，当前未选中任何歌单');
+            } else {
+                let index = this.findSongIndex();
+                if (index === 0) {
+                    index = this.tracks.length - 1;
+                }
+                const preSong = this.tracks.slice(index - 1, index)[0];
+                this.updateSongInfo(preSong.id);
             }
-            const preSong = this.tracks.slice(index - 1, index)[0];
-            this.updateSongInfo(preSong.id);
         },
         operate() {
-            if(this.songId === 0) {
+            if (this.songId === 0) {
                 this.$pop.prompt('抱歉，当前未选中任何歌曲');
                 return;
             }
