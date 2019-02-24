@@ -30,7 +30,7 @@ describe('Vuex', () => {
         expect(store.state.song.isPlay).to.be.equal(true);
     });
 
-    it('commit mutation modify song Uurl', () => {
+    it('commit mutation modify song url', () => {
         expect(store.state.song.url).to.be.equal('');
         store.commit('updateSongUrl', 'test');
         expect(store.state.song.url).to.be.equal('test');
@@ -55,7 +55,7 @@ describe('Vuex', () => {
     });
 
     
-    it('commit mutation modify song currentTime', () => {
+    it('commit mutation modify playlist', () => {
         expect(store.state.playlist.id).to.be.equal(0);
         expect(store.state.playlist.tracks.length).to.be.equal(0);
         store.commit('updatePlaylist', {

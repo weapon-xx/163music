@@ -12,11 +12,13 @@
 
 如果觉得项目有参考或者学习的价值，可以点击一下 star ⭐️，非常感谢~
 
+[相关文章]()
+
 ## 技术栈
 - *vue*：vue 2.6, vue-router, vuex, vue-server-renderer
 - *webpack*：webpack 4, webpack-dev-middleware, webpack-hot-middleware
 - *node*：express 4
-- *test*：karma 4, mocha, chai, vue/test-utils, eslint
+- *test*：karma 4, mocha, sinon-chai, vue/test-utils, eslint
 
 ## 上手指南
 项目代码涉及 ES6/7 特性，Node 请安装 v8.0 以上版本

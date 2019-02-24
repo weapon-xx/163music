@@ -15,14 +15,16 @@ export default context => new Promise((resolve, reject) => {
         // call `asyncData()` method from components
         return Promise.all(matchedComponents.map((Component) => {
             if (!context.headers.cookie || !context.headers.cookie.includes('MUSIC_U')) {
-                return {};
-            } else if (Component.asyncData) {
+                return undefined;
+            }
+            if (Component.asyncData) {
                 return Component.asyncData({
                     store,
                     route: router.currentRoute,
                     cookie: context.headers.cookie,
                 });
             }
+            return undefined;
         })).then(() => {
             // state convert `window.__INITIAL_STATE__` and write into html
             context.state = store.state;

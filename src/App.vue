@@ -10,6 +10,7 @@
 <script>
 import player from './components/player.vue';
 import footBox from './components/footBox.vue';
+import { requestLoginStatus } from './api/index';
 
 export default {
     name: 'app',
@@ -34,7 +35,15 @@ export default {
             this.$router.isBack = false;// 重置
         },
     },
-    mounted() {},
+    mounted() {
+        requestLoginStatus().then((data) => {
+            if (+data.code === 200) {
+                this.$store.commit('updateUserId', data.bindings[1].userId);
+            }
+        }).catch((e) => {
+            console.error(e);
+        });
+    },
 };
 </script>
 <style lang="scss">

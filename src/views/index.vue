@@ -10,7 +10,6 @@
 import headBox from '../components/headBox.vue';
 import banner from '../components/banner.vue';
 import listBlock from '../components/listBlock.vue';
-import { requestLoginStatus } from '../api/index';
 
 export default {
     components: { headBox, banner, listBlock },
@@ -37,17 +36,12 @@ export default {
         this.$pop.loadingShow();
         // if ssr fetch didn't work, fetch data again in mounted hook.
         if (!this.recommend.length && !this.banners.length) {
-            this.$store.dispatch('requestIndex');
+            this.$store.dispatch('requestIndex').then(() => {
+                this.$pop.loadingHide();
+            });
+        } else {
+            this.$pop.loadingHide();
         }
-        requestLoginStatus().then((data) => {
-            this.$pop.loadingHide();
-            if (+data.code === 200) {
-                this.$store.commit('updateUserId', data.bindings[1].userId);
-            }
-        }).catch((e) => {
-            this.$pop.loadingHide();
-            console.error(e);
-        });
     },
 };
 </script>

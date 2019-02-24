@@ -74,7 +74,6 @@ module.exports = function (config) {
 
       // Test Libraries
       'karma-mocha',
-      // 'karma-chai',    // delete
       'karma-sinon-chai',
 
       // Launchers

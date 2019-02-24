@@ -55,7 +55,7 @@ module.exports = {
                     'vue-style-loader',
                     'css-loader',
                     'sass-loader',
-                    'postcss-loader'
+                    'postcss-loader',
                 ],
             },
             {

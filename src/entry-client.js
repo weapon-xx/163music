@@ -4,7 +4,7 @@ import { isLogin } from './javascript/util';
 const { app, router, store } = createApp();
 
 const islogin = isLogin();
-if (router.currentRoute.path === '/login') {
+if (router.history.pending.name === 'login') {
     if (islogin) {
         router.push('/');
     }

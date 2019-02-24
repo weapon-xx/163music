@@ -49,7 +49,7 @@ export default {
     width: 90%;
     position: fixed;
     left: 0;
-    bottom: -1px;
+    bottom: -2px;
     padding: 5px 5% 3px;
     background-color: #fff;
     border-top: 1px solid #f6f6f6;

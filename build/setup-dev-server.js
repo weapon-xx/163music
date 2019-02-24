@@ -8,9 +8,9 @@ const hotMiddlewareFn = require('webpack-hot-middleware');
 const clientConfig = require('./webpack.client.config');
 const serverConfig = require('./webpack.server.config');
 
-const readFile = (fs, file) => {
+const readFile = (fileSystem, file) => {
     try {
-        return fs.readFileSync(path.join(clientConfig.output.path, file), 'utf-8');
+        return fileSystem.readFileSync(path.join(clientConfig.output.path, file), 'utf-8');
     } catch (e) {
         console.log(e);
         return e;
