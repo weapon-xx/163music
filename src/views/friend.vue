@@ -1,72 +1,74 @@
 <template>
     <div class="friend-container">
-        <ul class="friend-event-list">
-            <div class="pulldown-wrapper" :class="[{loading: requesting}]">
-                <div class="pulldown-wrapper-box">
-                    <i class="wif pulldown-icon"
-                    :class="[{active: pulldown.status === 1}, pulldown.status === 2 ? 'icon-loading pulldown-loading' : 'icon-arrow']"></i>
-                    <span v-show="pulldown.status === 0">{{pulldown.text.default}}</span>
-                    <span v-show="pulldown.status === 1">{{pulldown.text.ready}}</span>
-                    <span v-show="pulldown.status === 2">{{pulldown.text.loading}}</span>
-                    <span v-show="pulldown.status === 3">{{pulldown.text.succuess}}</span>
-                    <span v-show="pulldown.status === 4">{{pulldown.text.error}}</span>
+        <div class="friend-wrap">
+            <ul class="friend-event-list">
+                <div class="pulldown-wrapper" :class="[{loading: requesting}]">
+                    <div class="pulldown-wrapper-box">
+                        <i class="wif pulldown-icon"
+                        :class="[{active: pulldown.status === 1}, pulldown.status === 2 ? 'icon-loading pulldown-loading' : 'icon-arrow']"></i>
+                        <span v-show="pulldown.status === 0">{{pulldown.text.default}}</span>
+                        <span v-show="pulldown.status === 1">{{pulldown.text.ready}}</span>
+                        <span v-show="pulldown.status === 2">{{pulldown.text.loading}}</span>
+                        <span v-show="pulldown.status === 3">{{pulldown.text.succuess}}</span>
+                        <span v-show="pulldown.status === 4">{{pulldown.text.error}}</span>
+                    </div>
                 </div>
-            </div>
-            <li class="friend-event" v-for="(item, index) in events" :key="index">
-                <img class="friend-event-avatart" :src="item.user.avatarUrl"/>
-                <div class="friend-event-box">
-                    <div class="friend-event-header">
-                        <div class="friend-event-text">
-                            <p class="friend-event-username">
-                                {{item.user.nickname}}
-                            </p>
-                            <p class="friend-event-operation">
-                                分享{{item.data.video ? '视频' : '单曲'}}：
+                <li class="friend-event" v-for="(item, index) in events" :key="index">
+                    <img class="friend-event-avatart" :src="item.user.avatarUrl"/>
+                    <div class="friend-event-box">
+                        <div class="friend-event-header">
+                            <div class="friend-event-text">
+                                <p class="friend-event-username">
+                                    {{item.user.nickname}}
+                                </p>
+                                <p class="friend-event-operation">
+                                    分享{{item.data.video ? '视频' : '单曲'}}：
+                                </p>
+                            </div>
+                            <p class="friend-event-followers">
+                                {{item.user.followeds}} 粉丝
                             </p>
                         </div>
-                        <p class="friend-event-followers">
-                            {{item.user.followeds}} 粉丝
-                        </p>
-                    </div>
-                    <div class="friend-event-content-box">
-                        <p class="friend-event-content">
-                            {{item.data.msg}}
-                        </p>
-                        <!-- a -->
-                        <div class="friend-event-video-wrap" v-show="item.data && item.data.video" @click="viewVideo(item.data.video.videoId)">
-                            <div class="friend-event-video-info">
-                                <div class="friend-event-video-info-left">
-                                    <i class="wif icon-play friend-event-video-btn"></i>
-                                    <p class="friend-event-video-playTime">
-                                        {{item.data.video && item.data.video.playTime}}
+                        <div class="friend-event-content-box">
+                            <p class="friend-event-content">
+                                {{item.data.msg}}
+                            </p>
+                            <!-- a -->
+                            <div class="friend-event-video-wrap" v-show="item.data && item.data.video" @click="viewVideo(item.data.video.videoId)">
+                                <div class="friend-event-video-info">
+                                    <div class="friend-event-video-info-left">
+                                        <i class="wif icon-play friend-event-video-btn"></i>
+                                        <p class="friend-event-video-playTime">
+                                            {{item.data.video && item.data.video.playTime}}
+                                        </p>
+                                    </div>
+                                    <p class="friend-event-video-durationms">
+                                        {{item.data.video && item.data.video.durationms}}
                                     </p>
                                 </div>
-                                <p class="friend-event-video-durationms">
-                                    {{item.data.video && item.data.video.durationms}}
-                                </p>
+                                <img class="friend-event-video-cover" :src="item.data.video && item.data.video.coverUrl" alt="" />
                             </div>
-                            <img class="friend-event-video-cover" :src="item.data.video && item.data.video.coverUrl" alt="" />
-                        </div>
-                        <!-- img -->
-                        <div class="friend-event-img-wrap" v-show="item.pics">
-                            <img v-for="(pic, index) in item.pics" :key="index" :src="pic.squareUrl" @click="viewBigPic(pic.originUrl)" />
-                        </div>
-                        <!-- song -->
-                        <div class="friend-event-song-wrap" v-show="item.data &&item.data.song" @click="goPlay(item.data.song.id)">
-                            <img class="friend-event-song-cover" :src="item.data.song && item.data.song.album.picUrl" alt="">
-                            <div class="friend-event-song-info">
-                                <p class="friend-event-song-name">
-                                    {{item.data.song && item.data.song.album.name}}
-                                </p>
-                                <p class="friend-event-song-singer">
-                                    {{item.data.song && item.data.song.album.artists[0].name}}
-                                </p>
+                            <!-- img -->
+                            <div class="friend-event-img-wrap" v-show="item.pics">
+                                <img v-for="(pic, index) in item.pics" :key="index" :src="pic.squareUrl" @click="viewBigPic(pic.originUrl)" />
+                            </div>
+                            <!-- song -->
+                            <div class="friend-event-song-wrap" v-show="item.data &&item.data.song" @click="goPlay(item.data.song.id)">
+                                <img class="friend-event-song-cover" :src="item.data.song && item.data.song.album.picUrl" alt="">
+                                <div class="friend-event-song-info">
+                                    <p class="friend-event-song-name">
+                                        {{item.data.song && item.data.song.album.name}}
+                                    </p>
+                                    <p class="friend-event-song-singer">
+                                        {{item.data.song && item.data.song.album.artists[0].name}}
+                                    </p>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </li>
-        </ul>
+                </li>
+            </ul>
+        </div>
         <transition name="fade">
             <div class="floating-wraper" v-show="floating.isShow">
                 <div class="floating-wraper-mask" @click="closeFloating"></div>
@@ -136,7 +138,7 @@ export default {
     methods: {
         initScroll() {
             const vm = this;
-            const scroll = new BScroll('.friend-container', {
+            const scroll = new BScroll('.friend-wrap', {
                 scrollbar: true, // 滚动条
                 pullDownRefresh: { // 开启下拉刷新
                     threshold: 80, // 下拉距离
@@ -232,10 +234,13 @@ export default {
 <style lang="scss" scoped>
 @import "../style/common.scss";
 .friend-container {
-    position: absolute;
-    top: 0;
-    bottom: 56px;
+    .friend-wrap {
+        position: absolute;
+        top: 0;
+        bottom: 56px;
+    }
 }
+
 .friend-event-list {
     padding: 10px 10px 60px;
     .friend-event {
@@ -379,6 +384,7 @@ export default {
     width: 100%;
     height: 100%;
     z-index: 10;
+    overflow: scroll;
     .floating-wraper-mask {
         position: absolute;
         top: 0;
@@ -393,7 +399,7 @@ export default {
         width: 100%;
     }
     .friend-floating-close {
-      position: absolute;
+      position: fixed;
       top: 5px;
       right: 5px;
       color: #fff;
