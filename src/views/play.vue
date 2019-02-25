@@ -13,9 +13,8 @@
         <div v-show="!isShowLyric" class="player-cover-box">
           <img class="player-cover-rod" :class="[isPlay ? 'active' : '']" src="../img/rod.png" alt="">
           <div class="player-cover-wrap" :class="[isPlay ? 'active' : '']">
-              <img class="player-cover-cd" src="../img/cd.png" alt="" @click="switchLyric">
-              <img class="player-cover" v-show="song" :src="(song && song.al.picUrl)">
-              <img class="player-cover" v-show="!song" src="../img/default-cover.jpg" alt="">
+            <img class="player-cover-cd" src="../img/cd.png" alt="" @click="switchLyric" />
+            <div class="player-cover" :style="{backgroundImage: `url(${(song && song.al.picUrl)})`}"></div>
           </div>
         </div>
         <div v-show="isShowLyric" class="player-lyric-wrap" @click="switchLyric">
@@ -51,6 +50,7 @@ export default {
             showDragTime: undefined,
             lyric: undefined,
             isShowLyric: false,
+            defaultCover: '',
         };
     },
     computed: {
@@ -301,7 +301,7 @@ export default {
 
 .player-cover-wrap {
     position: relative;
-    width: 90%;
+    width: 338px;
     margin: 0 auto;
     border-radius: 50%;
     border: 1px solid #eaeaea85;
@@ -313,11 +313,16 @@ export default {
         z-index: 1;
     }
     .player-cover {
-        display: block;
         position: absolute;
         left: 50%;
         top: 50%;
-        width: 64%;
+        display: block;
+        height: 220px;
+        width: 220px;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-image: url('../img/default-cover.jpg');
         margin-left: -32%;
         margin-top: -32%;
         z-index: -1;
