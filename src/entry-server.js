@@ -20,9 +20,8 @@ export default context => new Promise((resolve, reject) => {
                     route: router.currentRoute,
                     cookie: context.headers.cookie,
                 });
-            } else {
-                return undefined;
             }
+            return undefined;
         })).then(() => {
             // state convert `window.__INITIAL_STATE__` and write into html
             context.state = store.state;

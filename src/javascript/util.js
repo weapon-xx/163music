@@ -80,7 +80,7 @@ export const convertDateToTime = function convertDateToTime(date) {
  */
 export const debounce = (fn, delay = 500) => {
     if (typeof fn !== 'function') {
-        return  new TypeError('first param must be function');
+        return new TypeError('first param must be function');
     }
     let timer = null;
     return function callback(ctx = window, ...args) {
@@ -88,7 +88,7 @@ export const debounce = (fn, delay = 500) => {
             clearTimeout(timer);
             timer = null;
         }
-        timer = setTimeout(function handler() {
+        timer = setTimeout(() => {
             fn.apply(ctx, args);
             timer = null;
         }, delay);

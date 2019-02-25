@@ -127,12 +127,10 @@ app.use((req, res, next) => {
         } else {
             next();
         }
+    } else if (isLogin) {
+        next();
     } else {
-        if (isLogin) {
-            next();
-        } else {
-            res.redirect('/login');
-        }
+        res.redirect('/login');
     }
 });
 

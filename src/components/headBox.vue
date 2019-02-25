@@ -27,7 +27,7 @@
             :key="index" v-for="(item, index) in songs" @click="goPlay(item.id)">
               <p class="serch-list-item-songname single-line-overflow" v-html="hightLightWord(item.name, keyword)"></p>
               <p class="serch-list-item-songinfo single-line-overflow">
-                <label v-html="hightLightWord(item.artists && item.artists[0].name, keyword)"></label> - 
+                <label v-html="hightLightWord(item.artists && item.artists[0].name, keyword)"></label> -
                 <label v-html="hightLightWord(item.album && item.album.name, keyword)"></label>
               </p>
               <p class="serch-list-item-songinfo single-line-overflow" v-for="(alia, index) in item.alias" :key="index">
@@ -42,12 +42,12 @@
 import { requestSuggestKeyword, requestSearchByKeyword } from '../api';
 import { debounce } from '../javascript/util';
 
-const SuggestKeywordFn = debounce(function(keyword) {
-  requestSuggestKeyword(keyword).then((data) => {
-      if (+data.code === 200) {
-          this.suggestList = data.result.songs;
-      }
-  });
+const SuggestKeywordFn = debounce(function handle(keyword) {
+    requestSuggestKeyword(keyword).then((data) => {
+        if (+data.code === 200) {
+            this.suggestList = data.result.songs;
+        }
+    });
 }, 800);
 
 export default {
@@ -101,14 +101,11 @@ export default {
             });
         },
         hightLightWord(str, word) {
-            if(str && typeof str === 'string') {
+            if (str && typeof str === 'string') {
                 const reg = new RegExp(word, 'g');
-                return str.replace(reg, ($1) => {
-                    return `<em>${$1}</em>`;
-                });
-            } else {
-              return '';
+                return str.replace(reg, $1 => `<em>${$1}</em>`);
             }
+            return '';
         },
     },
     mounted() {
