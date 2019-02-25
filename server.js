@@ -118,6 +118,19 @@ function render(req, res) {
     });
 }
 
+// auth redirect
+app.use((req, res, next) => {
+    if (req.path === '/login') {
+        next();
+    } else {
+        if (req.headers.cookie && req.headers.cookie.includes('MUSIC_U')) {
+            next();
+        } else {
+            res.redirect('/login');
+        }
+    }
+});
+
 app.get('*', isProd ? render : async (req, res) => {
     await readyPromise;
     render(req, res);
