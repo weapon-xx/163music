@@ -165,9 +165,9 @@ export default {
             const playedProgress = document.querySelector('.player-progress-played');
             const { offsetLeft } = document.querySelector('.player-progress-wrap');
 
-            point.addEventListener('touchstart', () => {
+            point.addEventListener('touchstart', (event) => {
                 let dragTime;
-                document.addEventListener('touchmove', (event) => {
+                point.addEventListener('touchmove', (event) => {
                     let currentX = parseInt(event.touches[0].clientX, 10);
                     if (currentX < offsetLeft) {
                         currentX = offsetLeft;
@@ -182,7 +182,7 @@ export default {
                     playedProgress.style.width = `${parseInt(progressPos * 100, 10)}%`;
                 }, false);
 
-                document.addEventListener('touchend', () => {
+                point.addEventListener('touchend', () => {
                     vm.$store.commit('updateCurrentTime', dragTime);
                     vm.showDragTime = undefined; // 重置拖拽时进度条时间
                 }, false);
