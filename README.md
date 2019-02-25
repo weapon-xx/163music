@@ -12,7 +12,7 @@
 
 如果觉得项目有参考或者学习的价值，可以点击一下 star ⭐️，非常感谢~
 
-[相关文章]()
+[相关文章](https://juejin.im/post/5c6cdb85518825625c27215b)
 
 ## 技术栈
 - *vue*：vue 2.6, vue-router, vuex, vue-server-renderer
