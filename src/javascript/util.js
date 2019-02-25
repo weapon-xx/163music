@@ -78,15 +78,18 @@ export const convertDateToTime = function convertDateToTime(date) {
  * @param {Object} context 函数执行上下文
  * @return {Function}
  */
-export const debounce = (fn, delay) => {
+export const debounce = (fn, delay = 500) => {
+    if (typeof fn !== 'function') {
+        return  new TypeError('first param must be function');
+    }
     let timer = null;
-    return function callback() {
+    return function callback(ctx = window, ...args) {
         if (timer) {
             clearTimeout(timer);
             timer = null;
         }
-        timer = setTimeout(function handler(...args) {
-            fn.apply(this, args);
+        timer = setTimeout(function handler() {
+            fn.apply(ctx, args);
             timer = null;
         }, delay);
     };

@@ -12,7 +12,7 @@ function resolve(dir) {
 
 module.exports = {
     mode: isProd ? 'production' : 'development',
-    devtool: isProd ? false : '#cheap-module-source-map',
+    devtool: isProd ? 'source-map' : 'cheap-module-source-map',
     output: {
         publicPath: '/dist/',
     },

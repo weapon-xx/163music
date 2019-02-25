@@ -77,7 +77,9 @@ export default {
             this.$router.back();
         },
         saveLocalSong(songId) {
-            localStorage && localStorage.setItem(LCKEY, JSON.stringify({ songId })); // 设置缓存
+            if (localStorage) {
+                localStorage.setItem(LCKEY, JSON.stringify({ songId })); // 设置缓存
+            }
         },
         findSongIndex() {
             return this.tracks.findIndex(song => +song.id === +this.songId);

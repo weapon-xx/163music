@@ -25,9 +25,10 @@
           <ul ref="searchList" class="serch-list-box" :class="[{active: !isFocus}]">
             <li class="serch-list-item" :class="[isFocus ? 'focus' : 'blur']"
             :key="index" v-for="(item, index) in songs" @click="goPlay(item.id)">
-              <p class="serch-list-item-songname single-line-overflow">{{item.name}}</p>
+              <p class="serch-list-item-songname single-line-overflow" v-html="hightLightWord(item.name, keyword)"></p>
               <p class="serch-list-item-songinfo single-line-overflow">
-                {{item.artists && item.artists[0].name}} - {{item.album && item.album.name}}
+                <label v-html="hightLightWord(item.artists && item.artists[0].name, keyword)"></label> - 
+                <label v-html="hightLightWord(item.album && item.album.name, keyword)"></label>
               </p>
               <p class="serch-list-item-songinfo single-line-overflow" v-for="(alia, index) in item.alias" :key="index">
                 {{alia}}
@@ -39,6 +40,15 @@
 </template>
 <script>
 import { requestSuggestKeyword, requestSearchByKeyword } from '../api';
+import { debounce } from '../javascript/util';
+
+const SuggestKeywordFn = debounce(function(keyword) {
+  requestSuggestKeyword(keyword).then((data) => {
+      if (+data.code === 200) {
+          this.suggestList = data.result.songs;
+      }
+  });
+}, 800);
 
 export default {
     name: 'headBox',
@@ -79,19 +89,26 @@ export default {
             this.isOpen = false;
         },
         requestSuggestKeyword(keyword) {
-            requestSuggestKeyword(keyword).then((data) => {
-                if (+data.code === 200) {
-                    this.suggestList = data.result.songs;
-                }
-            });
+            SuggestKeywordFn(this, keyword);
         },
         search(keyword) {
             this.isFocus = false;
+            this.keyword = keyword;
             requestSearchByKeyword(keyword).then((data) => {
                 if (+data.code === 200) {
                     this.songs = data.result.songs;
                 }
             });
+        },
+        hightLightWord(str, word) {
+            if(str && typeof str === 'string') {
+                const reg = new RegExp(word, 'g');
+                return str.replace(reg, ($1) => {
+                    return `<em>${$1}</em>`;
+                });
+            } else {
+              return '';
+            }
         },
     },
     mounted() {
@@ -102,12 +119,18 @@ export default {
                 vm.isOpen = true; // 开启搜索框
             }, false);
         }
+        // this.requestSuggestKeyword = function(keyword) {
+        //     debounceFn(vm, keyword);
+        // }
     },
 };
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss">
 @import "../style/common.scss";
+
+$key_color: #0868b5;
+
 .head {
   width: 90%;
   height: 50px;
@@ -275,12 +298,13 @@ export default {
   .search-word {
       display: flex;
       align-items: center;
-      line-height: 34px;
+      height: 38px;
+      line-height: 38px;
       font-size: 14px;
       color: $font_color;
       border-bottom: 1px solid #f1f1f1;
       &.first {
-        color: #0868b5;
+        color: $key_color;
       }
       i {
         margin-right: 5px;
@@ -305,6 +329,9 @@ export default {
     }
     .serch-list-item-songname {
       line-height: 24px;
+    }
+    em {
+      color: $key_color;
     }
   }
 }
