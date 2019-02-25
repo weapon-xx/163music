@@ -3,7 +3,7 @@
         <div class="list-topbar">
             <i class="wif icon-left list-topbar-icon" @click="goBack"></i>
             <h4 class="list-topbar-title">歌单</h4>
-            <div class="'voice-box'" :class="[{active: isPlay}]" @click="goPlay(0)" ref="voice_box">
+            <div class="voice-box" :class="[{active: isPlay}]" @click="goPlay(songId)" ref="voice_box">
                 <i></i>
                 <i></i>
                 <i></i>
@@ -28,7 +28,15 @@
             </div>
         </div>
         <ul class="list-box">
-            <li class="list-item" :key="index" v-for="(song, index) in playlist.tracks" @click="goPlay(song.id)">
+            <div class="list-box-header" @click="goPlay(playlist.tracks[0] && playlist.tracks[0].id)">
+                <div class="list-box-header-wrap">
+                    <i class="wif icon-play list-box-header-icon"></i>
+                    <p>播放全部</p>
+                    <p class="list-box-header-count">(共{{playlist.trackCount}}首)</p>
+                </div>
+                <p class="list-box-header-collect">{{playlist.subscribedCount}}人收藏</p>
+            </div>
+            <li class="list-item" :class="[{active: songId === song.id}]" :key="index" v-for="(song, index) in playlist.tracks" @click="goPlay(song.id)">
                 <p class="list-item-index">{{index + 1}}</p>
                 <div class="list-item-song-wrap">
                     <p class="list-item-song-name single-line-overflow">{{song.name}}</p>
@@ -43,12 +51,14 @@
 <script>
 import { requestPlaylistDetail } from '../api';
 import * as util from '../javascript/util';
+import { mapGetters } from 'vuex';
 
 export default {
     computed: {
-        isPlay() {
-            return this.$store.getters.isPlay;
-        },
+        ...mapGetters([
+            'isPlay',
+            'songId',
+        ])
     },
     data() {
         return {
@@ -88,6 +98,9 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 @import "../style/common.scss";
+
+$font_color: #999;
+
 .list-container {
     position: relative;
     .list-topbar {
@@ -118,6 +131,9 @@ export default {
             background-color: #000;
             opacity: .2;
         }
+        .voice-box i {
+            background-color: #fff;
+        }
     }
 }
 .list-detail-box {
@@ -143,7 +159,7 @@ export default {
     .list-detail-wrap {
         display: flex;
         justify-content: space-between;
-        padding: 20px;
+        padding: 20px 20px 80px;
     }
 }
 
@@ -178,6 +194,8 @@ export default {
     width: 50%;
     padding-top: 15px;
     color: #fff;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
     .list-detail-list-name {
         margin-bottom: 10px;
         font-weight: bold;
@@ -200,44 +218,83 @@ export default {
 }
 
 .list-box {
+    position: relative;
     width: 100%;
     margin: 0;
     padding: 0 0 10px;
-    .list-item {
+}
+
+.list-box-header {
+    position: absolute;
+    top: -40px;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-sizing: border-box;
+    width: 100%;
+    height: 40px;
+    padding: 0 10px;
+    background: #fff;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    .list-box-header-wrap {
         display: flex;
         align-items: center;
-        box-sizing: border-box;
-        width: 100%;
-        height: 50px;
-        padding: 0 10px;
-        list-style: none;
-        overflow: hidden;
     }
-    .list-item-index {
+    .list-box-header-icon {
+        font-size: 26px;
+        color: $font_color;
         margin-right: 10px;
-        color: #999;
-        width: 30px;
-        text-align: center;
-        font-size: 18px;
     }
-    .list-item-song-wrap {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
+    .list-box-header-count, .list-box-header-collect{
+        font-size: 14px;
+        color: $font_color;
+    }
+}
+
+.list-item {
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    width: 100%;
+    height: 50px;
+    padding: 0 10px;
+    list-style: none;
+    overflow: hidden;
+    &.active {
+        .list-item-index, .list-item-song-name {
+            color: $main_color;
+        }
+    }
+}
+
+.list-item-index {
+    margin-right: 10px;
+    color: $font_color;
+    width: 30px;
+    text-align: center;
+    font-size: 18px;
+}
+
+.list-item-song-wrap {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 90%;
+    height: 50px;
+    color: #212121;
+    border-bottom: 2px solid #eee;
+    p {
         width: 90%;
-        height: 50px;
-        color: #212121;
-        border-bottom: 2px solid #eee;
-        p {
-            width: 90%;
-        }
-        .list-item-song-name {
-            font-size: 16px;
-            margin-bottom: 5px;
-        }
-        .list-item-song-singer {
-            font-size: 12px;
-        }
+    }
+    .list-item-song-name {
+        font-size: 16px;
+        margin-bottom: 5px;
+    }
+    .list-item-song-singer {
+        font-size: 12px;
+        color: $font_color;
     }
 }
 </style>

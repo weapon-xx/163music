@@ -5,7 +5,11 @@
                 <div class="pulldown-wrapper" :class="[{loading: requesting}]">
                     <div class="pulldown-wrapper-box">
                         <i class="wif pulldown-icon"
-                        :class="[{active: pulldown.status === 1}, pulldown.status === 2 ? 'icon-loading pulldown-loading' : 'icon-arrow']"></i>
+                        :class="[{active: pulldown.status === 1}, 
+                        pulldown.status === 2 
+                        ? 'icon-loading pulldown-loading' 
+                        : pulldown.status === 3 ? 'icon-correct' : 'icon-arrow']">
+                        </i>
                         <span v-show="pulldown.status === 0">{{pulldown.text.default}}</span>
                         <span v-show="pulldown.status === 1">{{pulldown.text.ready}}</span>
                         <span v-show="pulldown.status === 2">{{pulldown.text.loading}}</span>
