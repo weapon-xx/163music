@@ -64,7 +64,7 @@ npm run lint
 ```
 
 ## 项目截图
-[在线体验](163music.jacksonx.cn) *(请使用 chrome 移动端调试体验)*
+[在线体验](http://163music.jacksonx.cn) *(请使用 chrome 移动端调试体验)*
 
 ![](https://github.com/weapon-xx/163music/blob/master/screenshot/v1.gif)
 
