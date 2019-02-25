@@ -36,7 +36,8 @@
                 </div>
                 <p class="list-box-header-collect">{{playlist.subscribedCount}}人收藏</p>
             </div>
-            <li class="list-item" :class="[{active: songId === song.id}]" :key="index" v-for="(song, index) in playlist.tracks" @click="goPlay(song.id)">
+            <li class="list-item" :class="[{active: songId === song.id}]"
+            :key="index" v-for="(song, index) in playlist.tracks" @click="goPlay(song.id)">
                 <p class="list-item-index">{{index + 1}}</p>
                 <div class="list-item-song-wrap">
                     <p class="list-item-song-name single-line-overflow">{{song.name}}</p>
@@ -49,16 +50,13 @@
     </div>
 </template>
 <script>
+import { mapGetters } from 'vuex';
 import { requestPlaylistDetail } from '../api';
 import * as util from '../javascript/util';
-import { mapGetters } from 'vuex';
 
 export default {
     computed: {
-        ...mapGetters([
-            'isPlay',
-            'songId',
-        ])
+        ...mapGetters(['isPlay', 'songId']),
     },
     data() {
         return {
