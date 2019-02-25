@@ -24,13 +24,9 @@ export default {
                 /**
                  * @see https://developers.google.com/web/updates/2017/09/autoplay-policy-changes#webaudio
                  */
-                // this.play().then(() => {
-                //     if (!this.isPlay) {
-                //         this.$store.commit('operate', true);
-                //     }
-                // }).catch((e) => {
-                //     console.error(e.message);
-                // });
+                // reset song currentTime
+                this.$store.commit('updateCurrentTime', 0);
+                // this.play();
             }
         },
         isPlay(nval) {
@@ -49,7 +45,9 @@ export default {
     },
     methods: {
         play() {
-            return this.audio.play();
+            return this.audio.play().then(() => {}).catch((e) => {
+                console.error(e.message);
+            });
         },
         pause() {
             return this.audio.pause();
@@ -60,10 +58,16 @@ export default {
         this.audio = this.$el.querySelector('audio');
 
         /**
-     * @todo
-     */
+         * @todo
+         */
         this.audio.oncanplay = function oncanplay() {
+            // listen audio is ready
             vm.$store.commit('updateDuration', parseInt(this.duration, 10));
+            if (vm.isPlay) {
+                vm.play();
+            } else {
+                vm.pause();
+            }
         };
 
         this.audio.addEventListener('timeupdate', (event) => {

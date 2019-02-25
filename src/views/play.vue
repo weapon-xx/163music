@@ -197,7 +197,6 @@ export default {
             // url
             if (urlId !== this.songId) {
                 songId = urlId;
-                this.$store.commit('updateCurrentTime', 0);
                 localStorage.setItem(LCKEY, JSON.stringify({ songId })); // 设置缓存
             } else {
                 ({ songId } = this);
