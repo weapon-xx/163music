@@ -118,12 +118,17 @@ function render(req, res) {
     });
 }
 
-// auth redirect
+// auth check
 app.use((req, res, next) => {
+    const isLogin = req.headers.cookie && req.headers.cookie.includes('MUSIC_U');
     if (req.path === '/login') {
-        next();
+        if (isLogin) {
+            res.redirect('/');
+        } else {
+            next();
+        }
     } else {
-        if (req.headers.cookie && req.headers.cookie.includes('MUSIC_U')) {
+        if (isLogin) {
             next();
         } else {
             res.redirect('/login');
