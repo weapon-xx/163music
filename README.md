@@ -12,7 +12,7 @@
 
 如果觉得项目有参考或者学习的价值，可以点击一下 star ⭐️，非常感谢~
 
-[相关文章]()
+[相关文章](https://juejin.im/post/5c6cdb85518825625c27215b)
 
 ## 技术栈
 - *vue*：vue 2.6, vue-router, vuex, vue-server-renderer
@@ -64,7 +64,7 @@ npm run lint
 ```
 
 ## 项目截图
-[在线体验](163music.jacksonx.cn) *(请使用 chrome 移动端调试体验)*
+[在线体验](http://163music.jacksonx.cn) *(请使用 chrome 移动端调试体验)*
 
 ![](https://github.com/weapon-xx/163music/blob/master/screenshot/v1.gif)
 
