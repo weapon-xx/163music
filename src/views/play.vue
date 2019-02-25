@@ -43,6 +43,8 @@ import { handleTime } from '../javascript/util';
 import { requestSongDetail, requestSongUrl, requestLyric } from '../api';
 import eventbus from '../javascript/eventbus';
 
+const LCKEY = 'music163';
+
 export default {
     data() {
         return {
@@ -74,6 +76,9 @@ export default {
         back() {
             this.$router.back();
         },
+        saveLocalSong(songId) {
+            localStorage && localStorage.setItem(LCKEY, JSON.stringify({ songId })); // 设置缓存
+        },
         findSongIndex() {
             return this.tracks.findIndex(song => +song.id === +this.songId);
         },
@@ -87,6 +92,7 @@ export default {
                 }
                 const nextSong = this.tracks.slice(index + 1, index + 2)[0];
                 this.updateSongInfo(nextSong.id);
+                this.saveLocalSong(nextSong.id);
             }
         },
         preSong() {
@@ -99,6 +105,7 @@ export default {
                 }
                 const preSong = this.tracks.slice(index - 1, index)[0];
                 this.updateSongInfo(preSong.id);
+                this.saveLocalSong(preSong.id);
             }
         },
         operate() {
@@ -165,7 +172,7 @@ export default {
             const playedProgress = document.querySelector('.player-progress-played');
             const { offsetLeft } = document.querySelector('.player-progress-wrap');
 
-            point.addEventListener('touchstart', (event) => {
+            point.addEventListener('touchstart', () => {
                 let dragTime;
                 point.addEventListener('touchmove', (event) => {
                     let currentX = parseInt(event.touches[0].clientX, 10);
@@ -190,14 +197,13 @@ export default {
         },
     },
     mounted() {
-        const LCKEY = 'music163';
         let songId;
         const urlId = +this.$route.params.id;
         if (urlId) {
             // url
             if (urlId !== this.songId) {
                 songId = urlId;
-                localStorage.setItem(LCKEY, JSON.stringify({ songId })); // 设置缓存
+                this.saveLocalSong(songId);
             } else {
                 ({ songId } = this);
             }

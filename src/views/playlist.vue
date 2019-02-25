@@ -67,6 +67,8 @@ export default {
             if (this.$store.state.playlist.id !== this.playlist.id) {
                 this.$store.commit('updatePlaylist', this.playlist);
             }
+            // commit mutation to play
+            this.$store.commit('operate', true);
         },
         handleCount(num) {
             return util.handleCount(num);
