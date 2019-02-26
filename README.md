@@ -66,11 +66,15 @@ npm run lint
 ## 项目截图
 [在线体验](http://163music.jacksonx.cn) *(请使用 chrome 移动端调试体验)*
 
-![](https://github.com/weapon-xx/163music/blob/master/screenshot/v1.gif)
+![播放](https://github.com/weapon-xx/163music/blob/master/screenshot/v1.gif)
 
-![](https://github.com/weapon-xx/163music/blob/master/screenshot/search.gif)
+![单曲搜索](https://github.com/weapon-xx/163music/blob/master/screenshot/search.gif)
 
-![](https://github.com/weapon-xx/163music/blob/master/screenshot/friend.gif)
+![好友动态](https://github.com/weapon-xx/163music/blob/master/screenshot/friend.gif)
+
+![播放列表](https://github.com/weapon-xx/163music/blob/master/screenshot/playlist.png)
+
+![播放页面](https://github.com/weapon-xx/163music/blob/master/screenshot/play.png)
 
 ## 相关资料
 [NeteaseCloudMusicApi](https://github.com/Binaryify/NeteaseCloudMusicApi)
