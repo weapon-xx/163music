@@ -36,13 +36,15 @@ export default {
         },
     },
     mounted() {
-        requestLoginStatus().then((data) => {
-            if (+data.code === 200) {
-                this.$store.commit('updateUserId', data.bindings[1].userId);
-            }
-        }).catch((e) => {
-            console.error(e);
-        });
+        if (this.$route.name !== 'login') {
+            requestLoginStatus().then((data) => {
+                if (+data.code === 200) {
+                    this.$store.commit('updateUserId', data.bindings[1].userId);
+                }
+            }).catch((e) => {
+                console.error(e);
+            });
+        }
     },
 };
 </script>
