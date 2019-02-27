@@ -36,6 +36,7 @@ export default {
         },
     },
     mounted() {
+        // prevent cookie clear delay
         if (this.$route.name !== 'login') {
             requestLoginStatus().then((data) => {
                 if (+data.code === 200) {

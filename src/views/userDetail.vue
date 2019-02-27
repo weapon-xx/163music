@@ -24,11 +24,16 @@
                 <p class="user-detail-feature-text">我的资料</p>
             </li>
         </ul>
+        <ul class="user-detail-feature-list">
+            <li class="user-detail-feature-item logout" @click="logout">
+                退出登录
+            </li>
+        </ul>
     </div>
 </template>
 <script>
 import { mapGetters } from 'vuex';
-import { requestUserDetail } from '../api';
+import { requestUserDetail, logout } from '../api';
 
 export default {
     computed: {
@@ -54,6 +59,13 @@ export default {
                 }
             });
         },
+        logout() {
+            logout().then((data) => {
+                if (data.code === 200) {
+                    this.$router.push('/login');
+                }
+            });
+        },
     },
     mounted() {
         if (this.userId) {
@@ -64,7 +76,10 @@ export default {
 </script>
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
+@import "../style/common.scss";
+
 $borderColor: #eee;
+
 .user-detail-container {
     background-color: #f7f5f5;
 }
@@ -73,6 +88,7 @@ $borderColor: #eee;
     padding: 10px;
     align-items: center;
     border-bottom: 1px solid $borderColor;
+    background-color: #fff;
     .user-detail-avatar {
         display: block;
         width: 60px;
@@ -90,6 +106,8 @@ $borderColor: #eee;
 
 .user-detail-feature-box {
     display: flex;
+    margin-bottom: 10px;
+    background-color: #fff;
     .user-detail-feature-item {
         position: relative;
         width: 25%;
@@ -116,6 +134,20 @@ $borderColor: #eee;
             text-align: center;
             font-size: 12px;
         }
+    }
+}
+
+.user-detail-feature-list {
+    background-color: #fff;
+    .user-detail-feature-item {
+        text-align: center;
+        height: 40px;
+        line-height: 40px;
+    }
+    .logout {
+        color: $main_color;
+        border-top: 1px solid $borderColor;
+        border-bottom: 1px solid $borderColor;
     }
 }
 </style>

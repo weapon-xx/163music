@@ -201,5 +201,13 @@ export const requestSearchByKeyword = promiseCache(
 /**
  * 获取视频播放地址
  * @param {Number} id 视频id
+ * @return {Promise}
  */
 export const getVideoUrl = promiseCache(id => axios.get(`${domain}/video/url?id=${id}`), id => `videoUrl-${id}`);
+
+
+/**
+ * 退出登录
+ * @return {Promise}
+ */
+export const logout = () => axios.get(`${domain}/logout`).then(data => data.data);
