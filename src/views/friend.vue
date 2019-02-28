@@ -18,7 +18,7 @@
                     </div>
                 </div>
                 <li class="friend-event" v-for="(item, index) in events" :key="index">
-                    <img class="friend-event-avatart" :src="item.user.avatarUrl"/>
+                    <img class="friend-event-avatart" v-lazy="item.user.avatarUrl"/>
                     <div class="friend-event-box">
                         <div class="friend-event-header">
                             <div class="friend-event-text">
@@ -50,15 +50,15 @@
                                         {{item.data.video && item.data.video.durationms}}
                                     </p>
                                 </div>
-                                <img class="friend-event-video-cover" :src="item.data.video && item.data.video.coverUrl" alt="" />
+                                <img class="friend-event-video-cover" v-lazy="item.data.video && item.data.video.coverUrl" alt="" />
                             </div>
                             <!-- img -->
                             <div class="friend-event-img-wrap" v-show="item.pics">
-                                <img v-for="(pic, index) in item.pics" :key="index" :src="pic.squareUrl" @click="viewBigPic(pic.originUrl)" />
+                                <img v-for="(pic, index) in item.pics" :key="index" v-lazy="pic.squareUrl" @click="viewBigPic(pic.originUrl)" />
                             </div>
                             <!-- song -->
                             <div class="friend-event-song-wrap" v-show="item.data &&item.data.song" @click="goPlay(item.data.song.id)">
-                                <img class="friend-event-song-cover" :src="item.data.song && item.data.song.album.picUrl" alt="">
+                                <img class="friend-event-song-cover" v-lazy="item.data.song && item.data.song.album.picUrl" alt="">
                                 <div class="friend-event-song-info">
                                     <p class="friend-event-song-name">
                                         {{item.data.song && item.data.song.album.name}}

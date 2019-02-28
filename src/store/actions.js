@@ -4,10 +4,10 @@ export default {
     // index.vue prefetch action
     requestIndex({ commit }, cookie) {
         return Promise.all([api.requestResource(cookie), api.requestBanner(cookie)]).then((dataArr) => {
-            if (dataArr[0].code === 200) {
+            if (dataArr[0] && dataArr[0].code === 200) {
                 commit('updateRecommend', dataArr[0].recommend);
             }
-            if (dataArr[1].code === 200) {
+            if (dataArr[1] && dataArr[1].code === 200) {
                 commit('updateBanners', dataArr[1].banners);
             }
         });
@@ -31,6 +31,17 @@ export default {
                     return item;
                 });
             }
+        });
+    },
+
+    // request login status and update user id
+    requestLoginStatus({ commit }) {
+        return api.requestLoginStatus().then((data) => {
+            if (data && +data.code === 200) {
+                commit('updateUserId', data.bindings[1].userId);
+            }
+        }).catch((e) => {
+            console.error(e);
         });
     },
 };

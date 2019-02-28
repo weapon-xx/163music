@@ -16,7 +16,7 @@
     </div>
 </template>
 <script>
-import { login, requestLoginStatus, cleanPromiseCache } from '../api/index';
+import { login, cleanPromiseCache } from '../api/index';
 import { isLogin } from '../javascript/util';
 
 export default {
@@ -27,15 +27,6 @@ export default {
         };
     },
     methods: {
-        updateLoginStatus() {
-            requestLoginStatus().then((data) => {
-                if (+data.code === 200) {
-                    this.$store.commit('updateUserId', data.bindings[1].userId);
-                }
-            }).catch((e) => {
-                console.error(e);
-            });
-        },
         login() {
             if (!!this.phone && !!this.password) {
                 login({
@@ -45,7 +36,7 @@ export default {
                     if (data && +data.code === 200) {
                         this.$router.push('/');
                         cleanPromiseCache();
-                        this.updateLoginStatus();
+                        this.$store.dispatch('requestLoginStatus');
                     } else {
                         this.$pop.prompt((data && data.data && data.data.msg) || '登录失败');
                     }

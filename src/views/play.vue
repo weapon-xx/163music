@@ -14,7 +14,8 @@
           <img class="player-cover-rod" :class="[isPlay ? 'active' : '']" src="../img/rod.png" alt="">
           <div class="player-cover-wrap" :class="[isPlay ? 'active' : '']">
             <img class="player-cover-cd" src="../img/cd.png" alt="" @click="switchLyric" />
-            <div class="player-cover" :style="{backgroundImage: `url(${(song && song.al.picUrl)})`}"></div>
+            <div v-if="song" class="player-cover" :style="{backgroundImage: `url(${(song && song.al.picUrl)})`}"></div>
+            <div v-else class="player-cover"></div>
           </div>
         </div>
         <div v-show="isShowLyric" class="player-lyric-wrap" @click="switchLyric">
@@ -142,7 +143,7 @@ export default {
             this.requestLyric(songId).then((data) => {
                 if (data && +data.code === 200) {
                     if (data.nolyric) {
-                        this.lyric = false;
+                        this.lyric = ['暂无歌词'];
                     } else {
                         const lyricArr = [];
                         data.lrc.lyric.split('\n').forEach((item) => {

@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import { sync } from 'vuex-router-sync';
+import VueLazyload from 'vue-lazyload';
 import App from './App.vue';
 import createStore from './store';
 import createRouter from './router';
@@ -14,6 +15,8 @@ if (isBrowser) {
     Vue.use(VueAwesomeSwiper);
     // load pop plugin
     Vue.use(pop);
+    // load lazy-load plugin
+    Vue.use(VueLazyload);
 }
 
 Vue.config.productionTip = false;

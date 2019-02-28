@@ -5,7 +5,7 @@
           <input ref="input" type="text" v-model="keyword" placeholder="输入关键字搜索单曲">
           <i class="clear-btn wif icon-error" :class="[{focus: isOpen}]" @click="clear"></i>
         </div>
-        <div class="voice-box" :class="[{active: isPlay}, {focus: isOpen}]" @click="goPlay(0)" ref="voice_box">
+        <div class="voice-box" :class="[{active: isPlay}, {focus: isOpen}]" @click="goPlay(songId)" ref="voice_box">
           <i></i>
           <i></i>
           <i></i>
@@ -39,6 +39,7 @@
     </div>
 </template>
 <script>
+import { mapGetters } from 'vuex';
 import { requestSuggestKeyword, requestSearchByKeyword } from '../api';
 import { debounce } from '../javascript/util';
 
@@ -53,9 +54,7 @@ const SuggestKeywordFn = debounce(function handle(keyword) {
 export default {
     name: 'headBox',
     computed: {
-        isPlay() {
-            return this.$store.getters.isPlay;
-        },
+        ...mapGetters(['isPlay', 'songId']),
     },
     data() {
         return {
@@ -116,9 +115,6 @@ export default {
                 vm.isOpen = true; // 开启搜索框
             }, false);
         }
-        // this.requestSuggestKeyword = function(keyword) {
-        //     debounceFn(vm, keyword);
-        // }
     },
 };
 </script>
@@ -127,6 +123,8 @@ export default {
 @import "../style/common.scss";
 
 $key_color: #0868b5;
+$back_color: #f2f2f2;
+$border_color: #f1f1f1;
 
 .head {
   width: 90%;
@@ -148,7 +146,7 @@ $key_color: #0868b5;
     box-sizing: border-box;
     width: 70%;
     height: 28px;
-    background-color: #f2f2f2;
+    background-color: $back_color;
     border-radius: 30px;
     transition: all .5s ease;
     &.focus {
@@ -165,7 +163,7 @@ $key_color: #0868b5;
       line-height: 24px;
       text-align: center;
       color: $font_color;
-      background-color: #f2f2f2;
+      background-color: $back_color;
       font-size: 14px;
       outline: none;
       border: none;
@@ -211,7 +209,7 @@ $key_color: #0868b5;
   left: 0;
   bottom: 0;
   width: 100%;
-  background-color: #f2f2f2;
+  background-color: $back_color;
   display: none;
   &.focus {
     display: block;
@@ -243,7 +241,7 @@ $key_color: #0868b5;
       line-height: 38px;
       font-size: 14px;
       color: $font_color;
-      border-bottom: 1px solid #f1f1f1;
+      border-bottom: 1px solid $border_color;
       &.first {
         color: $key_color;
       }
@@ -262,7 +260,7 @@ $key_color: #0868b5;
     line-height: 34px;
     font-size: 14px;
     color: $font_color;
-    border-bottom: 1px solid #f1f1f1;
+    border-bottom: 1px solid $border_color;
     padding: 5px 0;
     .serch-list-item-songinfo {
       font-size: 12px;

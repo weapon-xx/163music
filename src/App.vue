@@ -10,7 +10,6 @@
 <script>
 import player from './components/player.vue';
 import footBox from './components/footBox.vue';
-import { requestLoginStatus } from './api/index';
 
 export default {
     name: 'app',
@@ -36,15 +35,9 @@ export default {
         },
     },
     mounted() {
-        // prevent cookie clear delay
+        // avoid cookie clear delay
         if (this.$route.name !== 'login') {
-            requestLoginStatus().then((data) => {
-                if (+data.code === 200) {
-                    this.$store.commit('updateUserId', data.bindings[1].userId);
-                }
-            }).catch((e) => {
-                console.error(e);
-            });
+            this.$store.dispatch('requestLoginStatus');
         }
     },
 };

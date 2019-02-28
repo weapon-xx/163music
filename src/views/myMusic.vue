@@ -3,7 +3,7 @@
         <p class="myMusic-title">我创建的歌单({{userPlayList.length}})</p>
         <ul class="user-list">
             <li class="user-list-item" v-for="(item, index) in userPlayList" :key="index" @click="goPlaylist(item.id)">
-                <img class="user-list-item-cover" :src="item && item.coverImgUrl" alt="">
+                <img class="user-list-item-cover" v-lazy="item && item.coverImgUrl" alt="">
                 <div class="user-list-text-wrap">
                     <p class="user-list-item-name">{{item.name}}</p>
                     <p class="user-list-item-nickname">{{item.trackCount}}首，by {{item.creator.nickname}}</p>
