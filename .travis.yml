@@ -1,12 +1,8 @@
 language: node_js
 node_js: "11"
-before_install:
-  - curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version version-number
-  - export PATH="$HOME/.yarn/bin:$PATH"
-cache: yarn
 before_script:
-- pm2 stop server
-- yarn run test
-script: yarn run build
+  - pm2 stop server
+  - npm run test
+script: npm run build
 after_script: pm2 start server
 
