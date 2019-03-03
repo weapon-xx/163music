@@ -1,4 +1,7 @@
 # 163music
+[![Build Status](https://travis-ci.org/weapon-xx/163music.svg?branch=master)](https://travis-ci.org/weapon-xx/163music)
+![APM](https://img.shields.io/apm/l/vim-mode.svg)
+
 🎵 网易云音乐移动端 web app
 
 项目主体功能已大致完成：
