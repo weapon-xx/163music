@@ -445,4 +445,27 @@ export default {
     bottom: 0;
     height: 100px;
 }
+
+@media (max-height: 480px) {
+   .player-cover-box {
+        padding: 40px 0;
+        .player-cover-rod {
+            left: 50%;
+            width: 100px;
+        }
+        .active {
+            transform: rotate(-12deg);
+        }
+        .player-cover-wrap {
+            width: 280px;
+            .player-cover {
+                height: 180px;
+                width: 180px;
+            }
+        }
+    }
+    .player-lyric-wrap {
+        padding-top: 150px;
+    }
+}
 </style>
