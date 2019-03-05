@@ -21,6 +21,17 @@ const clientConfig = merge(base, {
         }),
         new VueSSRClientPlugin(),
     ],
+    optimization: {
+		splitChunks: {
+			cacheGroups: {
+				commons: {
+					test: /[\\/]node_modules[\\/]/,
+					name: 'vendors',
+					chunks: 'all'
+				}
+			}
+		}
+	},
 });
 
 module.exports = clientConfig;
