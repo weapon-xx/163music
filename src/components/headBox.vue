@@ -24,7 +24,7 @@
           </ul>
           <ul ref="searchList" class="serch-list-box" :class="[{active: !isFocus}]">
             <li class="serch-list-item" :class="[isFocus ? 'focus' : 'blur']"
-            :key="index" v-for="(item, index) in songs" @click="goPlay(item.id)">
+            :key="index" v-for="(item, index) in songs" @click="goPlay(item.id, true)">
               <p class="serch-list-item-songname single-line-overflow" v-html="hightLightWord(item.name, keyword)"></p>
               <p class="serch-list-item-songinfo single-line-overflow">
                 <label v-html="hightLightWord(item.artists && item.artists[0].name, keyword)"></label> -
@@ -76,7 +76,10 @@ export default {
         },
     },
     methods: {
-        goPlay(id) {
+        goPlay(id, play = false) {
+            if (play) {
+                this.$store.commit('operate', true);
+            }
             this.$router.push(`/play/${id}`);
         },
         clear() {
