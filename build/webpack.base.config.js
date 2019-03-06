@@ -12,7 +12,7 @@ function resolve(dir) {
 
 module.exports = {
     mode: isProd ? 'production' : 'development',
-    devtool: isProd ? 'source-map' : 'cheap-module-source-map',
+    devtool: isProd ? 'hidden-source-map' : 'cheap-module-eval-source-map',
     output: {
         publicPath: '/dist/',
     },
@@ -125,10 +125,9 @@ module.exports = {
     plugins: isProd
         ? [
             new VueLoaderPlugin(),
-
             /**
-       * @see https://webpack.docschina.org/plugins/module-concatenation-plugin/#src/components/Sidebar/Sidebar.jsx
-       */
+             * @see https://webpack.docschina.org/plugins/module-concatenation-plugin/#src/components/Sidebar/Sidebar.jsx
+             */
             new webpack.optimize.ModuleConcatenationPlugin(),
         ]
         : [
