@@ -46,19 +46,48 @@ export const handleCount = (num) => {
 };
 
 /**
- * 将秒时间转换 -> 分钟:秒
+ * 将秒时间转换为 mm:ss
  * @param {Number} time 时间
  * @return {String}
  */
-export const handleTime = (time) => {
-    if (time) {
-        let minutes = `${parseInt(time / 60, 10)}`;
-        minutes = minutes.length > 1 ? minutes : `0${minutes}`;
-        let seconds = `${time % 60}`;
-        seconds = seconds.length > 1 ? seconds : `0${seconds}`;
+export const convertSecondToHHMMSS = (time) => {
+    if (typeof time === 'number') {
+        let minutes = parseInt(time / 60, 10);
+        minutes = minutes > 1 ? `0${minutes}` : '00';
+        let seconds = parseInt(time % 60, 10);
+        seconds = seconds / 10 > 1 ? `${seconds}` : `0${seconds}`;
         return `${minutes}:${seconds}`;
     }
+    console.warn('argument must be Number');
     return '00:00';
+};
+
+/**
+ * 将 hh:mm:ss 转换为 秒
+ * @param {String} time 时间
+ * @return {Number}
+ */
+export const convertHHMMSSToSecond = (time) => {
+    if (time && typeof time === 'string') {
+        let hour = 0;
+        let minute = 0;
+        let second = 0;
+        let total = 0;
+        const arr = time.split(':');
+        if (arr.length === 1) {
+            [second] = arr;
+        } else if (arr.length === 2) {
+            [minute, second] = arr;
+        } else if (arr.length === 3) {
+            [hour, minute, second] = arr;
+        }
+        total += hour ? +hour * 3600 : 0;
+        total += minute ? +minute * 60 : 0;
+        total += +second;
+        return total;
+    }
+    console.warn('argument must be String');
+    return 0;
 };
 
 /**

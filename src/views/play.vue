@@ -1,6 +1,6 @@
 <template>
-    <div class="play-box">
-        <div class="play-mask player-top-mask"></div>
+    <div class="play-container">
+        <div class="player-top-mask"></div>
         <div class="player-cover-bg" :style="{backgroundImage: `url(${song && song.al.picUrl})`}">
         </div>
         <div class="player-topbar">
@@ -19,7 +19,7 @@
           </div>
         </div>
         <div v-show="isShowLyric" class="player-lyric-wrap" @click="switchLyric">
-          <p :key="index" v-for="(item, index) in lyric">{{item && item.lyric}}</p>
+          <p :class="{active: lyricIndex === index}" :key="index" v-for="(item, index) in lyric">{{item && item.lyric}}</p>
         </div>
         <div class="player-progress-box">
             <p class="player-progress-currtime">{{showDragTime ? showDragTime : songCurrTime}}</p>
@@ -35,12 +35,11 @@
              :class="[isPlay ? 'icon-pause' : 'icon-play']" @click="operate"></div>
             <div class="player-control-last wif icon-right" @click="nextSong"></div>
         </div>
-        <div class="play-mask player-bottom-mask"></div>
     </div>
 </template>
 <script>
 import { mapGetters } from 'vuex';
-import { handleTime } from '../javascript/util';
+import { convertSecondToHHMMSS, convertHHMMSSToSecond } from '../javascript/util';
 import { requestSongDetail, requestSongUrl, requestLyric } from '../api';
 import eventbus from '../javascript/eventbus';
 
@@ -60,17 +59,28 @@ export default {
         ...mapGetters(['isPlay', 'songId', 'duration', 'currentTime', 'tracks']),
         songDuration() {
             const duration = this.duration !== undefined ? parseInt(this.duration, 10) : undefined;
-            return handleTime(duration);
+            return convertSecondToHHMMSS(duration);
         },
         songCurrTime() {
             const currentTime = this.currentTime !== undefined ? parseInt(this.currentTime, 10) : undefined;
-            return handleTime(currentTime);
+            return convertSecondToHHMMSS(currentTime);
         },
         playScale() {
             if (this.duration !== undefined && this.currentTime !== undefined) {
                 return `${parseInt(this.currentTime / this.duration * 100, 10)}%`;
             }
             return '0%';
+        },
+        lyricIndex() {
+            if (this.currentTime !== undefined) {
+                for (let i = 0; i < this.lyric.length; i += 1) {
+                    console.log(this.lyric[i].time);
+                    if (this.lyric[i].time > this.currentTime) {
+                        return i - 1;
+                    }
+                }
+            }
+            return 0;
         },
     },
     methods: {
@@ -85,9 +95,14 @@ export default {
         findSongIndex() {
             return this.tracks.findIndex(song => +song.id === +this.songId);
         },
+        reset() {
+            this.$store.commit('operate', false);
+            this.$store.commit('updateCurrentTime', 0);
+        },
         nextSong() {
             if (this.tracks.length === 0) {
                 this.$pop.prompt('抱歉，当前未选中任何歌单');
+                this.reset();
             } else {
                 let index = this.findSongIndex();
                 if (index === this.tracks.length - 1) {
@@ -101,6 +116,7 @@ export default {
         preSong() {
             if (this.tracks.length === 0) {
                 this.$pop.prompt('抱歉，当前未选中任何歌单');
+                this.reset();
             } else {
                 let index = this.findSongIndex();
                 if (index === 0) {
@@ -145,16 +161,24 @@ export default {
                     if (data.nolyric) {
                         this.lyric = ['暂无歌词'];
                     } else {
-                        const lyricArr = [];
-                        data.lrc.lyric.split('\n').forEach((item) => {
-                            const arr = item.match(/(\[.*\])(.*)/);
-                            const obj = {};
-                            if (!arr) { return; }
-                            obj.time = arr[2] ? arr[1] : 0;
-                            obj.lyric = arr[2] ? arr[2] : arr[1];
-                            lyricArr.push(obj);
-                        });
-                        this.lyric = lyricArr;
+                        this.lyric = data.lrc.lyric.split('\n').reduce((all, item) => {
+                            const arr = item.match(/\[(.*)\](.*)/);
+                            if (arr) {
+                                const [time, lyric] = arr.slice(1, 3);
+                                if (lyric) {
+                                    all.push({
+                                        time: convertHHMMSSToSecond(time),
+                                        lyric,
+                                    });
+                                } else {
+                                    all.push({
+                                        time: undefined,
+                                        lyric: time,
+                                    });
+                                }
+                            }
+                            return all;
+                        }, []);
                     }
                 }
             });
@@ -187,7 +211,7 @@ export default {
                     }
                     const progressPos = (currentX - offsetLeft) / wrapWidth;
                     dragTime = parseInt(vm.duration * progressPos, 10);
-                    vm.showDragTime = handleTime(dragTime);
+                    vm.showDragTime = convertSecondToHHMMSS(dragTime);
                     point.style.left = `${parseInt(progressPos * 100, 10)}%`;
                     playedProgress.style.width = `${parseInt(progressPos * 100, 10)}%`;
                 }, false);
@@ -233,7 +257,7 @@ export default {
 <style lang="scss" scoped>
 @import "../style/common.scss";
 
-.play-box {
+.play-container {
     position: absolute;
     width: 100%;
     top: 0;
@@ -277,13 +301,14 @@ export default {
 .player-cover-bg {
     background-position: center;
     background-repeat: no-repeat;
+    background-size: cover;
     opacity: .3;
     position: absolute;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    filter: blur(20px);
+    filter: blur(10px);
 }
 
 .player-cover-box {
@@ -359,7 +384,14 @@ export default {
   p {
     text-align: center;
     font-size: 14px;
-    margin-bottom: 10px;
+    line-height: 30px;
+    color: #fff;
+    opacity: .5;
+    &.active {
+        color: #fff;
+        font-weight: bolder;
+        opacity: 1;
+    }
   }
 }
 
@@ -426,24 +458,16 @@ export default {
     }
 }
 
-.play-mask {
+.player-top-mask {
     position: absolute;
+    top: 0;
+    bottom: 0;
     left: 0;
     width: 100%;
     background-color: #000;
     filter: blur(15px);
     z-index: -1;
-    opacity: .1;
-}
-
-.player-top-mask {
-    top: 0;
-    height: 50px;
-}
-
-.player-bottom-mask {
-    bottom: 0;
-    height: 100px;
+    opacity: .3;
 }
 
 @media (max-height: 480px) {
