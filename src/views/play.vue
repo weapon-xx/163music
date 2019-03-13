@@ -18,8 +18,8 @@
             <div v-else class="player-cover"></div>
           </div>
         </div>
-        <div v-show="isShowLyric" class="player-lyric-wrap" @click="switchLyric">
-          <p :class="{active: lyricIndex === index}" :key="index" v-for="(item, index) in lyric">{{item && item.lyric}}</p>
+        <div v-show="isShowLyric" ref="lyricBox" class="player-lyric-box" @click="switchLyric">
+            <p :class="{active: lyricIndex === index}" :key="index" v-for="(item, index) in lyric">{{item && item.lyric}}</p>
         </div>
         <div class="player-progress-box">
             <p class="player-progress-currtime">{{showDragTime ? showDragTime : songCurrTime}}</p>
@@ -39,6 +39,7 @@
 </template>
 <script>
 import { mapGetters } from 'vuex';
+import { setInterval, clearInterval } from 'timers';
 import { convertSecondToHHMMSS, convertHHMMSSToSecond } from '../javascript/util';
 import { requestSongDetail, requestSongUrl, requestLyric } from '../api';
 import eventbus from '../javascript/eventbus';
@@ -74,9 +75,10 @@ export default {
         lyricIndex() {
             if (this.currentTime !== undefined) {
                 for (let i = 0; i < this.lyric.length; i += 1) {
-                    console.log(this.lyric[i].time);
                     if (this.lyric[i].time > this.currentTime) {
-                        return i - 1;
+                        const index = i - 1;
+                        this.lyricScroll(index);
+                        return index;
                     }
                 }
             }
@@ -136,6 +138,28 @@ export default {
                 this.$store.commit('operate', false);
             } else {
                 this.$store.commit('operate', true);
+            }
+        },
+        lyricScroll(index) {
+            const { lyricBox } = this.$refs;
+            const { offsetHeight } = lyricBox;
+            const { scrollHeight } = lyricBox;
+            const { scrollTop } = lyricBox;
+            function animate(currentTop, targetTop) {
+                let distance = targetTop - currentTop;
+                const timer = setInterval(() => {
+                    let step = distance / 30;
+                    step = step > 0 ? Math.ceil(step) : Math.floor(step);
+                    lyricBox.scrollTop += step;
+                    distance -= step;
+                    if (distance === 0) {
+                        clearInterval(timer);
+                    }
+                }, 20);
+            }
+
+            if (scrollTop + offsetHeight < scrollHeight) {
+                animate(scrollTop, 32 * index);
             }
         },
         switchLyric() {
@@ -374,25 +398,26 @@ export default {
     }
 }
 
-.player-lyric-wrap {
-  position: relative;
-  width: 80%;
-  height: 150px;
-  margin: 20px auto 0;
-  overflow-y: scroll;
-  padding-top: 250px;
-  p {
-    text-align: center;
-    font-size: 14px;
-    line-height: 30px;
-    color: #fff;
-    opacity: .5;
-    &.active {
+.player-lyric-box {
+    position: relative;
+    width: 80%;
+    height: 150px;
+    margin: 20px auto 0;
+    overflow-y: scroll;
+    padding-top: 250px;
+    p {
+        text-align: center;
+        font-size: 14px;
+        line-height: 30px;
         color: #fff;
-        font-weight: bolder;
-        opacity: 1;
+        opacity: .5;
+        transition: all .5s ease;
+        &.active {
+            color: #fff;
+            font-weight: bolder;
+            opacity: 1;
+        }
     }
-  }
 }
 
 .player-progress-box {
@@ -488,7 +513,7 @@ export default {
             }
         }
     }
-    .player-lyric-wrap {
+    .player-lyric-box {
         padding-top: 150px;
     }
 }

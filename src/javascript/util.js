@@ -55,7 +55,7 @@ export const convertSecondToHHMMSS = (time) => {
         let minutes = parseInt(time / 60, 10);
         minutes = minutes > 1 ? `0${minutes}` : '00';
         let seconds = parseInt(time % 60, 10);
-        seconds = seconds / 10 > 1 ? `${seconds}` : `0${seconds}`;
+        seconds = seconds / 10 >= 1 ? `${seconds}` : `0${seconds}`;
         return `${minutes}:${seconds}`;
     }
     console.warn('argument must be Number');
