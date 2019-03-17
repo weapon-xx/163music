@@ -1,9 +1,4 @@
-import axios from 'axios';
-
-axios.defaults.withCredentials = true;// request with cookie
-
-// const domain = 'http://163music.jacksonx.cn/api';
-const domain = 'http://163api.jacksonx.cn';
+import requestServer from '../javascript/requestServer';
 
 /**
  * promise 缓存函数
@@ -41,7 +36,7 @@ export function cleanPromiseCache() {
  * 首页 banner
  * @return {Promise}
  */
-export const requestBanner = promiseCache(() => axios.get(`${domain}/banner`).then(data => data.data), () => 'banner');
+export const requestBanner = promiseCache(() => requestServer.get('/banner'), () => 'banner');
 
 /**
  * 手机号登录
@@ -55,9 +50,9 @@ export const login = (params) => {
     }
     const param = {
         method: 'get',
-        url: `${domain}/login/cellphone?phone=${phone}&password=${password}`,
+        url: `/login/cellphone?phone=${phone}&password=${password}`,
     };
-    return axios.request(param).then(data => data.data).catch(err => err.response);
+    return requestServer.request(param);
 };
 
 /**
@@ -67,14 +62,14 @@ export const login = (params) => {
 export const requestResource = promiseCache((cookie) => {
     const params = {
         method: 'get',
-        url: `${domain}/recommend/resource`,
+        url: '/recommend/resource',
     };
     if (cookie) {
         params.headers = {
             cookie,
         };
     }
-    return axios.request(params).then(data => data.data);
+    return requestServer.request(params);
 }, () => 'resource');
 
 /**
@@ -82,24 +77,24 @@ export const requestResource = promiseCache((cookie) => {
  * @param {Number} id  歌单id
  * @return {Promise}
  */
-export const requestPlaylistDetail = promiseCache(id => axios.request({
+export const requestPlaylistDetail = promiseCache(id => requestServer.request({
     method: 'get',
-    url: `${domain}/playlist/detail?id=${id}`,
-}).then(data => data.data), id => `PlaylistDetail-${id}`);
+    url: `/playlist/detail?id=${id}`,
+}), id => `PlaylistDetail-${id}`);
 
 /**
  * 获取歌单详情
  * @param {Number} id  歌单id
  * @return {Promise}
  */
-export const requestSongDetail = promiseCache(id => axios.get(`${domain}/song/detail?ids=${id}`).then(data => data.data), id => `songDetail-${id}`);
+export const requestSongDetail = promiseCache(id => requestServer.get(`/song/detail?ids=${id}`), id => `songDetail-${id}`);
 
 /**
- * 获取歌单 url
+ * 获取歌曲 url
  * @param {Number} id  歌单id
  * @return {Promise}
  */
-export const requestSongUrl = promiseCache(id => axios.get(`${domain}/song/url?id=${id}`).then(data => data.data), id => `songUrl-${id}`);
+export const requestSongUrl = promiseCache(id => requestServer.get(`/song/url?id=${id}`), id => `songUrl-${id}`);
 
 /**
  * 获取登录状态
@@ -108,14 +103,14 @@ export const requestSongUrl = promiseCache(id => axios.get(`${domain}/song/url?i
 export const requestLoginStatus = (cookie) => {
     const param = {
         method: 'get',
-        url: `${domain}/login/status`,
+        url: '/login/status',
     };
     if (cookie) {
         param.headers = {
             cookie,
         };
     }
-    return axios.request(param).then(data => data.data);
+    return requestServer.request(param);
 };
 
 /**
@@ -126,14 +121,14 @@ export const requestLoginStatus = (cookie) => {
 export const requestUserPlaylist = promiseCache((uid, cookie) => {
     const param = {
         method: 'get',
-        url: `${domain}/user/playlist?uid=${uid}`,
+        url: `/user/playlist?uid=${uid}`,
     };
     if (cookie) {
         param.headers = {
             cookie,
         };
     }
-    return axios.request(param).then(data => data.data);
+    return requestServer.request(param);
 }, uid => `userPlaylist-${uid}`);
 
 /**
@@ -144,14 +139,14 @@ export const requestUserPlaylist = promiseCache((uid, cookie) => {
 export const requestUserDetail = promiseCache((uid, cookie) => {
     const param = {
         method: 'get',
-        url: `${domain}/user/detail?uid=${uid}`,
+        url: `/user/detail?uid=${uid}`,
     };
     if (cookie) {
         param.headers = {
             cookie,
         };
     }
-    return axios.request(param).then(data => data.data);
+    return requestServer.request(param);
 }, uid => `userDetail-${uid}`);
 
 /**
@@ -161,14 +156,14 @@ export const requestUserDetail = promiseCache((uid, cookie) => {
 export const requestEvent = (cookie) => {
     const param = {
         method: 'get',
-        url: `${domain}/event`,
+        url: '/event',
     };
     if (cookie) {
         param.headers = {
             cookie,
         };
     }
-    return axios.request(param).then(data => data.data);
+    return requestServer.request(param);
 };
 
 /**
@@ -176,7 +171,7 @@ export const requestEvent = (cookie) => {
  * @param {Number} id 歌曲id
  * @return {Promise}
  */
-export const requestLyric = promiseCache(id => axios.get(`${domain}/lyric?id=${id}`).then(data => data.data), id => `lyric-${id}`);
+export const requestLyric = promiseCache(id => requestServer.get(`/lyric?id=${id}`), id => `lyric-${id}`);
 
 /**
  * 搜索建议
@@ -184,7 +179,7 @@ export const requestLyric = promiseCache(id => axios.get(`${domain}/lyric?id=${i
  * @return {Promise}
  */
 export const requestSuggestKeyword = promiseCache(
-    keywords => axios.get(`${domain}/search/suggest?keywords=${keywords}`).then(data => data.data),
+    keywords => requestServer.get(`/search/suggest?keywords=${keywords}`),
     keywords => `Suggest-${keywords}`,
 );
 
@@ -194,7 +189,7 @@ export const requestSuggestKeyword = promiseCache(
  * @return {Promise}
  */
 export const requestSearchByKeyword = promiseCache(
-    keywords => axios.get(`${domain}/search?keywords= ${keywords}`).then(data => data.data),
+    keywords => requestServer.get(`/search?keywords= ${keywords}`),
     keywords => `Search-${keywords}`,
 );
 
@@ -203,11 +198,25 @@ export const requestSearchByKeyword = promiseCache(
  * @param {Number} id 视频id
  * @return {Promise}
  */
-export const getVideoUrl = promiseCache(id => axios.get(`${domain}/video/url?id=${id}`), id => `videoUrl-${id}`);
+export const getVideoUrl = promiseCache(id => requestServer.get(`/video/url?id=${id}`), id => `videoUrl-${id}`);
 
 
 /**
  * 退出登录
  * @return {Promise}
  */
-export const logout = () => axios.get(`${domain}/logout`).then(data => data.data);
+export const logout = () => requestServer.get('/logout');
+
+/**
+ * 获取用户关注列表
+ * @param {Number} uid 用户id
+ * @return {Promise}
+ */
+export const getUserFollow = promiseCache(uid => requestServer.get(`/user/follows?uid=${uid}`), uid => `follow-${uid}`);
+
+/**
+ * 获取用户粉丝列表
+ * @param {Number} uid 用户id
+ * @return {Promise}
+ */
+export const getUserFollowed = promiseCache(uid => requestServer.get(`/user/followeds?uid=${uid}`), uid => `followed-${uid}`);
