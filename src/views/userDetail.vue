@@ -1,5 +1,8 @@
 <template>
     <div class="user-detail-container">
+        <div class="user-detail-header">
+            <p>账号</p>
+        </div>
         <div class="user-detail-box">
             <img class="user-detail-avatar" :src="profile.avatarUrl" alt="">
             <div class="user-detail-wrap">
@@ -12,11 +15,11 @@
                 <p class="user-detail-feature-text">动态</p>
                 <p class="user-detail-feature-num">{{profile.eventCount}}</p>
             </li>
-            <li class="user-detail-feature-item">
+            <li class="user-detail-feature-item" @click="jump('follow')">
                 <p class="user-detail-feature-text">关注</p>
                 <p class="user-detail-feature-num">{{profile.followeds}}</p>
             </li>
-            <li class="user-detail-feature-item">
+            <li class="user-detail-feature-item" @click="jump('followed')">
                 <p class="user-detail-feature-text">粉丝</p>
                 <p class="user-detail-feature-num">{{profile.follows}}</p>
             </li>
@@ -66,6 +69,11 @@ export default {
                 }
             });
         },
+        jump(router) {
+            if (router) {
+                this.$router.push(router);
+            }
+        },
     },
     mounted() {
         if (this.userId) {
@@ -83,6 +91,18 @@ $borderColor: #eee;
 .user-detail-container {
     background-color: #f7f5f5;
 }
+
+.user-detail-header {
+    height: 40px;
+    line-height: 40px;
+    background-color: #fff;
+    border-bottom: 1px solid $borderColor;
+    p {
+        text-align: center;
+        color: #000;
+    }
+}
+
 .user-detail-box {
     display: flex;
     padding: 10px;
@@ -133,6 +153,8 @@ $borderColor: #eee;
         .user-detail-feature-num {
             text-align: center;
             font-size: 12px;
+            color: #000;
+            font-weight: bold;
         }
     }
 }

@@ -42,6 +42,16 @@ export default function createRouter() {
                 name: 'userDetail',
                 component: () => import('../views/userDetail.vue'),
             },
+            {
+                path: '/followed',
+                name: 'followed',
+                component: () => import('../views/followed.vue'),
+            },
+            {
+                path: '/follow',
+                name: 'follow',
+                component: () => import('../views/follow.vue'),
+            },
         ],
     });
 }
