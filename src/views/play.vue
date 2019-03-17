@@ -194,11 +194,6 @@ export default {
                                         time: convertHHMMSSToSecond(time),
                                         lyric,
                                     });
-                                } else {
-                                    all.push({
-                                        time: undefined,
-                                        lyric: time,
-                                    });
                                 }
                             }
                             return all;
