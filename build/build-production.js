@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const chalk = require('chalk');
+const logSymbols = require('log-symbols');
 const clientConfig = require('./webpack.client.config');
 const serverConfig = require('./webpack.server.config');
 
@@ -13,9 +14,9 @@ log(chalk.green('Start building...'));
 function handle(err, stats) {
     if (err) { throw err; }
     /**
-   * @see https://webpack.docschina.org/configuration/stats/#src/components/Sidebar/Sidebar.jsx
-   * stats config
-   */
+     * @see https://webpack.docschina.org/configuration/stats/#src/components/Sidebar/Sidebar.jsx
+     * stats config
+     */
     process.stdout.write(stats.toString({
         colors: true,
         builtAt: true,
@@ -31,14 +32,14 @@ function handle(err, stats) {
     if (stats.hasErrors()) {
         log(chalk.red('ERROR: '));
         result.errors.forEach((error) => {
-            log(chalk.red(error));
+            log(logSymbols.error, error);
             log('--------');
         });
     }
     if (stats.hasWarnings()) {
         log(chalk.yellow('WARNING: '));
         result.warnings.forEach((warn) => {
-            log(chalk.yellow(warn));
+            log(logSymbols.warning, warn);
             log('--------');
         });
     }

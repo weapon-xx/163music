@@ -129,6 +129,7 @@ module.exports = {
              * @see https://webpack.docschina.org/plugins/module-concatenation-plugin/#src/components/Sidebar/Sidebar.jsx
              */
             new webpack.optimize.ModuleConcatenationPlugin(),
+            new webpack.ProgressPlugin(),
         ]
         : [
             new VueLoaderPlugin(),
