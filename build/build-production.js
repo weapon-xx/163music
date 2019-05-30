@@ -4,7 +4,7 @@ const logSymbols = require('log-symbols');
 const clientConfig = require('./webpack.client.config');
 const serverConfig = require('./webpack.server.config');
 
-const s = Date.now();
+const start = Date.now();
 const { log } = console;
 let clientStats; let
     serverStats;
@@ -48,7 +48,7 @@ function handle(err, stats) {
 function done() {
     if (clientStats && serverStats) {
         const time = clientStats.endTime > serverStats.endTime ? clientStats.endTime : serverStats.endTime;
-        log(chalk.green(`Build successfully, whole time: ${(time - s) / 1000}s`));
+        log(chalk.green(`Build successfully, whole time: ${(time - start) / 1000}s`));
     }
 }
 

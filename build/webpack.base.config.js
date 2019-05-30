@@ -2,6 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 const { VueLoaderPlugin } = require('vue-loader');
+// const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 
 const inlineLimit = 4096;
 const isProd = process.env.NODE_ENV === 'production';
@@ -34,11 +35,20 @@ module.exports = {
             {
                 test: /\.jsx?$/,
                 exclude: /node_modules/,
-                use: [
-                    {
-                        loader: 'babel-loader',
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: [
+                            [
+                                '@babel/preset-env',
+                                {
+                                    useBuiltIns: 'usage',
+                                },
+                            ],
+                        ],
+                        plugins: ['@babel/transform-runtime'],
                     },
-                ],
+                },
             },
             {
                 test: /\.vue$/,
@@ -130,6 +140,7 @@ module.exports = {
              */
             new webpack.optimize.ModuleConcatenationPlugin(),
             new webpack.ProgressPlugin(),
+            // new BundleAnalyzerPlugin(),
         ]
         : [
             new VueLoaderPlugin(),
