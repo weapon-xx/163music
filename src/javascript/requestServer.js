@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const requestServer = axios.create({
-    baseURL: 'http://163api.jacksonx.cn',
+    baseURL: '//163api.jacksonx.cn',
     withCredentials: true,
     timeout: 60000,
 });
