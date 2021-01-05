@@ -22,7 +22,7 @@
     "*.{js,vue}": "cross-env NODE_ENV=production eslint"
   },
   "dependencies": {
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "babel-loader": "^8.0.5",
     "better-scroll": "^1.14.1",
     "chalk": "^2.4.2",
