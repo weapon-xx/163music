@@ -89,7 +89,7 @@
     "karma-spec-reporter": "^0.0.32",
     "karma-webpack": "^3.0.5",
     "mocha": "^5.2.0",
-    "node-sass": "^4.11.0",
+    "node-sass": "^7.0.0",
     "phantomjs-prebuilt": "^2.1.16",
     "postcss-loader": "^3.0.0",
     "postcss-pixel-to-viewport": "^1.0.2",
